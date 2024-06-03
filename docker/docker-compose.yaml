@@ -31,22 +31,6 @@ services:
     env_file:
       - ../.env
 
-  redis:
-    restart: always
-    image: redis:alpine
-    container_name: social_redis
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "5"
-    ports:
-    - "6379:6379"
-    networks:
-      - main_network
-    env_file:
-      - ../.env
-
 networks:
   main_network:
     driver: bridge
