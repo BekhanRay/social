@@ -1,0 +1,54 @@
+version: '3.8'
+services:
+  backend: &backend
+    container_name: social_back
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ..:/opt/services
+    env_file:
+      - ../etc/.env
+    ports:
+      - "8000:8000"
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic
+      --no-input && gunicorn core.wsgi:application --bind 0.0.0.0:8000"
+    networks:
+      - main_network
+      - nginx_network
+
+  db:
+    image: postgres:15-alpine
+    container_name: social_db
+    restart: unless-stopped
+    volumes:
+      - ../storage:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - main_network
+    env_file:
+      - ../etc/.env
+
+  redis:
+    restart: always
+    image: redis:alpine
+    container_name: social_redis
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+    ports:
+    - "6379:6379"
+    networks:
+      - main_network
+    env_file:
+      - ../etc/.env
+
+networks:
+  main_network:
+    driver: bridge
+  nginx_network:
+    driver: bridge

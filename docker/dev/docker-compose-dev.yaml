@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  nginx:
+    container_name: social-nginx
+    image: nginx:1.25.2-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ../nginx/conf.dev:/etc/nginx/conf.d
+      - ../back_static:/opt/services/static
+      - ../back_media:/opt/services/media
+    networks:
+      - nginx_network
