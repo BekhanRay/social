@@ -97,13 +97,6 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-class Forum(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='forums')
-    title = models.CharField(max_length=255)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
 class Action(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
