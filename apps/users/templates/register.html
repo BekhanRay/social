@@ -3,13 +3,9 @@
 {% block title %} Registration {% endblock %}
 
 {% block body %}
-<div class="container">
-    <form method="post" class="registration-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="form-group">
-            <button type="submit">Sign Up</button>
-        </div>
-    </form>
-</div>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+</form>
 {% endblock %}

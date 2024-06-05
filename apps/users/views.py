@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, UserLoginForm
+from .forms import UserRegistrationForm, UserLoginForm, ProfileForm
+from .models import Profile
 
 
 def register(request):
@@ -27,3 +28,9 @@ def user_login(request):
     else:
         form = UserLoginForm()
     return render(request, 'login.html', {'form': form})
+
+
+def profile(request):
+    # my_users = Profile.objects.filter(user=request.user).order_by('-id')
+    form = ProfileForm()
+    return render(request, 'profile.html', {'form':form})

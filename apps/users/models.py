@@ -1,47 +1,24 @@
-# from datetime import timedelta
-#
-# from django.contrib.auth.models import AbstractUser
-# from django.db import models
-# from django.db.models.functions import datetime
-#
-#
-# class User(AbstractUser):
-#     username = models.CharField(max_length=50, blank=False, null=False)
-#     password = models.CharField(max_length=50, blank=False, null=False)
-#     email = models.EmailField()
-#     birth_date = models.DateField(blank=False, null=False)
-#     GENDER_CHOICES = ('Male', 'Female')
-#     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-#     country = models.CharField(max_length=50, blank=False, null=False)
-#     region = models.CharField(max_length=50, blank=False, null=False)
-#     city = models.CharField(max_length=50, blank=False, null=False)
-#     is_user_agreemant = models.BooleanField(default=True, blank=False, null=False)
-#     is_superuser = models.BooleanField(default=False, blank=False, null=False)
-#
-#     def __str__(self):
-#         return self.username
-#
-#     @property
-#     def get_user_country(self):
-#         return self.country
-#
-#     @property
-#     def get_user_region(self):
-#         return self.region
-#
-#     @property
-#     def get_user_birth_date(self):
-#         return self.birth_date
-#
-#     @property
-#     def get_profile(self):
-#         return self
-#
 
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Group, Permission
 from django.db import models
 
 
-class User(models.Model):
+class User(AbstractBaseUser, PermissionsMixin):
+    groups = models.ManyToManyField(
+        Group,
+        related_name='custom_user_set',  # Измените related_name здесь
+        blank=True,
+        help_text=('The groups this user belongs to. A user will get all permissions '
+                   'granted to each of their groups.'),
+        related_query_name='user',
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='custom_user_permissions_set',  # Измените related_name здесь
+        blank=True,
+        help_text=('Specific permissions for this user.'),
+        related_query_name='user',
+    )
     GENDER_CHOICES = [
         ('male', 'Male'),
         ('female', 'Female'),
@@ -64,10 +41,16 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    USERNAME_FIELD = 'login'
+    USERNAME_FIELD = 'nickname'
+    PROFILE_PHOTO = 'avatar_photo'
+    PASSWORD_FIELD = 'password'
+
+    def __str__(self):
+        return self.nickname
+
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=User)
     general_info = models.TextField(blank=True, null=True)
     personal_info = models.TextField(blank=True, null=True)
     education_profession = models.TextField(blank=True, null=True)

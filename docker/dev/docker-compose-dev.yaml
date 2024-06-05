@@ -8,7 +8,7 @@ services:
       - "80:80"
     volumes:
       - ../nginx/conf.dev:/etc/nginx/conf.d
-      - ../back_static:/opt/services/static
-      - ../back_media:/opt/services/media
+      - ../static:/opt/services/static
+      - ../media:/opt/services/media
     networks:
       - nginx_network
