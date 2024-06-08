@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %} Добавить комментарий {% endblock %}
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Добавить</button>
+</form>
+{% endblock %}

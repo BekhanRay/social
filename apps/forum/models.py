@@ -35,6 +35,43 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
+    likes = models.PositiveIntegerField(default=0)
+    dislikes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f'Commented by {self.author} to {self.post} post'
+
+    @property
+    def get_replies(self):
+        return self.replies.all()
+
+    @property
+    def reply_count(self):
+        count = self.replies.count()
+        if not count:
+            return ''
+        return count
+
+    @property
+    def get_dislikes(self):
+        count = self.dislikes
+        if not count:
+            return ''
+        return count
+
+    @property
+    def get_likes(self):
+        count = self.likes
+        if not count:
+            return ''
+        return count
+
+
+class CommentReaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, related_name='reactions', on_delete=models.CASCADE)
+    reaction_type = models.CharField(max_length=10)  # 'like' or 'dislike'
+
+    class Meta:
+        unique_together = ('user', 'comment')
