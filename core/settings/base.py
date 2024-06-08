@@ -62,6 +62,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
@@ -111,10 +116,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Формат отображения даты и времени
-DATE_FORMAT = 'Y.m.d'
-DATETIME_FORMAT = 'Y.m.d H:i'
-
 # STATIC (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
@@ -131,4 +132,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-USER_MODEL = 'social.User'
+AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_REDIRECT_URL = '/'
+
+
+LOGIN_URL = 'login'

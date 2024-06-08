@@ -1,6 +1,10 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, UserLoginForm, ProfileForm
+from .forms import UserRegistrationForm, ProfileForm
+from django.shortcuts import get_object_or_404
+
 from .models import Profile
 
 
@@ -15,22 +19,33 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-def user_login(request):
+def login_view(request):
     if request.method == 'POST':
-        form = UserLoginForm(request, data=request.POST)
+        form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')  # Перенаправление на главную страницу после успешного входа
+            user = form.get_user()
+            auth_login(request, user)
+            return redirect('profile')  # Перенаправление на страницу профиля
     else:
-        form = UserLoginForm()
+        form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
 
+@login_required
 def profile(request):
-    # my_users = Profile.objects.filter(user=request.user).order_by('-id')
-    form = ProfileForm()
-    return render(request, 'profile.html', {'form':form})
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except:
+        profile = None
+
+    if request.method == 'POST':
+
+        # profile = get_object_or_404(Profile, user=request.user)
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'profile.html', {'form': form})

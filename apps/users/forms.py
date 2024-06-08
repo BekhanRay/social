@@ -1,32 +1,21 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import User, Profile
+from django.contrib.auth.forms import UserCreationForm
 
-
-class UserLoginForm(AuthenticationForm):
-    username = forms.CharField(
-        max_length=50,
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Login'})
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'})
-    )
-
-    # class Meta:
-    #     model = User
-    #     fields = ('username', 'password')
+from .models import CustomUser, Profile
 
 
 class UserRegistrationForm(UserCreationForm):
-    email = forms.EmailField(
-        error_messages={'required': 'Email is required'}
-    )
-    birthdate = forms.DateField(
-        error_messages={'required': 'We need to know your age !'}
+
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
     )
 
+    birthdate = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=True, label='Birthdate')
+    gender = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+
     class Meta:
-        model = User
+        model = CustomUser
         fields = [
             'login',
             'email',
@@ -40,8 +29,28 @@ class UserRegistrationForm(UserCreationForm):
             'confirmation_code'
         ]
 
+    def __init__(self, *args, **kwargs):
+        super(UserRegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['login'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Login'})
+        self.fields['email'].widget = forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'})
+        self.fields['nickname'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nickname'})
+        self.fields['country'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Country'})
+        self.fields['region'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Region'})
+        self.fields['city'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'City'})
+        self.fields['user_agreement'].widget = forms.CheckboxInput(attrs={'class': 'form-check-input'})
+        self.fields['confirmation_code'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Confirmation Code'})
+
 
 class ProfileForm(forms.ModelForm):
+
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = {
+            'general_info',
+            'personal_info',
+            'education_profession',
+            'habits_preferences',
+        }
+        widgets = {
+            'user': forms.HiddenInput(),
+        }

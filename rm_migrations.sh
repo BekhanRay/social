@@ -5,7 +5,7 @@ src_directory="apps"
 # Найти все поддиректории с именем migrations внутри директории src
 migrations_directories=$(find "$src_directory" -type d -name migrations)
 
-for dir in $migrations_directories;do
+for dir in $migrations_directories; do
     echo "Deleting migrations in $dir"
     
     # Удалить все файлы с расширением .py, кроме __init__.py

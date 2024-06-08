@@ -1,24 +1,11 @@
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Group, Permission
 from django.db import models
+from .managers import UserManager
 
 
-class User(AbstractBaseUser, PermissionsMixin):
-    groups = models.ManyToManyField(
-        Group,
-        related_name='custom_user_set',  # Измените related_name здесь
-        blank=True,
-        help_text=('The groups this user belongs to. A user will get all permissions '
-                   'granted to each of their groups.'),
-        related_query_name='user',
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='custom_user_permissions_set',  # Измените related_name здесь
-        blank=True,
-        help_text=('Specific permissions for this user.'),
-        related_query_name='user',
-    )
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+
     GENDER_CHOICES = [
         ('male', 'Male'),
         ('female', 'Female'),
@@ -28,29 +15,31 @@ class User(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=255)
     email = models.EmailField(max_length=100, unique=True)
     nickname = models.CharField(max_length=50)
-    birthdate = models.DateField()
+    birthdate = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
-    country = models.CharField(max_length=50)
+    country = models.CharField(max_length=255, blank=True)
     region = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
-    user_agreement = models.BooleanField()
+    user_agreement = models.BooleanField(default=False)
     confirmation_code = models.CharField(max_length=50)
     avatar_photo = models.ForeignKey('Photo', null=True, blank=True, on_delete=models.SET_NULL,
                                      related_name='avatar_user')
     is_online = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    USERNAME_FIELD = 'nickname'
-    PROFILE_PHOTO = 'avatar_photo'
-    PASSWORD_FIELD = 'password'
+    USERNAME_FIELD = 'login'
+
+    objects = UserManager()
+    REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.nickname
+        return self.login
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=User)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     general_info = models.TextField(blank=True, null=True)
     personal_info = models.TextField(blank=True, null=True)
     education_profession = models.TextField(blank=True, null=True)
@@ -58,9 +47,11 @@ class Profile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.user.login
 
 class Photo(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='photos')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='photos')
     file_path = models.CharField(max_length=255)
     is_avatar = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -68,21 +59,21 @@ class Photo(models.Model):
 
 
 class Video(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='videos')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='videos')
     url = models.URLField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 class Message(models.Model):
-    sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
+    sender = models.ForeignKey(CustomUser, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(CustomUser, related_name='received_messages', on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Forum(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='forums')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='forums')
     title = models.CharField(max_length=255)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -98,7 +89,7 @@ class Action(models.Model):
 
 
 class UserAction(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     action = models.ForeignKey(Action, on_delete=models.CASCADE)
     is_participating = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -111,7 +102,7 @@ class Search(models.Model):
         ('female', 'Female'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='searches')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='searches')
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
     min_age = models.IntegerField()
     max_age = models.IntegerField()
