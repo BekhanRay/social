@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from .models import CustomUser, UserAction, Photo, Profile, Video, Action, Search, Statistics, Message, Forum
+from .models import CustomUser, UserAction, Photo, Profile, Video, Action, Search, Statistics, Forum
 
 
 admin.site.unregister(Group)
@@ -13,6 +13,5 @@ admin.site.register(Video)
 admin.site.register(Action)
 admin.site.register(Search)
 admin.site.register(Statistics)
-admin.site.register(Message)
 admin.site.register(Forum)
 admin.site.site_header = 'Админка'

@@ -1,19 +1,14 @@
-import config
-
-SECRET_KEY = config.SECRET_KEY
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config.DEBUG
+from config import SECRET_KEY, DEBUG, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT
 
 # DB
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config.POSTGRES_DB,
-        'USER': config.POSTGRES_USER,
-        'PASSWORD': config.POSTGRES_PASSWORD,
-        'HOST': config.POSTGRES_HOST,
-        'PORT': config.POSTGRES_PORT,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': POSTGRES_DB,
+        'USER': POSTGRES_USER,
+        'PASSWORD': POSTGRES_PASSWORD,
+        'HOST': POSTGRES_HOST,
+        'PORT': POSTGRES_PORT,
     }
 }
 

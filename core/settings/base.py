@@ -10,9 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+from pathlib import Path
 
 import config
 # from .prod import *
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 from .local import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -35,10 +38,12 @@ APPS = [
     'apps.users',
     'apps.forum',
     'apps.statics',
+    'apps.chat',
 ]
 
 THIRD_PARTY_APPS = [
     'jazzmin',
+    'channels'
 ]
 
 INSTALLED_APPS = [
@@ -51,6 +56,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     *APPS,
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
+        },
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -65,13 +65,6 @@ class Video(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Message(models.Model):
-    sender = models.ForeignKey(CustomUser, related_name='sent_messages', on_delete=models.CASCADE)
-    receiver = models.ForeignKey(CustomUser, related_name='received_messages', on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
 class Forum(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='forums')
     title = models.CharField(max_length=255)
