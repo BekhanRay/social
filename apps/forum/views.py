@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 from .models import Forum, Thread, Post, Comment, CommentReaction
 
 
@@ -21,7 +22,23 @@ def post_list(request, forum_id, thread_id):
     thread = Thread.objects.get(id=thread_id)
     posts = Post.objects.filter(thread=thread_id)
     return render(request, 'post_list.html', {'posts': posts,
-                                              'thread_title': thread.title})
+                                              'thread': thread})
+
+
+@login_required
+def add_post(request, thread_id):
+    thread = get_object_or_404(Thread, id=thread_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.thread = thread
+            post.author = request.user
+            post.save()
+            return redirect('')
+    else:
+        form = PostForm()
+    return render(request, 'add_post.html', {'form': form, 'thread': thread})
 
 
 @login_required

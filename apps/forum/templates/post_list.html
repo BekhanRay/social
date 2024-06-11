@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} {{ thread_title }} {% endblock %}
+{% block title %} {{ thread.title }} {% endblock %}
 {% block body %}
 <script>
     function toggleReplies(commentId) {
@@ -14,7 +14,17 @@
             toggleButton.textContent = `Посмотреть ответы (${toggleButton.getAttribute('data-reply-count')})`;
         }
     }
+     document.getElementById('add-post-button').addEventListener('click', function() {
+        const form = document.getElementById('add-post-form');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    });
 </script>
+<a href="{% url 'add_post' thread.id %}">Add Post</a>
+
 {% for post in posts %}
     <div>
         <h2>{{ post.title }}</h2>
