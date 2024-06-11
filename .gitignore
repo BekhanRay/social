@@ -5,6 +5,7 @@ venv
 .env
 .env.prod
 __pycache__
+blabla
 сore/__pycache__
 apps/users/__pycache__
 apps/users/migrations/__pycache__
