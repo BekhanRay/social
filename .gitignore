@@ -1,6 +1,6 @@
 .gitignore
 .idea
-.blabla
+__pycache__
 venv
 .env
 .env.prod
