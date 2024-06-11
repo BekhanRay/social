@@ -1,17 +1,17 @@
 .gitignore
 .idea
 __pycache__
-venv
-.env
-.env.prod
-__pycache__
-blabla
 сore/__pycache__
 apps/users/__pycache__
 apps/users/migrations/__pycache__
 apps/quiz/__pycache__
 apps/quiz/migrations/__pycache__
 back_media/__pycache__
+venv
+.env
+.env.prod
+blabla
+
 storage
 
 ### types ###
