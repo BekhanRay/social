@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %} {{ thread.title }} {% endblock %}
+{% block body %}
+<script>
+    function toggleReplies(commentId) {
+        var repliesDiv = document.getElementById('replies-' + commentId);
+        var toggleButton = document.getElementById('toggle-replies-' + commentId);
+
+        if (repliesDiv.style.display === 'none') {
+            repliesDiv.style.display = 'block';
+            toggleButton.textContent = 'Скрыть ответы';
+        } else {
+            repliesDiv.style.display = 'none';
+            toggleButton.textContent = `Посмотреть ответы (${toggleButton.getAttribute('data-reply-count')})`;
+        }
+    }
+     document.getElementById('add-post-button').addEventListener('click', function() {
+        const form = document.getElementById('add-post-form');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+        } else {
+            form.style.display = 'none';
+        }
+    });
+</script>
+<a href="{% url 'add_post' thread.id %}">Add Post</a>
+
+{% for post in posts %}
+    <div>
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
+        <p>Posted by {{ post.author.username }} on {{ post.created_at }}</p>
+        <a href="{% url 'add_comment' post.id %}">Добавить комментарий</a>
+        <div>
+            {% for comment in post.comments.all %}
+                {% if not comment.parent %}
+                {% include "comment.html" with comment=comment %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}
