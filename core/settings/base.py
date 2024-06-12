@@ -10,8 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+from pathlib import Path
 
 import config
+# from .prod import *
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 from .local import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,16 +33,17 @@ DEBUG = config.DEBUG
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 APPS = [
     'apps.users',
     'apps.forum',
     'apps.statics',
+    'apps.chat',
 ]
 
 THIRD_PARTY_APPS = [
     'jazzmin',
+    'channels'
 ]
 
 INSTALLED_APPS = [
@@ -52,6 +57,15 @@ INSTALLED_APPS = [
     *APPS,
 ]
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
+        },
+    },
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -61,6 +75,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 ROOT_URLCONF = 'core.urls'
 
@@ -82,7 +101,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -101,18 +119,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bishkek'
 
 USE_I18N = True
 
 USE_TZ = True
-
 
 # STATIC (CSS, JavaScript, Images)
 
@@ -129,3 +145,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_REDIRECT_URL = '/'
+
+
+LOGIN_URL = 'login'
