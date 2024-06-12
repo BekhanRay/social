@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %} {{forum_title}} {% endblock %}
+{% block body %}
+<h1>{{forum_title}}</h1>
+    <ul>
+        {% for thread in threads %}
+    <h2><a href="{% url 'post_list' forum_id=thread.forum.id thread_id=thread.id %}">{{ thread.title }}</a></h2>
+        {% endfor %}
+    </ul>
+{% endblock %}

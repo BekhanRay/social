@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %} Форумы {% endblock %}
+{% block body %}
+<h1>Изменить комментарий</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+{% endblock %}
