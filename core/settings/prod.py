@@ -20,12 +20,12 @@ DATABASES = {
 # }
 
 # CACHE
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-#         'LOCATION': 'redis://redis:6379/1',
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://redis:6379/1',
+    }
+}
 
 # CSRF
 CSRF_USE_SESSIONS = True

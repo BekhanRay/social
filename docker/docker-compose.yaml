@@ -20,7 +20,6 @@ services:
 
   db:
     image: postgres:15-alpine
-    container_name: al-khail_db
     restart: unless-stopped
     volumes:
       - ../storage:/var/lib/postgresql/data
@@ -36,7 +35,6 @@ services:
   redis:
     restart: always
     image: redis:alpine
-    container_name: redis_al
     logging:
       driver: json-file
       options:

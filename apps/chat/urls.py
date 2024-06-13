@@ -1,7 +1,7 @@
-from django.urls import path
-
-from apps.chat import views
-
-urlpatterns = [
-    path('', views)
-]
+# from django.urls import path
+#
+# from apps.chat import views
+#
+# urlpatterns = [
+#     # path('', )
+# ]

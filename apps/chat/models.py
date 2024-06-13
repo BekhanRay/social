@@ -1,11 +1,13 @@
 from django.db import models
 from uuid import uuid4
+from apps.users.models import CustomUser
+from django.conf import settings
 
 
 class Chat(models.Model):
     uuid = models.UUIDField(default=uuid4, editable=False, primary_key=True)
-    initiator = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, related_name='initiator')
-    receiver = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, related_name='receiver')
+    initiator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='initiator')
+    receiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='receiver')
 
     # members = models.ManyToManyField('users.CustomUser')
     # def add_user(self, user):
@@ -20,10 +22,10 @@ class Chat(models.Model):
 
 
 class Message(models.Model):
-    author = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, related_name='author')
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='author')
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
-    group = models.ForeignKey('groups.Group', on_delete=models.CASCADE, related_name='group')
+    chat = models.ForeignKey('Chat', on_delete=models.CASCADE, related_name='group')
 
 
 

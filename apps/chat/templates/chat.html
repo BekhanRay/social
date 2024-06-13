@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Chat Page
+{% endblock %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block content %}
+<div id="chat-room">
+    <!-- Здесь будет отображаться история сообщений -->
+    <div id="chat-history"></div>
+
+    <!-- Форма для отправки новых сообщений -->
+    <form id="chat-form">
+        <input type="text" id="chat-message" placeholder="Введите сообщение...">
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
