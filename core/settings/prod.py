@@ -29,12 +29,9 @@ CACHES = {
 
 # CSRF
 CSRF_USE_SESSIONS = True
-# CSRF_TRUSTED_ORIGINS = ['http://16.171.24.8:80/',
-#                         'http://localhost/',
-#                         'http://16.171.24.8/',
-#                         'http://209.38.228.54:80/',
-#                         'http://209.38.228.54/',
-#                         ]
+CSRF_TRUSTED_ORIGINS = ['16.171.6.225',
+                        'http://localhost/',
+                        ]
 
 
 # Cors
