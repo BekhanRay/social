@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from apps.users.models import CustomUser
 from django.db import models
 
 
@@ -22,7 +22,7 @@ class Thread(models.Model):
 
 class Post(models.Model):
     thread = models.ForeignKey(Thread, related_name='posts', on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -32,7 +32,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
@@ -69,7 +69,7 @@ class Comment(models.Model):
 
 
 class CommentReaction(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, related_name='reactions', on_delete=models.CASCADE)
     reaction_type = models.CharField(max_length=10)  # 'like' or 'dislike'
 

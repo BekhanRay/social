@@ -3,9 +3,109 @@
 {% block title %} Registration {% endblock %}
 
 {% block body %}
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+<style>
+    .page_layout_register {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+    }
+    .forms_register_box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .input {
+        outline: unset;
+        border: solid 1px #eee;
+        border-radius: 12px;
+        width: 400px;
+        max-width: 500px;
+        height: 55px;
+        padding: 0 16px;
+        font-size: 15px;
+    }
+    .agreement {
+        display: flex;
+        align-items: center;
+        max-width: 400px;
+        font-size: 12px;
+        gap: 8px;
+        cursor: pointer;
+    }
+    #registrationForm button {
+        background: #eb008a;
+        transition: 200ms;
+    }
+    #registrationForm button:hover {
+        background: #eb008a99;
+    }
+    .forms_register h2{
+        margin: unset;
+        line-height: 60px;
+    }
+    #id_agreement{
+        width: 24px;
+        height: 24px;
+    }
+</style>
+
+<div class="page_layout_register">
+    <div class="forms_register">
+        <form method="post" id="registrationForm">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div id="step1" style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Регистрация</h2>
+                </div>
+                {{ form.username.errors }}
+                <input type="text" id="id_username" name="username" class="input" placeholder="Логин" required>
+                {{ form.password1.errors }}
+                <input type="password" id="id_password1" name="password1" class="input" placeholder="Пароль" required>
+                {{ form.password2.errors }}
+                <input type="password" id="id_password2" name="password2" class="input" placeholder="Повторите пароль" required>
+                {{ form.email.errors }}
+                <input type="email" id="id_email" name="email" class="input" placeholder="Электронная почта" required>
+                <div style="display: flex; gap: 8px; align-items: center; font-size: 12px;">
+                    <input type="text" style="max-width: 60px; text-align: center;" id="pincode" name="pincode" class="input" placeholder="Код" required>
+                    <span>Код подтверждения</span>
+                </div>
+                <button type="button" id="nextButton">Дальше</button>
+            </div>
+            <div id="step2" style="display: none; flex-direction: column; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Регистрация</h2>
+                    <button type="button" id="backButton" style="padding: 0 16px; height: 42.5px;">Назад</button>
+                </div>
+                {{ form.dob.errors }}
+                <input type="date" id="id_dob" name="dob" class="input" required>
+                {{ form.gender.errors }}
+                <select id="id_gender" style="width: 100%; cursor: pointer;" name="gender" class="input" required>
+                    <option selected disabled>Выберите пол</option>
+                    <option value="male">Мужчина</option>
+                    <option value="female">Женщина</option>
+                </select>
+                {{ form.country.errors }}
+                <input type="text" id="id_country" name="country" class="input" placeholder="Страна" required>
+                {{ form.city.errors }}
+                <input type="text" id="id_city" name="city" class="input" placeholder="Город" required>
+                {{ form.agreement.errors }}
+                <label for="id_agreement" class="agreement">
+                    <input type="checkbox" id="id_agreement" name="agreement" required> Я принимаю пользовательское соглашение
+                </label>
+                <button type="submit">Регистрироваться</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    document.getElementById('nextButton').addEventListener('click', function() {
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'flex';
+    });
+    document.getElementById('backButton').addEventListener('click', function() {
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('step1').style.display = 'flex';
+    });
+</script>
 {% endblock %}
