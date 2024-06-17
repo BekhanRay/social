@@ -2,20 +2,34 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, ProfileForm
-from django.shortcuts import get_object_or_404
+from .forms import ProfileForm #, CustomUserCreationForm
 
-from .models import Profile
+from .models import Profile, CustomUser
 
 
 def register(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')  # Перенаправление на страницу входа после успешной регистрации
-    else:
-        form = UserRegistrationForm()
+        if CustomUser.objects.filter(email=request.POST['email']) is not None:
+            CustomUser.objects.create_user(
+                login=request.POST['login'],
+                password = request.POST['password1'],
+                email = request.POST['email'],
+                birthdate = request.POST['birthdate'],
+                confirmation_code = request.POST['confirmation_code'],
+                gender = request.POST['gender'],
+                country = request.POST['country'],
+                region = request.POST['region'],
+                city = request.POST['city'],
+                user_agreement = bool([True if request.POST['user_agreement'] == 'on' else False]),
+            )
+        return redirect('login')
+        # form.save()
+        # form = CustomUserCreationForm(request.POST)
+        # if form.is_valid():
+        #     form.save()
+        #     return redirect('login')  # Перенаправление на страницу входа после успешной регистрации
+    # else:
+    #     form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
 
