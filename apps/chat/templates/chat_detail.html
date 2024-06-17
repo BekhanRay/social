@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Чат с {{ chat.receiver.username }}{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <h2>Чат с {{ chat.receiver.username }}</h2>
+    <div class="messages">
+        {% for message in messages %}
+        <div class="message">
+            <p>{{ message.sender.username }}: {{ message.content }}</p>
+            <span class="timestamp">{{ message.timestamp }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    <form id="sendMessageForm">
+        {% csrf_token %}
+        <input type="hidden" name="chat_id" value="{{ chat.id }}">
+        <textarea name="content" placeholder="Введите ваше сообщение" required></textarea>
+        <button type="submit">Отправить</button>
+    </form>
+</div>
+<script>
+    const sendMessageForm = document.getElementById('sendMessageForm');
+
+    sendMessageForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(sendMessageForm);
+        fetch("{% url 'send_message' %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Очистка формы или обновление сообщений
+                sendMessageForm.reset();
+                // Можно добавить логику для обновления списка сообщений без перезагрузки страницы
+            } else {
+                alert(data.error || 'Ошибка отправки сообщения.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+    });
+</script>
+{% endblock %}

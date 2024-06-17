@@ -1,16 +1,30 @@
-from django.contrib.auth import login as auth_login, authenticate
+import random
+
+from django.conf import settings
+from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.checks import messages
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
 from .models import Profile, CustomUser
 
 
+def generate_code():
+    random.seed()
+    return str(random.randint(10000,99999))
+
+
 def register(request):
     if request.method == 'POST':
         if CustomUser.objects.filter(email=request.POST['email']) is not None:
+            # message = generate_code()
+            # send_mail('код подтверждения', message,
+            #           settings.EMAIL_HOST_USER,
+            #           [CustomUser.objects.get(email=request.POST['email'])],
+            #           fail_silently=False)
             CustomUser.objects.create_user(
                 login=request.POST['login'],
                 password=request.POST['password1'],
@@ -27,15 +41,6 @@ def register(request):
     return render(request, 'register.html')
 
 
-# def login_view(request):
-#     if request.method == 'POST':
-#         user = CustomUser.objects.get(login=request.POST['login'], password=request.POST['password'])
-#         if user is not None:
-#             auth_login(request, user)
-#             return redirect('profile')  # Перенаправление на страницу профиля
-#     else:
-#         pass
-#     return render(request, 'login.html')
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -53,6 +58,7 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
+
 
 @login_required
 def profile(request):
@@ -73,4 +79,18 @@ def profile(request):
             updated_at=timezone.now()
         )
         profile.save()
+    # elif request.method == 'GET':
+    #     return render(request, 'profile.html', {"form": Profile.objects.get(user=request.user)})
     return render(request, 'profile.html')
+
+
+@login_required
+def logout_view(request):
+    auth_logout(request)
+    return redirect('register')
+
+
+def profile_detail(request):
+    user = CustomUser.objects.get(id=request.user.id)
+    profile = Profile.objects.get(user=user)
+    return render(request, 'profile_detail.html', {'user': user, 'profile': profile})

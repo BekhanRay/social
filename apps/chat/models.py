@@ -1,13 +1,20 @@
 from django.db import models
-from apps.users.models import CustomUser
+from django.conf import settings
+from django.utils import timezone
 
 
 class Chat(models.Model):
-    participants = models.ManyToManyField(CustomUser)
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_chats', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='received_chats', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.sender} -> {self.receiver}"
 
 class Message(models.Model):
-    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='messages')
-    sender = models.ForeignKey(CustomUser, related_name='sent_messages', on_delete=models.CASCADE)
+    chat = models.ForeignKey(Chat, related_name='messages', on_delete=models.CASCADE)
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_messages', on_delete=models.CASCADE)
     content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.sender}: {self.content}"
