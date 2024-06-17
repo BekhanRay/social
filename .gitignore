@@ -7,12 +7,16 @@ __pycache__
 сore/__pycache__
 apps/users/__pycache__
 apps/users/migrations/__pycache__
-apps/quiz/__pycache__
-apps/quiz/migrations/__pycache__
-back_media/__pycache__
+apps/chat/__pycache__
+apps/chat/migrations/__pycache__
+media/__pycache__
+apps/forum/__pycache__
+apps/forum/migrations/__pycache__
+apps/statics/__pycache__
+apps/statics/migrations/__pycache__
 storage
 amici.pem
-
+*.pem
 ### types ###
 *.js
 *.map
