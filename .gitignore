@@ -15,7 +15,6 @@ apps/forum/migrations/__pycache__
 apps/statics/__pycache__
 apps/statics/migrations/__pycache__
 storage
-amici.pem
 *.pem
 ### types ###
 *.js

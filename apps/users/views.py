@@ -2,7 +2,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
-from .forms import ProfileForm #, CustomUserCreationForm
+from django.utils import timezone
 
 from .models import Profile, CustomUser
 
@@ -12,25 +12,18 @@ def register(request):
         if CustomUser.objects.filter(email=request.POST['email']) is not None:
             CustomUser.objects.create_user(
                 login=request.POST['login'],
-                password = request.POST['password1'],
-                email = request.POST['email'],
-                birthdate = request.POST['birthdate'],
-                confirmation_code = request.POST['confirmation_code'],
-                gender = request.POST['gender'],
-                country = request.POST['country'],
-                region = request.POST['region'],
-                city = request.POST['city'],
-                user_agreement = bool([True if request.POST['user_agreement'] == 'on' else False]),
+                password=request.POST['password1'],
+                email=request.POST['email'],
+                birthdate=request.POST['birthdate'],
+                confirmation_code=request.POST['confirmation_code'],
+                gender=request.POST['gender'],
+                country=request.POST['country'],
+                region=request.POST['region'],
+                city=request.POST['city'],
+                user_agreement=bool([True if request.POST['user_agreement'] == 'on' else False]),
             )
         return redirect('login')
-        # form.save()
-        # form = CustomUserCreationForm(request.POST)
-        # if form.is_valid():
-        #     form.save()
-        #     return redirect('login')  # Перенаправление на страницу входа после успешной регистрации
-    # else:
-    #     form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'register.html')
 
 
 def login_view(request):
@@ -49,17 +42,19 @@ def login_view(request):
 def profile(request):
     try:
         profile = Profile.objects.get(user=request.user)
+        return render(request, 'profile.html', {"form": profile})
     except:
-        profile = None
+        pass
 
     if request.method == 'POST':
-
-        # profile = get_object_or_404(Profile, user=request.user)
-        form = ProfileForm(request.POST, instance=profile)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = request.user
-            profile.save()
-    else:
-        form = ProfileForm(instance=profile)
-    return render(request, 'profile.html', {'form': form})
+        profile = Profile.objects.create(
+            user=request.user,
+            general_info=request.POST['general_info'],
+            personal_info=request.POST['personal_info'],
+            education_profession=request.POST['education_profession'],
+            habits_preferences=request.POST['habits_preferences'],
+            created_at=timezone.now(),
+            updated_at=timezone.now()
+        )
+        profile.save()
+    return render(request, 'profile.html')

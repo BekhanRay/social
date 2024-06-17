@@ -177,7 +177,7 @@ button:hover {
                 <div class="search_page">
 
                 </div>
-                <a href="#" class="forum">Форум</a>
+                <a href="{% url 'forum_list' %}" class="forum">Форум</a>
             </div>
             <div class="user_page">
                 {% if user.is_authenticated %}
