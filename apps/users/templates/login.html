@@ -1,18 +1,56 @@
-{% extends 'base.html' %}
-{% block title %}
-Login
-{% endblock %}
+{% extends "base.html" %}
+
+{% block title %} Login {% endblock %}
+
 {% block body %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {% if form.non_field_errors %}
-            <ul>
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        <button type="submit">Login</button>
-    </form>
+<style>
+    .page_layout_login {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+    }
+    .forms_login_box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .input {
+        outline: unset;
+        border: solid 1px #eee;
+        border-radius: 12px;
+        width: 400px;
+        max-width: 500px;
+        height: 55px;
+        padding: 0 16px;
+        font-size: 15px;
+    }
+    #loginForm button {
+        background: #eb008a;
+        transition: 200ms;
+    }
+    #loginForm button:hover {
+        background: #eb008a99;
+    }
+    .forms_login h2 {
+        margin: unset;
+        line-height: 60px;
+    }
+</style>
+
+<div class="page_layout_login">
+    <div class="forms_login">
+        <form method="post" id="loginForm">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="forms_login_box">
+                <h2>Логин</h2>
+                {{ form.username.errors }}
+                <input type="text" id="id_username" name="username" class="input" placeholder="Логин" required>
+                {{ form.password.errors }}
+                <input type="password" id="id_password" name="password" class="input" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
