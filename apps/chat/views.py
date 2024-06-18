@@ -20,3 +20,4 @@ def chat_room(request, room_name):
         return redirect('home')
 
     return render(request, 'messages/chat_room.html', {'room_name': room_name, 'chat': chat})
+
