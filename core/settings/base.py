@@ -16,7 +16,7 @@ import config
 # from .prod import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-from .local import *
+from .prod import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -43,7 +43,8 @@ APPS = [
 
 THIRD_PARTY_APPS = [
     'jazzmin',
-    'channels'
+    'channels',
+    'daphne',
 ]
 
 INSTALLED_APPS = [
@@ -57,13 +58,19 @@ INSTALLED_APPS = [
     *APPS,
 ]
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
-        'CONFIG': {
-            'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
-        },
-    },
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
+#         'CONFIG': {
+#             'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
+#         },
+#     },
+# }
+
+CHANNELS_LAYERS = {
+  'default': {
+    'BACKEND': 'channels.layers.InMemoryChannelLayer'
+  }
 }
 
 MIDDLEWARE = [

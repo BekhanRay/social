@@ -1,23 +1,25 @@
+from pathlib import Path
+
 from config import SECRET_KEY, DEBUG, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT
-
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # DB
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': POSTGRES_DB,
-        'USER': POSTGRES_USER,
-        'PASSWORD': POSTGRES_PASSWORD,
-        'HOST': POSTGRES_HOST,
-        'PORT': POSTGRES_PORT,
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     },
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'db',
+#         'USER': 'postgres',
+#         'PASSWORD': 1,
+#         'HOST': 'db',
+#         'PORT': 5432,
+#     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
 
 # CACHE
 CACHES = {
@@ -29,7 +31,7 @@ CACHES = {
 
 # CSRF
 CSRF_USE_SESSIONS = True
-CSRF_TRUSTED_ORIGINS = ['16.171.6.225',
+CSRF_TRUSTED_ORIGINS = ['http://16.171.6.225/',
                         'http://localhost/',
                         ]
 

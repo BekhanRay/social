@@ -3,11 +3,11 @@ from decouple import config
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG')
 
-POSTGRES_DB = config('PG_NAME')
-POSTGRES_USER = config('PG_USER')
-POSTGRES_PASSWORD = config('PG_PASSWORD', cast=int)
-POSTGRES_HOST = config('PG_HOST')
-POSTGRES_PORT = config('PG_PORT', cast=int)
+POSTGRES_DB = config('POSTGRES_DB')
+POSTGRES_USER = config('POSTGRES_USER')
+POSTGRES_PASSWORD = config('POSTGRES_PASSWORD', cast=int)
+POSTGRES_HOST = config('POSTGRES_HOST')
+POSTGRES_PORT = config('POSTGRES_PORT', cast=int)
 
 # EMAIL
 
