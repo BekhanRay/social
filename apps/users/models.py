@@ -1,10 +1,13 @@
 
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, Group, Permission
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from .managers import UserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+
+    def upload_to(self, filename):
+        return f'media/{self.login}/{filename}'
 
     GENDER_CHOICES = [
         ('male', 'Male'),
@@ -22,8 +25,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     city = models.CharField(max_length=50)
     user_agreement = models.BooleanField(default=False)
     confirmation_code = models.CharField(max_length=50)
-    avatar_photo = models.ForeignKey('Photo', null=True, blank=True, on_delete=models.SET_NULL,
-                                     related_name='avatar_user')
+    avatar_photo = models.ImageField('Photo', null=True, blank=True, upload_to=upload_to)
     is_online = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -49,13 +51,6 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.login
-
-class Photo(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='photos')
-    file_path = models.CharField(max_length=255)
-    is_avatar = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Video(models.Model):

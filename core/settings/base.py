@@ -16,7 +16,7 @@ import config
 # from .prod import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-from .local import *
+from .prod import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -43,7 +43,8 @@ APPS = [
 
 THIRD_PARTY_APPS = [
     'jazzmin',
-    'channels'
+    'channels',
+    'daphne',
 ]
 
 INSTALLED_APPS = [
@@ -57,13 +58,19 @@ INSTALLED_APPS = [
     *APPS,
 ]
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
-        'CONFIG': {
-            'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
-        },
-    },
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
+#         'CONFIG': {
+#             'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
+#         },
+#     },
+# }
+
+CHANNELS_LAYERS = {
+  'default': {
+    'BACKEND': 'channels.layers.InMemoryChannelLayer'
+  }
 }
 
 MIDDLEWARE = [
@@ -99,8 +106,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.wsgi.application'
-
+# WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -151,3 +158,12 @@ LOGIN_REDIRECT_URL = '/'
 
 
 LOGIN_URL = 'login'
+# Email
+EMAIL_BACKEND = config.EMAIL_BACKEND
+EMAIL_HOST = config.EMAIL_HOST
+EMAIL_PORT = config.EMAIL_PORT
+EMAIL_USE_SSL = config.EMAIL_USE_SSL
+EMAIL_HOST_USER = config.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = config.EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = config.DEFAULT_FROM_EMAIL
+SERVER_EMAIL = config.SERVER_EMAIL

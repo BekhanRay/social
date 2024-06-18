@@ -25,3 +25,6 @@ web/media
 web/static/CACHE
 stats
 Dockerfile
+.idea
+*.pem
+static

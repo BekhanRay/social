@@ -1,40 +1,29 @@
-from config import SECRET_KEY, DEBUG, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT
+from pathlib import Path
 
+from config import SECRET_KEY, DEBUG, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # DB
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': POSTGRES_DB,
-        'USER': POSTGRES_USER,
-        'PASSWORD': POSTGRES_PASSWORD,
-        'HOST': POSTGRES_HOST,
-        'PORT': POSTGRES_PORT,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
+
+# CACHE
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://redis:6379/1',
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     },
-# }
-
-# CACHE
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-#         'LOCATION': 'redis://redis:6379/1',
-#     }
-# }
-
 # CSRF
 CSRF_USE_SESSIONS = True
-# CSRF_TRUSTED_ORIGINS = ['http://16.171.24.8:80/',
-#                         'http://localhost/',
-#                         'http://16.171.24.8/',
-#                         'http://209.38.228.54:80/',
-#                         'http://209.38.228.54/',
-#                         ]
+CSRF_TRUSTED_ORIGINS = ['http://16.171.6.225/',
+                        'http://localhost/',
+                        ]
 
 
 # Cors
