@@ -16,7 +16,7 @@ import config
 # from .prod import *
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-from .prod import *
+from .local import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -43,8 +43,7 @@ APPS = [
 
 THIRD_PARTY_APPS = [
     'jazzmin',
-    'channels',
-    'daphne',
+    'channels'
 ]
 
 INSTALLED_APPS = [
@@ -58,19 +57,13 @@ INSTALLED_APPS = [
     *APPS,
 ]
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
-#         'CONFIG': {
-#             'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
-#         },
-#     },
-# }
-
-CHANNELS_LAYERS = {
-  'default': {
-    'BACKEND': 'channels.layers.InMemoryChannelLayer'
-  }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
+        },
+    },
 }
 
 MIDDLEWARE = [
@@ -129,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'Asia/Bishkek'
 
@@ -158,12 +151,3 @@ LOGIN_REDIRECT_URL = '/'
 
 
 LOGIN_URL = 'login'
-# Email
-EMAIL_BACKEND = config.EMAIL_BACKEND
-EMAIL_HOST = config.EMAIL_HOST
-EMAIL_PORT = config.EMAIL_PORT
-EMAIL_USE_SSL = config.EMAIL_USE_SSL
-EMAIL_HOST_USER = config.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = config.EMAIL_HOST_USER
-DEFAULT_FROM_EMAIL = config.DEFAULT_FROM_EMAIL
-SERVER_EMAIL = config.SERVER_EMAIL

@@ -46,6 +46,10 @@
                 <h2>Профиль</h2>
                 {% if user.is_authenticated %}
                     {{ form.general_info.errors }}
+                <div class="form-group">
+        <label for="image">Аватарка:</label>
+        <input type="file" id="image" name="image" class="form-control">
+    </div>
                     <textarea id="id_general_info" name="general_info" class="input" placeholder="Общая информация">{{ form.general_info }}</textarea>
                     {{ form.personal_info.errors }}
                     <textarea id="id_personal_info" name="personal_info" class="input" placeholder="Личная информация">{{ form.personal_info }}</textarea>
