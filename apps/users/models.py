@@ -1,17 +1,17 @@
-
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils import timezone
+
 from .managers import UserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
-    def upload_to(self, filename):
-        return f'media/{self.login}/{filename}'
-
     GENDER_CHOICES = [
-        ('male', 'Male'),
-        ('female', 'Female'),
+        ('мужской', 'Мужской'),
+        ('женский', 'Женский'),
     ]
 
     login = models.CharField(max_length=50, unique=True)
@@ -19,13 +19,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
     nickname = models.CharField(max_length=50)
     birthdate = models.DateField(null=True, blank=True)
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=7, choices=GENDER_CHOICES, default='Другой')
     country = models.CharField(max_length=255, blank=True)
     region = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     user_agreement = models.BooleanField(default=False)
     confirmation_code = models.CharField(max_length=50)
-    avatar_photo = models.ImageField('Photo', null=True, blank=True, upload_to=upload_to)
+    avatar_photo = models.ForeignKey('Photo', null=True, blank=True, on_delete=models.SET_NULL,
+                                     related_name='avatar_user')
     is_online = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -39,6 +40,28 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.login
 
+    @property
+    def age(self):
+        today = timezone.now().date()
+        age = int(
+            today.year
+            - (self.birthdate.year)
+            - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
+        )
+        if len(str(age)) == 1 \
+                and age == 1 \
+                or str(age)[-1] == '1' \
+                and age not in (11, 12, 13, 14,):
+            return f'{age} год'
+        if len(str(age)) == 1 \
+                and 1 < age <= 4 \
+                and age not in (11, 12, 13, 14,):
+            return f'{age} года'
+        if str(age)[-1] in ('2', '3', 4,) \
+                and age not in (11, 12, 13, 14,):
+            return f'{age} года'
+        return f'{age} лет'
+
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -51,6 +74,22 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.login
+
+
+class Photo(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='photos')
+    file_path = models.ImageField(upload_to='user_photos/', default='user_photos/default_user_photo.jpg')
+    is_avatar = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+@receiver(post_save, sender=CustomUser)
+def create_default_avatar(sender, instance, created, **kwargs):
+    if created and not instance.avatar_photo:
+        default_photo = Photo.objects.create(user=instance, file_path='user_photos/default_user_photo.jpg', is_avatar=True)
+        instance.avatar_photo = default_photo
+        instance.save()
 
 
 class Video(models.Model):

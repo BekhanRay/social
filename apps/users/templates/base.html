@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
     <title>{% block title %} {% endblock %}</title>
     <style>
 body {
@@ -13,9 +15,6 @@ body {
     background-color: #f7f8fa;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     color: #333;
 }
@@ -90,8 +89,8 @@ button:hover {
     right: 0;
     top: 0;
     height: 80px;
-    border-radius: 0 0 12px 12px;
     background: #eb008a;
+    z-index: 1001;
 }
 .header_inside{
     max-width: 1060px;
@@ -111,6 +110,10 @@ button:hover {
     display: grid;
     color: #fff;
     place-items: center;
+}
+.logo svg{
+    width: 100%;
+    height: 40px;
 }
 .search__forum{
     display: flex;
@@ -143,9 +146,9 @@ button:hover {
     height: 50px;
     display: flex;
     align-items: center;
-    flex-direction: row-reverse;
-    
-    
+    justify-content: space-between;
+
+
 }
 .user_icon{
     transition: 200ms;
@@ -160,28 +163,196 @@ button:hover {
 .user_icon svg{
     min-width: 35px;
     min-height: 35px;
-    
+
 }
 .user_icon span{
     font-size: 13px;
     color: #fff;
 }
+.filter-form {
+            margin-bottom: 20px;
+        }
+        .filter-form input, .filter-form select {
+            padding: 5px;
+            margin: 5px;
+            width: calc(100% - 12px);
+        }
+        .user-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .user-list li {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+
+        .filter-hidden {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #0009;
+    z-index: 1000;
+}
+.filter{
+    display: none;
+
+
+}
+.filter_inside{
+    position: absolute;
+    min-height: 100px;
+    background: #fff;
+    right: 0;
+    left: 0;
+    top: 80px;
+    display: flex;
+    padding: 16px;
+    animation: filter 200ms ;
+}
+@keyframes filter {
+	0% {
+		opacity: 0;
+        transform: translateY(-30px)
+	}
+	100% {
+		opacity: 1;
+        transform: translateY(0px)
+	}
+}
+.input_filter{
+    outline: unset;
+    border: solid 1px #000;
+    font-size: 13px;
+    padding: 8px;
+    border-radius: 8px;
+    height: 52px;
+    width: 100%;
+    min-width: 200px;
+    max-width: 260px;
+}
+.filter_inside form button{
+    height: 50px;
+    padding: 0 16px;
+    background: #eb008a;
+    transition: 200ms;
+}
+.filter_inside form button:hover{
+    opacity: .8;
+}
+#filterButton{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    gap: 5px;
+    background: unset;
+    transition: 200ms;
+}
+#filterButton:hover{
+    opacity: 0.7;
+}
+#filterButton svg{
+    width: 35px;
+    height: 35px;
+}
+#filterButton span{
+    font-size: 13px;
+    color: #fff;
+}
+
+.profiles_page{
+    margin-top: 80px;
+    display: grid;
+    grid-template-columns:
+  repeat(auto-fill, 270px);
+    padding: 16px;
+    gap: 16px;
+    justify-content: center;
+}
+.profile{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+}
+.profile:hover .meet_btn{
+    background-color: #eb008a;
+}
+.avatar{
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 22px;
+}
+.avatar img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.name{
+    font-weight: bold;
+}
+.name__age{
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 18px;
+}
+.age{
+    font-size: 19px;
+    font-weight: bold;
+    color: #ff50b7;
+}
+.meet_btn{
+    background-color: #eb008a77;
+    font-weight: bold;
+    transition: 200ms;
+    border-radius: 25px;
+}
+
     </style>
 <!--    <link rel="stylesheet" href="styles.css">-->
 </head>
 <body>
     <div class="header">
         <div class="header_inside">
-            <a href="" class="logo">AmiCi</a>
+            <a href="{% url 'home' %}" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="29" height="11" viewBox="0 0 29 11" fill="none">
+                    <path d="M27.5141 2.35185C27.2501 2.35185 27.0261 2.25985 26.8421 2.07585C26.6581 1.89185 26.5661 1.66785 26.5661 1.40385C26.5661 1.13985 26.6581 0.915848 26.8421 0.731848C27.0261 0.539848 27.2501 0.443848 27.5141 0.443848C27.7781 0.443848 28.0021 0.539848 28.1861 0.731848C28.3781 0.915848 28.4741 1.13985 28.4741 1.40385C28.4741 1.66785 28.3781 1.89185 28.1861 2.07585C28.0021 2.25985 27.7781 2.35185 27.5141 2.35185ZM26.6981 9.07185C26.3141 9.07185 26.0021 8.95185 25.7621 8.71185C25.5301 8.47185 25.4141 8.11185 25.4141 7.63185C25.4141 7.43185 25.4461 7.17185 25.5101 6.85185L26.3261 2.99985H28.0541L27.1901 7.07985C27.1581 7.19985 27.1421 7.32785 27.1421 7.46385C27.1421 7.62385 27.1781 7.73985 27.2501 7.81185C27.3301 7.87585 27.4581 7.90785 27.6341 7.90785C27.7781 7.90785 27.9061 7.88385 28.0181 7.83585C27.9861 8.23585 27.8421 8.54385 27.5861 8.75985C27.3381 8.96785 27.0421 9.07185 26.6981 9.07185Z" fill="white"/>
+                    <path d="M22.4014 9.192C21.4974 9.192 20.8334 8.964 20.4094 8.508C19.9854 8.052 19.7734 7.296 19.7734 6.24C19.7734 5.4 19.9134 4.496 20.1934 3.528C20.4814 2.56 20.9374 1.732 21.5614 1.044C22.1934 0.348 22.9934 0 23.9614 0C24.5614 0 25.0454 0.132 25.4134 0.396001C25.7814 0.660001 25.9654 1.064 25.9654 1.608C25.9654 1.952 25.8974 2.224 25.7614 2.424C25.6254 2.616 25.4134 2.712 25.1254 2.712C24.8374 2.712 24.6094 2.608 24.4414 2.4C24.5854 2.328 24.7134 2.184 24.8254 1.968C24.9374 1.752 24.9934 1.528 24.9934 1.296C24.9934 1.08 24.9334 0.904 24.8134 0.768C24.7014 0.632 24.5174 0.564001 24.2614 0.564001C23.8374 0.564001 23.4334 0.856001 23.0494 1.44C22.6654 2.016 22.3534 2.744 22.1134 3.624C21.8814 4.504 21.7654 5.352 21.7654 6.168C21.7654 6.776 21.8694 7.24 22.0774 7.56C22.2854 7.88 22.6614 8.04 23.2054 8.04C23.6774 8.04 24.1134 7.936 24.5134 7.728C24.9134 7.52 25.2574 7.224 25.5454 6.84L25.8214 6.96C25.6214 7.464 25.3254 7.884 24.9334 8.22C24.5414 8.556 24.1214 8.804 23.6734 8.964C23.2254 9.116 22.8014 9.192 22.4014 9.192Z" fill="white"/>
+                    <path d="M19.0414 2.35185C18.7774 2.35185 18.5534 2.25985 18.3694 2.07585C18.1854 1.89185 18.0934 1.66785 18.0934 1.40385C18.0934 1.13985 18.1854 0.915848 18.3694 0.731848C18.5534 0.539848 18.7774 0.443848 19.0414 0.443848C19.3054 0.443848 19.5294 0.539848 19.7134 0.731848C19.9054 0.915848 20.0014 1.13985 20.0014 1.40385C20.0014 1.66785 19.9054 1.89185 19.7134 2.07585C19.5294 2.25985 19.3054 2.35185 19.0414 2.35185ZM18.2254 9.07185C17.8414 9.07185 17.5294 8.95185 17.2894 8.71185C17.0574 8.47185 16.9414 8.11185 16.9414 7.63185C16.9414 7.43185 16.9734 7.17185 17.0374 6.85185L17.8534 2.99985H19.5814L18.7174 7.07985C18.6854 7.19985 18.6694 7.32785 18.6694 7.46385C18.6694 7.62385 18.7054 7.73985 18.7774 7.81185C18.8574 7.87585 18.9854 7.90785 19.1614 7.90785C19.3054 7.90785 19.4334 7.88385 19.5454 7.83585C19.5134 8.23585 19.3694 8.54385 19.1134 8.75985C18.8654 8.96785 18.5694 9.07185 18.2254 9.07185Z" fill="white"/>
+                    <path d="M15.3106 9.07194C14.8226 9.07194 14.4626 8.94394 14.2306 8.68794C14.0066 8.42394 13.8946 8.09994 13.8946 7.71594C13.8946 7.54794 13.9146 7.35994 13.9546 7.15194C13.9946 6.93594 14.0346 6.72794 14.0746 6.52794C14.1226 6.32794 14.1546 6.19994 14.1706 6.14394C14.2346 5.86394 14.2946 5.58794 14.3506 5.31594C14.4066 5.04394 14.4346 4.82394 14.4346 4.65594C14.4346 4.24794 14.2906 4.04394 14.0026 4.04394C13.7946 4.04394 13.6106 4.14794 13.4506 4.35594C13.2906 4.55594 13.1626 4.81994 13.0666 5.14794L12.2506 8.99994H10.5226L11.3986 4.85994C11.4226 4.76394 11.4346 4.66394 11.4346 4.55994C11.4346 4.20794 11.3146 4.03194 11.0746 4.03194C10.8506 4.03194 10.6546 4.13594 10.4866 4.34394C10.3266 4.54394 10.1986 4.81194 10.1026 5.14794L9.28659 8.99994H7.55859L8.83059 2.99994H10.5586L10.4266 3.62394C10.8346 3.16794 11.3226 2.93994 11.8906 2.93994C12.5946 2.93994 13.0066 3.28394 13.1266 3.97194C13.5666 3.29194 14.1226 2.95194 14.7946 2.95194C15.2026 2.95194 15.5266 3.06394 15.7666 3.28794C16.0066 3.51194 16.1266 3.85194 16.1266 4.30794C16.1266 4.53994 16.0986 4.79994 16.0426 5.08794C15.9866 5.36794 15.9066 5.71194 15.8026 6.11994C15.7386 6.36794 15.6786 6.61194 15.6226 6.85194C15.5746 7.08394 15.5506 7.26794 15.5506 7.40394C15.5506 7.56394 15.5866 7.68794 15.6586 7.77594C15.7306 7.86394 15.8546 7.90794 16.0306 7.90794C16.2706 7.90794 16.4626 7.82394 16.6066 7.65594C16.7506 7.47994 16.8946 7.21194 17.0386 6.85194H17.5426C17.2466 7.73194 16.9026 8.32394 16.5106 8.62794C16.1266 8.92394 15.7266 9.07194 15.3106 9.07194Z" fill="white"/>
+                    <path d="M2.61738 10.368C2.32138 10.368 2.06138 10.344 1.83738 10.296C1.61338 10.248 1.41737 10.132 1.24937 9.948C1.08938 9.764 1.00938 9.48 1.00938 9.096C1.00938 8.56 1.16938 7.84 1.48937 6.936C1.81738 6.032 2.24538 5.124 2.77338 4.212C2.37338 4.236 2.05738 4.296 1.82538 4.392C1.59338 4.488 1.44137 4.636 1.36937 4.836C1.40137 4.836 1.43338 4.876 1.46538 4.956C1.50538 5.036 1.52538 5.12 1.52538 5.208C1.52538 5.352 1.46138 5.468 1.33338 5.556C1.20538 5.636 1.04537 5.676 0.853375 5.676C0.629375 5.676 0.449375 5.616 0.313375 5.496C0.177375 5.376 0.109375 5.204 0.109375 4.98C0.109375 4.708 0.213375 4.46 0.421375 4.236C0.637375 4.012 0.933375 3.836 1.30938 3.708C1.68538 3.572 2.10138 3.504 2.55738 3.504C2.72538 3.504 2.93338 3.516 3.18138 3.54C3.83738 2.5 4.52938 1.652 5.25738 0.996C5.99338 0.332 6.69338 0 7.35738 0C7.74138 0 8.05738 0.056 8.30538 0.168L6.42138 9H4.69338L5.61738 4.644C5.32138 4.508 5.04938 4.408 4.80138 4.344C4.55338 4.28 4.28938 4.236 4.00938 4.212C3.55338 5.196 3.17738 6.204 2.88138 7.236C2.59338 8.26 2.44938 9.08 2.44938 9.696C2.44938 10 2.50538 10.224 2.61738 10.368ZM6.42138 0.852C6.07738 1.036 5.71738 1.38 5.34138 1.884C4.97338 2.38 4.61338 2.984 4.26138 3.696C4.83738 3.808 5.32538 3.948 5.72538 4.116L6.42138 0.852Z" fill="white"/>
+                    </svg>
+            </a>
             <div class="search__forum">
-                <div class="search_page">
-
-                </div>
-                <a href="{% url 'forum_list' %}" class="forum">Форум</a>
+                <button id="filterButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5 13C4.44772 13 4 12.5523 4 12L4 4C4 3.44771 4.44771 3 5 3C5.55228 3 6 3.44771 6 4L6 12C6 12.5523 5.55228 13 5 13Z" fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19 21C18.4477 21 18 20.5523 18 20L18 18C18 17.4477 18.4477 17 19 17C19.5523 17 20 17.4477 20 18L20 20C20 20.5523 19.5523 21 19 21Z" fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5 21C4.44772 21 4 20.5523 4 20L4 16C4 15.4477 4.44771 15 5 15C5.55228 15 6 15.4477 6 16L6 20C6 20.5523 5.55228 21 5 21Z" fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19 13C18.4477 13 18 12.5523 18 12L18 4C18 3.44771 18.4477 3 19 3C19.5523 3 20 3.44771 20 4L20 12C20 12.5523 19.5523 13 19 13Z" fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 8C11.4477 8 11 7.55228 11 7L11 4C11 3.44772 11.4477 3 12 3C12.5523 3 13 3.44772 13 4L13 7C13 7.55228 12.5523 8 12 8Z" fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C11.4477 21 11 20.5523 11 20L11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12L13 20C13 20.5523 12.5523 21 12 21Z" fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5 13C4.44772 13 4 13.4477 4 14C4 14.5523 4.44772 15 5 15C5.55228 15 6 14.5523 6 14C6 13.4477 5.55228 13 5 13ZM2 14C2 12.3431 3.34315 11 5 11C6.65685 11 8 12.3431 8 14C8 15.6569 6.65685 17 5 17C3.34315 17 2 15.6569 2 14Z" fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 8C11.4477 8 11 8.44772 11 9C11 9.55228 11.4477 10 12 10C12.5523 10 13 9.55228 13 9C13 8.44772 12.5523 8 12 8ZM9 9C9 7.34315 10.3431 6 12 6C13.6569 6 15 7.34315 15 9C15 10.6569 13.6569 12 12 12C10.3431 12 9 10.6569 9 9Z" fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M19 14C18.4477 14 18 14.4477 18 15C18 15.5523 18.4477 16 19 16C19.5523 16 20 15.5523 20 15C20 14.4477 19.5523 14 19 14ZM16 15C16 13.3431 17.3431 12 19 12C20.6569 12 22 13.3431 22 15C22 16.6569 20.6569 18 19 18C17.3431 18 16 16.6569 16 15Z" fill="white"/>
+                        </svg>
+                        <span>Фильтрация</span>
+                </button>
             </div>
             <div class="user_page">
+                <a href="{% url 'forum_list' %}" class="forum">Форум</a>
+
                 {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}" class="user_icon">
+                <a href="{% url 'login' %}" class="user_icon">
                 {% endif %}
                 {% if not user.is_authenticated %}
                 <a href="{% url 'register' %}" class="user_icon">
@@ -190,17 +361,106 @@ button:hover {
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M6.63223 16.3732C8.19493 15.4738 10.0816 15 12.0011 15C13.9206 15 15.8073 15.4738 17.37 16.3732C18.9321 17.2722 20.1199 18.5702 20.6702 20.1106C20.856 20.6307 20.5851 21.203 20.065 21.3888C19.5449 21.5746 18.9726 21.3036 18.7868 20.7835C18.4256 19.7723 17.6046 18.8157 16.3724 18.1066C15.1408 17.3978 13.6038 17 12.0011 17C10.3985 17 8.86143 17.3978 7.62982 18.1066C6.39763 18.8157 5.57668 19.7723 5.21542 20.7835C5.0296 21.3036 4.45736 21.5746 3.93727 21.3888C3.41718 21.203 3.14619 20.6307 3.332 20.1106C3.88234 18.5702 5.07011 17.2721 6.63223 16.3732Z" fill="white"/>
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5C10.3431 5 9 6.34315 9 8C9 9.65685 10.3431 11 12 11C13.6569 11 15 9.65685 15 8C15 6.34315 13.6569 5 12 5ZM7 8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8C17 10.7614 14.7614 13 12 13C9.23858 13 7 10.7614 7 8Z" fill="white"/>
                         </svg>
-                    {% if user.is_authenticated %}
-                    <span>Выйти</span>
-                    {% else %}
                     <span>Войти</span>
-                    {% endif %}
                 </a>
             </div>
         </div>
     </div>
-{% block body %}
+    <div class="filter" id="filterArea">
+        <div class="filter_inside">
+            <form method="get" action="" style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px; width: 100%; justify-content: center;">
+                <div style="display: flex; gap: 16px; ">
+                    <input type="number" class="input_filter" placeholder="Мин. возраст" id="max_age" style="width: 150px;">
+                    <input type="number" class="input_filter" placeholder="Макс. возраст" id="min_age" style="width: 150px;">
+                </div>
 
+                <input type="text" id="country" name="country" class="input_filter" placeholder="Страна" value="{{ request.GET.country }}">
+                <input type="text" id="city" name="city" class="input_filter" placeholder="Город" value="{{ request.GET.city }}">
+                <input type="text" id="region" name="region" class="input_filter" placeholder="Регион" value="{{ request.GET.region }}">
+                <select id="gender" style="width: 100%; cursor: pointer;" name="gender" class="input_filter" required>
+                    <option selected disabled>Выберите пол</option>
+                    <option value="male" {% if form.gender.value == "male" %}selected{% endif %}>Мужской</option>
+                    <option value="female" {% if form.gender.value == "female" %}selected{% endif %}>Женский</option>
+                </select>
+                <button type="submit">Фильтровать</button>
+            </form>
+        </div>
+    </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const filterButton = document.getElementById('filterButton');
+  const filterArea = document.getElementById('filterArea');
+
+  filterButton.addEventListener('click', function() {
+    if (filterArea.classList.contains('filter-hidden')) {
+      filterArea.classList.remove('filter-hidden');
+      filterArea.classList.add('filter');
+    } else {
+      filterArea.classList.remove('filter');
+      filterArea.classList.add('filter-hidden');
+    }
+  });
+
+  // Добавляем обработчик события click к документу
+  document.addEventListener('click', function(event) {
+    // Проверяем, был ли клик внутри элемента с id filterArea
+    if (!event.target.closest('#filterArea') && !event.target.isSameNode(filterArea)) {
+      // Если нет, то возвращаем функцию filter
+      return;
+    }
+
+    // Если кликнули на filterArea, то выполняем действия по умолчанию
+    if (event.target === filterArea || event.target.closest('.filterArea')) {
+      if (filterArea.classList.contains('filter')) {
+        filterArea.classList.remove('filter');
+        filterArea.classList.add('filter-hidden');
+      } else if (filterArea.classList.contains('filter-hidden')) {
+        filterArea.classList.remove('filter-hidden');
+        filterArea.classList.add('filter');
+      }
+    }
+  });
+});
+
+
+
+
+</script>
+{% block body %}
+<!-- <form method="get" class="filter-form">
+        {{ form.as_p }}
+        <button type="submit">Filter</button>
+    </form> -->
+    <!-- <div class="card" style="width: 18rem;">
+  <img src="{{profile.avatar_photo.file_path.url}}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{profile.nickname}}, {{profile.age}} лет</h5>
+    <p class="card-text">{{profile.general_info}}</p>
+    <a href="#" class="btn btn-primary">Познакомиться</a>
+  </div>
+</div> -->
+<div class="profiles_page">
+
+    {% for profile in profiles %}
+<div class="profiles_page">
+
+    <div class="profile">
+        <a href="{% url 'user_detail' user_id=profile.id %}" class="avatar">
+            <img src="{{profile.avatar_photo.file_path.url}}" alt="">
+        </a>
+        <div class="name__age">
+            <div class="name">{{profile.nickname}}</div>
+            <div class="age">{{profile.age}}</div>
+        </div>
+        <button class="meet_btn">Познакомиться</button>
+    </div>
+</div>
+    {% endfor %}
+
+
+</div>
 {% endblock %}
 </body>
 </html>
