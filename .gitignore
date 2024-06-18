@@ -15,6 +15,7 @@ apps/forum/migrations/__pycache__
 apps/statics/__pycache__
 apps/statics/migrations/__pycache__
 storage
+core/settings/__pycache__/
 *.pem
 ### types ###
 *.js
