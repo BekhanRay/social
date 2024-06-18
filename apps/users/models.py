@@ -10,8 +10,8 @@ from .managers import UserManager
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     GENDER_CHOICES = [
-        ('male', 'Male'),
-        ('female', 'Female'),
+        ('мужской', 'Мужской'),
+        ('женский', 'Женский'),
     ]
 
     login = models.CharField(max_length=50, unique=True)
@@ -19,7 +19,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=100, unique=True)
     nickname = models.CharField(max_length=50)
     birthdate = models.DateField(null=True, blank=True)
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
+    gender = models.CharField(max_length=7, choices=GENDER_CHOICES, default='Другой')
     country = models.CharField(max_length=255, blank=True)
     region = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
@@ -48,7 +48,19 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             - (self.birthdate.year)
             - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
         )
-        return age
+        if len(str(age)) == 1 \
+                and age == 1 \
+                or str(age)[-1] == '1' \
+                and age not in (11, 12, 13, 14,):
+            return f'{age} год'
+        if len(str(age)) == 1 \
+                and 1 < age <= 4 \
+                and age not in (11, 12, 13, 14,):
+            return f'{age} года'
+        if str(age)[-1] in ('2', '3', 4,) \
+                and age not in (11, 12, 13, 14,):
+            return f'{age} года'
+        return f'{age} лет'
 
 
 class Profile(models.Model):

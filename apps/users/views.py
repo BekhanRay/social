@@ -4,11 +4,11 @@ from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.checks import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
 from .forms import UserFilterForm
-from .models import Profile, CustomUser
+from .models import Profile, CustomUser, Photo
 
 
 def register(request):
@@ -114,3 +114,12 @@ def user_list(request):
             users = users.filter(is_online=is_online)
 
     return render(request, 'base.html', {'form': form, 'profiles': users})
+
+
+def user_detail(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    user_photos = Photo.objects.filter(user=user) or 'Нет фоток'
+    profile = Profile.objects.get(user=user)
+    return render(request, 'user_detail.html', {'user': user,
+                                                'photos': user_photos,
+                                                'profile': profile})

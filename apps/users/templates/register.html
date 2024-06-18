@@ -85,8 +85,8 @@
                 {{ form.gender.errors }}
                 <select id="id_gender" style="width: 100%; cursor: pointer;" name="gender" class="input" required>
                     <option selected disabled>Выберите пол</option>
-                    <option value="male" {% if form.gender.value == "male" %}selected{% endif %}>Мужчина</option>
-                    <option value="female" {% if form.gender.value == "female" %}selected{% endif %}>Женщина</option>
+                    <option value="male" {% if form.gender.value == "male" %}selected{% endif %}>Мужской</option>
+                    <option value="female" {% if form.gender.value == "female" %}selected{% endif %}>Женский</option>
                 </select>
                 {{ form.country.errors }}
                 <input type="text" id="id_country" name="country" class="input" placeholder="Страна" value="{{ form.country.value }}" required>
