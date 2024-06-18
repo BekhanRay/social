@@ -1,6 +1,6 @@
 from datetime import date
 
-from django.contrib.auth import login as auth_login, authenticate
+from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.checks import messages
@@ -14,7 +14,7 @@ from .models import Profile, CustomUser, Photo
 def register(request):
     if request.method == 'POST':
         if CustomUser.objects.filter(email=request.POST['email']) is not None:
-            CustomUser.objects.create_user(
+            user = CustomUser.objects.create_user(
                 login=request.POST['login'],
                 password=request.POST['password1'],
                 email=request.POST['email'],
@@ -27,7 +27,12 @@ def register(request):
                 city=request.POST['city'],
                 user_agreement=bool([True if request.POST['user_agreement'] == 'on' else False]),
             )
-        return redirect('login')
+            Profile.objects.create(user=user)
+            if user:
+                auth_login(request, user)
+            else:
+                return redirect('register')
+        return redirect('profile')
     return render(request, 'register.html')
 
 
@@ -62,33 +67,33 @@ def login_view(request):
 def profile(request):
     try:
         profile = Profile.objects.get(user=request.user)
-        return render(request, 'profile.html', {"form": profile})
-    except:
-        pass
+        if request.method == 'POST':
+            profile.general_info = request.POST['general_info']
+            profile.personal_info = request.POST['personal_info']
+            profile.education_profession = request.POST['education_profession']
+            profile.habits_preferences = request.POST['habits_preferences']
+            profile.updated_at = timezone.now()
+            profile.save()
+            # Optionally, you could add a message to indicate success
+            return render(request, 'profile.html', {"form": profile, "message": "Profile updated successfully"})
+        else:
+            return render(request, 'profile.html', {"form": profile})
+    except Profile.DoesNotExist:
+        if request.method == 'POST':
+            user = get_object_or_404(CustomUser, id=request.user.id)
+            profile = Profile.objects.create(
+                user=user,
+                general_info=request.POST['general_info'],
+                personal_info=request.POST['personal_info'],
+                education_profession=request.POST['education_profession'],
+                habits_preferences=request.POST['habits_preferences'],
+                created_at=timezone.now(),
+                updated_at=timezone.now()
+            )
+            profile.save()
+            # Optionally, you could add a message to indicate success
+            return render(request, 'profile.html', {"form": profile, "message": "Profile created successfully"})
 
-    if request.method == 'POST':
-        user = CustomUser.objects.get(id=request.user.id)
-        image = request.FILES.get('image') or None
-        if image:
-            if user.avatar_photo:
-                user.avatar_photo.file_path = 'user_photos/' + image
-                user.avatar_photo.save()
-            else:
-                photo = Photo.objects.create(user=user, file_path=image, is_avatar=True)
-                user.avatar_photo = photo
-            user.save()
-        profile = Profile.objects.create(
-            user=user,
-            general_info=request.POST['general_info'],
-            personal_info=request.POST['personal_info'],
-            education_profession=request.POST['education_profession'],
-            habits_preferences=request.POST['habits_preferences'],
-            created_at=timezone.now(),
-            updated_at=timezone.now()
-        )
-
-        profile.save()
-        return redirect('home')
     return render(request, 'profile.html')
 
 
@@ -135,3 +140,8 @@ def user_detail(request, user_id):
     return render(request, 'user_detail.html', {'user': user,
                                                 'photos': user_photos,
                                                 'profile': profile})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('register')
