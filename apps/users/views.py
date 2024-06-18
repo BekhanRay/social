@@ -67,8 +67,18 @@ def profile(request):
         pass
 
     if request.method == 'POST':
+        user = CustomUser.objects.get(id=request.user.id)
+        image = request.FILES.get('image') or None
+        if image:
+            if user.avatar_photo:
+                user.avatar_photo.file_path = 'user_photos/' + image
+                user.avatar_photo.save()
+            else:
+                photo = Photo.objects.create(user=user, file_path=image, is_avatar=True)
+                user.avatar_photo = photo
+            user.save()
         profile = Profile.objects.create(
-            user=request.user,
+            user=user,
             general_info=request.POST['general_info'],
             personal_info=request.POST['personal_info'],
             education_profession=request.POST['education_profession'],
@@ -76,7 +86,9 @@ def profile(request):
             created_at=timezone.now(),
             updated_at=timezone.now()
         )
+
         profile.save()
+        return redirect('home')
     return render(request, 'profile.html')
 
 
