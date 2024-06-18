@@ -63,6 +63,9 @@
             <img src="{{user.avatar_photo.file_path.url}}" alt="">
         </a>
         <h2>{{ user.nickname }}, {{user.age}}</h2>
+        {% if user.id == request.user.id%}
+        <a style="color: red", href="{% url 'logout' %}">Выйти</a>
+        {% endif %}
         <div class="field-group">
             <label>Почта:</label>
             <p>{{ user.email }}</p>

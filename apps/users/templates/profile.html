@@ -50,22 +50,30 @@
         <label for="image">Аватарка:</label>
         <input type="file" id="image" name="image" class="form-control">
     </div>
+                    <h6>Личная информация</h6>
                     <textarea id="id_general_info" name="general_info" class="input" placeholder="Общая информация">{{ form.general_info }}</textarea>
                     {{ form.personal_info.errors }}
+                    <h6>Общая информация</h6>
                     <textarea id="id_personal_info" name="personal_info" class="input" placeholder="Личная информация">{{ form.personal_info }}</textarea>
                     {{ form.education_profession.errors }}
+                    <h6>Образование и профессия</h6>
                     <textarea id="id_education_profession" name="education_profession" class="input" placeholder="Образование и профессия">{{ form.education_profession }}</textarea>
                     {{ form.habits_preferences.errors }}
+                    <h6>Привычки и предпочтения</h6>
                     <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="Привычки и предпочтения">{{ form.habits_preferences }}</textarea>
                     <button type="submit">Изменить</button>
                 {% else %}
                     {{ form.general_info.errors }}
+                    <h4>Личная информация</h4>
                     <textarea id="id_general_info" name="general_info" class="input" placeholder="Общая информация">{{ form.general_info.value }}</textarea>
                     {{ form.personal_info.errors }}
+                    <h6>Общая информация</h6>
                     <textarea id="id_personal_info" name="personal_info" class="input" placeholder="Личная информация">{{ form.personal_info.value }}</textarea>
                     {{ form.education_profession.errors }}
+                    <h6>Образование и профессия</h6>
                     <textarea id="id_education_profession" name="education_profession" class="input" placeholder="Образование и профессия">{{ form.education_profession.value }}</textarea>
                     {{ form.habits_preferences.errors }}
+                    <h6>Привычки и предпочтения</h6>
                     <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="Привычки и предпочтения">{{ form.habits_preferences.value }}</textarea>
                     <button type="submit">Сохранить</button>
                 {% endif %}
