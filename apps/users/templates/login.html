@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Login {% endblock %}
+{% block title %} Войти {% endblock %}
 
 {% block body %}
 <style>
@@ -41,7 +41,16 @@
     <div class="forms_login">
         <form method="post" id="loginForm">
             {% csrf_token %}
-            {{ form.non_field_errors }}
+            {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close">✖</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
             <div class="forms_login_box">
                 <h2>Логин</h2>
                 {{ form.username.errors }}

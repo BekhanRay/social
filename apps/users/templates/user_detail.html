@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-
+{% block title %} Пользователь {{user.nickname}} {% endblock %}
 {% block body %}
 <style>
 .avatar{
@@ -65,6 +65,7 @@
         <h2>{{ user.nickname }}, {{user.age}}</h2>
         {% if user.id == request.user.id%}
         <a style="color: red", href="{% url 'logout' %}">Выйти</a>
+        <a style="color: green", href="{% url 'user_change' %}">Изменить профиль</a>
         {% endif %}
         <div class="field-group">
             <label>Почта:</label>

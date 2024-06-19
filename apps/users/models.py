@@ -42,6 +42,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def age(self):
+        if self.birthdate is None:
+            return None
         today = timezone.now().date()
         age = int(
             today.year

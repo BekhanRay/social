@@ -370,18 +370,20 @@ button:hover {
     <div class="filter" id="filterArea">
         <div class="filter_inside">
             <form method="get" action="" style="display: flex; align-items: center; flex-wrap: wrap; gap: 16px; width: 100%; justify-content: center;">
-                <div style="display: flex; gap: 16px; ">
-                    <input type="number" class="input_filter" placeholder="Мин. возраст" id="max_age" style="width: 150px;">
-                    <input type="number" class="input_filter" placeholder="Макс. возраст" id="min_age" style="width: 150px;">
-                </div>
+
+
+                <input type="number" class="input_filter" placeholder="Мин. возраст" name="min_age" id="min_age" value="{{ request.GET.min_age }}" style="width: 150px;">
+                <input type="number" class="input_filter" placeholder="Макс. возраст" name="max_age" id="max_age" value="{{ request.GET.max_age }}" style="width: 150px;">
+
+
 
                 <input type="text" id="country" name="country" class="input_filter" placeholder="Страна" value="{{ request.GET.country }}">
                 <input type="text" id="city" name="city" class="input_filter" placeholder="Город" value="{{ request.GET.city }}">
                 <input type="text" id="region" name="region" class="input_filter" placeholder="Регион" value="{{ request.GET.region }}">
                 <select id="gender" style="width: 100%; cursor: pointer;" name="gender" class="input_filter" required>
                     <option selected disabled>Выберите пол</option>
-                    <option value="male" {% if form.gender.value == "male" %}selected{% endif %}>Мужской</option>
-                    <option value="female" {% if form.gender.value == "female" %}selected{% endif %}>Женский</option>
+                    <option value="Мужской" {% if form.gender.value == "Мужской" %}selected{% endif %}>Мужской</option>
+                    <option value="Женский" {% if form.gender.value == "Женский" %}selected{% endif %}>Женский</option>
                 </select>
                 <button type="submit">Фильтровать</button>
             </form>

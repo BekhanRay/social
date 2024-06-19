@@ -1,13 +1,12 @@
 from datetime import date
-
 from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.checks import messages
+from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 
-from .forms import UserFilterForm
+from .forms import UserFilterForm, UserChangeForm
 from .models import Profile, CustomUser, Photo
 
 
@@ -104,21 +103,24 @@ def calculate_age(birthdate):
 
 def user_list(request):
     form = UserFilterForm(request.GET or None)
-    users = CustomUser.objects.all()
+    users = CustomUser.objects.exclude(pk=request.user.pk)
 
     if form.is_valid():
-        min_age = form.cleaned_data.get('min_age')
-        max_age = form.cleaned_data.get('max_age')
+        max_age = form.cleaned_data.get('min_age')
+        min_age = form.cleaned_data.get('max_age')
         region = form.cleaned_data.get('region')
         city = form.cleaned_data.get('city')
         country = form.cleaned_data.get('country')
         gender = form.cleaned_data.get('gender')
         is_online = form.cleaned_data.get('is_online')
 
-        if min_age is not None:
-            users = [user for user in users if calculate_age(user.birthdate) >= min_age]
-        if max_age is not None:
-            users = [user for user in users if calculate_age(user.birthdate) <= max_age]
+        try:
+            if min_age is not None:
+                users = users.filter(birthdate__gte=date.today().replace(year=date.today().year - min_age))
+            if max_age is not None:
+                users = users.filter(birthdate__lte=date.today().replace(year=date.today().year - max_age - 1))
+        except:
+            pass
         if region:
             users = users.filter(region__icontains=region)
         if city:
@@ -140,6 +142,68 @@ def user_detail(request, user_id):
     return render(request, 'user_detail.html', {'user': user,
                                                 'photos': user_photos,
                                                 'profile': profile})
+
+
+@login_required
+def user_change(request):
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST or None)
+        user = CustomUser.objects.get(pk=request.user.pk)
+
+        if form.is_valid():
+            nickname = form.cleaned_data["nickname"]
+            email = form.cleaned_data["email"]
+            gender = form.cleaned_data["gender"]
+            birthdate = form.cleaned_data["birthdate"]
+            region = form.cleaned_data["region"]
+            city = form.cleaned_data["city"]
+            country = form.cleaned_data["country"]
+            general_info = form.cleaned_data["general_info"]
+            personal_info = form.cleaned_data["personal_info"]
+            education_profession = form.cleaned_data["education_profession"]
+            habits_preferences = form.cleaned_data["habits_preferences"]
+
+            if nickname:
+                user.nickname = nickname
+
+            if email:
+                user.email = email
+
+            if gender:
+                user.gender = gender
+
+            if birthdate:
+                user.birthdate = birthdate
+
+            if region:
+                user.region = region
+
+            if city:
+                user.city = city
+
+            if country:
+                user.country = country
+
+            if general_info:
+                user.profile.general_info = general_info
+
+            if personal_info:
+                user.profile.personal_info = personal_info
+
+            if education_profession:
+                user.profile.education_profession = education_profession
+
+            if habits_preferences:
+                user.profile.habits_preferences = habits_preferences
+
+            user.save()
+            messages.success(request, "Профиль успешно изменен!")
+            return redirect("home")
+        else:
+            messages.error(request, "Введенные данные некорректны.")
+    else:
+        form = UserChangeForm()
+    return render(request, "user_change.html", {"form": form})
 
 
 def logout_view(request):
