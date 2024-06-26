@@ -74,6 +74,7 @@
                     <span>Код подтверждения</span>
                 </div>
                 <button type="button" id="nextButton">Дальше</button>
+                <a href="{% url 'login' %}">У вас уже есть аккаунт? Войти</a>
             </div>
             <div id="step2" style="display: none; flex-direction: column; gap: 8px;">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -99,6 +100,7 @@
                     <input type="checkbox" id="id_user_agreement" name="user_agreement" {% if form.user_agreement.value %}checked{% endif %} required> Я принимаю пользовательское соглашение
                 </label>
                 <button type="submit">Регистрироваться</button>
+                <a href="{% url 'login' %}">У вас уже есть аккаунт? Войти</a>
             </div>
         </form>
     </div>

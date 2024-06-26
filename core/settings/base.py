@@ -31,19 +31,20 @@ SECRET_KEY = config.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 APPS = [
     'apps.users',
     'apps.forum',
     'apps.statics',
-    'apps.chat',
+    # 'apps.chat',
 ]
 
 THIRD_PARTY_APPS = [
     'jazzmin',
-    'channels'
+    'channels',
+    'django_private_chat2.apps.DjangoPrivateChat2Config',
 ]
 
 INSTALLED_APPS = [
@@ -61,10 +62,15 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
         'CONFIG': {
-            'hosts': [('localhost', 6379)],  # Adjust the host and port as per your Redis configuration
+            'hosts': [('redis', 6379)],  # Adjust the host and port as per your Redis configuration
         },
     },
 }
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer"
+#     }
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

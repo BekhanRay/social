@@ -42,6 +42,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def age(self):
+        if self.birthdate is None:
+            return None
         today = timezone.now().date()
         age = int(
             today.year
@@ -65,10 +67,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    general_info = models.TextField(blank=True, null=True)
-    personal_info = models.TextField(blank=True, null=True)
-    education_profession = models.TextField(blank=True, null=True)
-    habits_preferences = models.TextField(blank=True, null=True)
+    general_info = models.TextField(default='')
+    personal_info = models.TextField(default='')
+    education_profession = models.TextField(default='')
+    habits_preferences = models.TextField(default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

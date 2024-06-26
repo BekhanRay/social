@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from apps import users
 from core.settings import base
@@ -25,8 +25,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('apps.users.urls')),
     path('forum/', include('apps.forum.urls')),
-    path('chat/', include('apps.chat.urls')),
-    path('home/', users.views.user_list, name='home')
+    # path('chat/', include('apps.chat.urls')),
+    path('home/', users.views.user_list, name='home'),
+    re_path(r'chat/', include('django_private_chat2.urls', namespace='django_private_chat2')),
 ]
 
 if base.DEBUG:
