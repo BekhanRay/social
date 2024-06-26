@@ -1,23 +1,28 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from apps.users.models import CustomUser
-from .models import Chat, Message
-from .forms import MessageForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, render
+from rest_framework import generics
+from .models import ChatMessage
+from .serializers import ChatMessageSerializer
+from apps.users.models import CustomUser as User
+from django.db.models import Q
 
+class ChatMessageList(generics.ListAPIView):
+    serializer_class = ChatMessageSerializer
 
-def create_chat(request, receiver_id):
-    receiver = get_object_or_404(CustomUser, id=receiver_id)
-    chat, created = Chat.objects.get_or_create(participants__in=[request.user, receiver])
+    def get_queryset(self):
+        user = self.request.user
+        recipient = User.objects.get(username=self.kwargs['username'])
+        return ChatMessage.objects.filter(
+            Q(sender=user, recipient=recipient) | Q(sender=recipient, recipient=user)
+        ).order_by('timestamp')
 
-    if created:
-        chat.participants.add(request.user, receiver)
+class ChatMessageCreate(generics.CreateAPIView):
+    serializer_class = ChatMessageSerializer
 
-    return redirect('chat_room', room_name=chat.id)
+    def perform_create(self, serializer):
+        serializer.save(sender=self.request.user)
 
-
-def chat_room(request, room_name):
-    chat = get_object_or_404(Chat, id=room_name)
-    if request.user not in chat.participants.all():
-        return redirect('home')
-
-    return render(request, 'messages/chat_room.html', {'room_name': room_name, 'chat': chat})
-
+@login_required
+def chat_view(request, username):
+    recipient = get_object_or_404(User, login=username)
+    return render(request, 'chat.html', {'recipient': recipient})

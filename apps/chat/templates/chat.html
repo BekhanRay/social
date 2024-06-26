@@ -1,26 +1,32 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat</title>
+</head>
+<body>
+    <h1>Chat with {{ recipient.username }}</h1>
+    <div id="chat-log"></div>
+    <input id="chat-message-input" type="text" size="100">
+    <button id="chat-message-submit">Send</button>
 
-{% block title %}
-Chat Page
-{% endblock %}
+    <script>
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + "{{ recipient.username }}" + '/'
+        );
 
-{% block css %}
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').innerHTML += ('<br>' + data.sender + ': ' + data.message);
+        };
 
-{% endblock %}
-
-{% block content %}
-<div id="chat-room">
-    <!-- Здесь будет отображаться история сообщений -->
-    <div id="chat-history"></div>
-
-    <!-- Форма для отправки новых сообщений -->
-    <form id="chat-form">
-        <input type="text" id="chat-message" placeholder="Введите сообщение...">
-        <button type="submit">Отправить</button>
-    </form>
-</div>
-{% endblock %}
-
-{% block js %}
-
-{% endblock %}
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+</body>
+</html>

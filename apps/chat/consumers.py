@@ -1,67 +1,72 @@
 import json
+from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync
+from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
+from .models import ChatMessage
 
-from channels.db import database_sync_to_async
-from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import Chat, Message
-# from users.models import CustomUser
 
-class ChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = f'chat_{self.room_name}'
+class ChatConsumer(WebsocketConsumer):
+    def connect(self):
+        self.user = self.scope['user']
+        try:
+            self.recipient = User.objects.get(username=self.scope['url_route']['kwargs']['username'])
+            self.room_group_name = f'chat_{self.user.id}_{self.recipient.id}'
 
-        self.chat = await self.get_chat(self.room_name)
-        if self.chat and self.scope['user'] in self.chat.participants.all():
-            await self.channel_layer.group_add(
+            async_to_sync(self.channel_layer.group_add)(
                 self.room_group_name,
                 self.channel_name
             )
-            await self.accept()
-        else:
-            await self.close()
 
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_name
-        )
+            self.accept()
+        except ObjectDoesNotExist:
+            self.close()
 
-    async def receive(self, text_data):
-        data = json.loads(text_data)
-        message = data['message']
-        sender = self.scope['user']
+    def disconnect(self, close_code):
+        try:
+            async_to_sync(self.channel_layer.group_discard)(
+                self.room_group_name,
+                self.channel_name
+            )
+        except Exception as e:
+            # Log the error or handle it appropriately
+            print(f"Error during disconnect: {e}")
 
-        if self.chat and sender in self.chat.participants.all():
-            await self.save_message(sender, message)
-            await self.channel_layer.group_send(
+    def receive(self, text_data):
+        try:
+            data = json.loads(text_data)
+            message = data['message']
+
+            chat_message = ChatMessage.objects.create(
+                sender=self.user,
+                recipient=self.recipient,
+                message=message
+            )
+
+            async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
                     'type': 'chat_message',
                     'message': message,
-                    'sender': sender.username
+                    'sender': self.user.username
                 }
             )
+        except json.JSONDecodeError:
+            self.send(text_data=json.dumps({
+                'error': 'Invalid message format'
+            }))
+        except Exception as e:
+            # Log the error or handle it appropriately
+            print(f"Error during receive: {e}")
+            self.send(text_data=json.dumps({
+                'error': 'An error occurred'
+            }))
 
-    async def chat_message(self, event):
+    def chat_message(self, event):
         message = event['message']
         sender = event['sender']
 
-        await self.send(text_data=json.dumps({
+        self.send(text_data=json.dumps({
             'message': message,
             'sender': sender
         }))
-
-    @database_sync_to_async
-    def get_chat(self, room_name):
-        try:
-            return Chat.objects.get(id=room_name)
-        except Chat.DoesNotExist:
-            return None
-
-    @database_sync_to_async
-    def save_message(self, sender, message):
-        Message.objects.create(
-            chat=self.chat,
-            sender=sender,
-            content=message
-        )
