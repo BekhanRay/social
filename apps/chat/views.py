@@ -54,7 +54,7 @@ def get_or_create_chat(request, room):
             defaults={'sender': request.user, 'receiver': User.objects.get(login=room)}
         )
 
-        messages = Message.objects.filter(chat=chat)
+        messages = Message.objects.filter(chat=chat).order_by('-timestamp')
         return render(request, "chat/chat.html", {'room_name': room, 'messages': messages})
 
     elif request.method == "POST":

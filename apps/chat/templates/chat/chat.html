@@ -4,7 +4,7 @@
     <h1>WebSocket Chat</h1>
     <div id="chat-log"></div>
     <input type="text" id="chat-message-input" autocomplete="off">
-    <button id="chat-message-submit">Send</button>
+    <button id="chat-message-submit" formmethod="post">Send</button>
 
     <script>
         // Получение room_name из URL
@@ -18,7 +18,7 @@
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             const chatLog = document.querySelector('#chat-log');
-            chatLog.innerHTML += '<div>' + data.message + '</div>';
+            chatLog.innerHTML += '<div>' + data.sender + ' | ' + data.message + '</div>';
         };
 
         chatSocket.onclose = function(e) {
