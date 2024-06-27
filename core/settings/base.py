@@ -38,13 +38,13 @@ APPS = [
     'apps.users',
     'apps.forum',
     'apps.statics',
-    # 'apps.chat',
+    'apps.chat',
 ]
 
 THIRD_PARTY_APPS = [
     'jazzmin',
+    'daphne',
     'channels',
-    'django_private_chat2.apps.DjangoPrivateChat2Config',
 ]
 
 INSTALLED_APPS = [
@@ -58,19 +58,19 @@ INSTALLED_APPS = [
     *APPS,
 ]
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
-        'CONFIG': {
-            'hosts': [('redis', 6379)],  # Adjust the host and port as per your Redis configuration
-        },
-    },
-}
 # CHANNEL_LAYERS = {
-#     "default": {
-#         "BACKEND": "channels.layers.InMemoryChannelLayer"
-#     }
+#     'default': {
+#         'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
+#         'CONFIG': {
+#             'hosts': [('redis', 6379)],  # Adjust the host and port as per your Redis configuration
+#         },
+#     },
 # }
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

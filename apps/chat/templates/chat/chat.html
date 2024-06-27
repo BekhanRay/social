@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block body %}
+<div align="center">
+    <h1>WebSocket Chat</h1>
+    <div id="chat-log"></div>
+    <input type="text" id="chat-message-input" autocomplete="off">
+    <button id="chat-message-submit">Send</button>
+
+    <script>
+        // Получение room_name из URL
+        const pathArray = window.location.pathname.split('/');
+        const roomName = pathArray[pathArray.length - 2]; // Предполагается, что URL заканчивается на /chat/room_name/
+
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const chatLog = document.querySelector('#chat-log');
+            chatLog.innerHTML += '<div>' + data.message + '</div>';
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // Нажатие Enter
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+</div>
+{% endblock %}
