@@ -21,6 +21,7 @@ def register(request):
                 birthdate=request.POST['birthdate'],
                 confirmation_code=request.POST['confirmation_code'],
                 gender=request.POST['gender'],
+                preffered_gender=request.POST['preffered_gender'],
                 country=request.POST['country'],
                 region=request.POST['region'],
                 city=request.POST['city'],
@@ -35,15 +36,6 @@ def register(request):
     return render(request, 'register.html')
 
 
-# def login_view(request):
-#     if request.method == 'POST':
-#         user = CustomUser.objects.get(login=request.POST['login'], password=request.POST['password'])
-#         if user is not None:
-#             auth_login(request, user)
-#             return redirect('profile')  # Перенаправление на страницу профиля
-#     else:
-#         pass
-#     return render(request, 'login.html')
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -61,6 +53,7 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
+
 
 @login_required
 def profile(request):
@@ -104,6 +97,13 @@ def calculate_age(birthdate):
 def user_list(request):
     form = UserFilterForm(request.GET or None)
     users = CustomUser.objects.exclude(pk=request.user.pk)
+    match request.user.preffered_gender:
+        case 'Мужской':
+            users = CustomUser.objects.filter(gender='Мужской').exclude(pk=request.user.pk)
+        case 'Женский':
+            users = CustomUser.objects.filter(gender='Женский').exclude(pk=request.user.pk)
+        case 'Все':
+            users = CustomUser.objects.all().exclude(pk=request.user.pk)
 
     if form.is_valid():
         max_age = form.cleaned_data.get('min_age')

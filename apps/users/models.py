@@ -15,12 +15,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     ]
 
     login = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=255)
+    password = models.CharField(max_length=128)
     email = models.EmailField(max_length=100, unique=True)
     nickname = models.CharField(max_length=50)
     birthdate = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=7, choices=GENDER_CHOICES, default='Другой')
-    country = models.CharField(max_length=255, blank=True)
+    preffered_gender = models.CharField(max_length=7, choices=GENDER_CHOICES, default='Все')
+    country = models.CharField(max_length=50, blank=True)
     region = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     user_agreement = models.BooleanField(default=False)

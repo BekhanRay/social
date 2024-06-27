@@ -5,7 +5,6 @@
     <ul>
         {% for forum in forums %}
             <li><a href="{% url 'thread_list' forum_id=forum.pk %}">{{ forum.title }}</a></li>
-        <p>{{ forum.description }}</p>
         {% endfor %}
     </ul>
 {% endblock %}
