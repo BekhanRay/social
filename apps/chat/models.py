@@ -10,6 +10,9 @@ class Chat(models.Model):
     def __str__(self):
         return f'{self.sender} -> {self.receiver}'
 
+    def absolute_url(self, path):
+        return self.context['request'].build_absolute_uri(path)
+
 
 class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='chat')

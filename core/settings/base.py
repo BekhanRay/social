@@ -37,7 +37,6 @@ ALLOWED_HOSTS = ['*']
 APPS = [
     'apps.users',
     'apps.forum',
-    'apps.statics',
     'apps.chat',
 ]
 
