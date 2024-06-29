@@ -1,45 +1,143 @@
 {% extends 'base.html' %}
 {% block body %}
-<div align="center">
-    <h1>WebSocket Chat</h1>
-    <div id="chat-log"></div>
-    <input type="text" id="chat-message-input" autocomplete="off">
-    <button id="chat-message-submit">Send</button>
-
-    <script>
-        // Получение room_name из URL
-        const pathArray = window.location.pathname.split('/');
-        const roomName = pathArray[pathArray.length - 2]; // Предполагается, что URL заканчивается на /chat/room_name/
-
-        const chatSocket = new WebSocket(
-            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
-        );
-
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            const chatLog = document.querySelector('#chat-log');
-            chatLog.innerHTML += '<div>' + data.message + '</div>';
-        };
-
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // Нажатие Enter
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
-
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-            messageInputDom.value = '';
-        };
-    </script>
+<div class="page__layout">
+    <div class="chat_box">
+        <div class="chat_sidebar">
+            <button class="chat_user" data-user="user1">
+                <div class="chat_user_img">
+                    <img src="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg" alt="">
+                </div>
+                <div class="chat_user_text">
+                    <div class="chat_user_nickname">Chika</div>
+                    <div class="chat_user_data">
+                        <span>Последнее сообщение</span>
+                        <span>- 2 ч.</span>
+                    </div>
+                </div>
+            </button>
+            <button class="chat_user" data-user="user2">
+                <div class="chat_user_img">
+                    <img src="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg" alt="">
+                </div>
+                <div class="chat_user_text">
+                    <div class="chat_user_nickname">Ami</div>
+                    <div class="chat_user_data">
+                        <span>Последнее сообщение</span>
+                        <span>- 3 ч.</span>
+                    </div>
+                </div>
+            </button>
+            <button class="chat_user" data-user="user3">
+                <div class="chat_user_img">
+                    <img src="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg" alt="">
+                </div>
+                <div class="chat_user_text">
+                    <div class="chat_user_nickname">Lisa</div>
+                    <div class="chat_user_data">
+                        <span>Последнее сообщение</span>
+                        <span>- 1 ч.</span>
+                    </div>
+                </div>
+            </button>
+        </div>
+        <div class="chat_message">
+            <div class="header_chat_message">
+                <a href="#" class="chat_user_img" id="currentUserImage">
+                    <img src="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg" alt="">
+                </a>
+                <a href="#" class="chat_user_nickname" id="currentUserNickname">Напиши сообщение</a>
+            </div>
+            <div class="container_chat_message">
+                <div class="messageContainer" id="messageContainer">
+                    <div class="chat_message_item self">,kf ,kf ,kf</div>
+                </div>
+            </div>
+            <div class="input_chat_message">
+                <textarea name="message" id="messageInput" class="messageInput"></textarea>
+                <button type="submit" class="sendButton" data-user="user1">Отправить</button>
+            </div>
+        </div>
+    </div>
 </div>
+    <script>
+   document.addEventListener('DOMContentLoaded', function() {
+            const users = document.querySelectorAll('.chat_user');
+            const sendButton = document.querySelector('.sendButton');
+            const messageInput = document.getElementById('messageInput');
+            const messageContainer = document.getElementById('messageContainer');
+            const currentUserImage = document.getElementById('currentUserImage').querySelector('img');
+            const currentUserNickname = document.getElementById('currentUserNickname');
+
+            let currentUserId = 'user1';
+            const messages = {
+                user1: [],
+                user2: [],
+                user3: []
+            };
+
+            // Переключение между пользователями
+            users.forEach(user => {
+                user.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-user');
+                    currentUserId = userId;
+                    sendButton.setAttribute('data-user', userId);
+
+                    // Удаляем класс активного пользователя
+                    users.forEach(u => u.classList.remove('chat_active'));
+                    // Добавляем класс активного пользователя
+                    this.classList.add('chat_active');
+
+                    // Обновляем заголовок
+                    const nickname = this.querySelector('.chat_user_nickname').textContent;
+                    const imageSrc = this.querySelector('.chat_user_img img').src;
+                    currentUserNickname.textContent = nickname;
+                    currentUserImage.src = imageSrc;
+
+                    // Обновляем сообщения
+                    messageContainer.innerHTML = '';
+                    messages[userId].forEach(message => {
+                        const messageElement = document.createElement('div');
+                        messageElement.classList.add('chat_message_item');
+                        messageElement.textContent = message;
+                        messageContainer.appendChild(messageElement);
+                    });
+
+                    console.log(`Switched to user: ${userId}`);
+                });
+            });
+
+            // Отправка сообщения
+            sendButton.addEventListener('click', function() {
+                const messageText = messageInput.value.trim();
+
+                console.log(`Sending message for user: ${currentUserId}`);
+
+                if (messageText !== '') {
+                    console.log(`Message text: ${messageText}`);
+                    messages[currentUserId].push(messageText);
+
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('chat_message_item');
+                    messageElement.textContent = messageText;
+                    messageContainer.appendChild(messageElement);
+
+                    messageInput.value = '';
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+                    console.log(`Message sent for user: ${currentUserId}`);
+                } else {
+                    console.log(`Message text is empty for user: ${currentUserId}`);
+                }
+            });
+
+            // Отправка сообщения при нажатии Enter
+            messageInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    sendButton.click();
+                    console.log(`Enter pressed for user: ${currentUserId}`);
+                }
+            });
+            
+        });
+    </script>
 {% endblock %}

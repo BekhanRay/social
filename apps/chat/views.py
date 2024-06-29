@@ -67,3 +67,8 @@ def get_or_create_chat(request, room):
         messages = Message.objects.filter(chat=room)
         return render(request, "chat/chat.html", {'room_name': room, 'messages': messages})
     return HttpResponse(status=405)  # Method not allowed for non-GET requests
+
+@login_required
+def chat_view(request, id):
+    if request.method == "GET":
+        return (Chat.objects.filter(id=id).order_by('-timestamp'))
