@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block body %}
+{% for chat in chats %}
+<div>{{chat.room_name}}</div>
+{% endfor %}
+{% endblock %}

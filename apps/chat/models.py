@@ -8,7 +8,7 @@ class Chat(models.Model):
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chatReceiver')
 
     def __str__(self):
-        return f'{self.sender} -> {self.receiver}'
+        return self.room_name
 
     def absolute_url(self, path):
         return self.context['request'].build_absolute_uri(path)
@@ -17,8 +17,8 @@ class Chat(models.Model):
 class Message(models.Model):
     chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name='chat')
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messageSender')
-    message = models.TextField(max_length=255, verbose_name='message')
+    message = models.CharField(max_length=255, verbose_name='message')
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.sender
+        return self.message
