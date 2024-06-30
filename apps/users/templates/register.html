@@ -1,118 +1,132 @@
 {% extends "base.html" %}
 
-{% block title %} Registration {% endblock %}
+{% block title %} Регистрация {% endblock %}
 
 {% block body %}
-<style>
-    .page_layout_register {
-        display: grid;
-        place-items: center;
-        min-height: 100vh;
-    }
-    .forms_register_box {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-    .input {
-        outline: unset;
-        border: solid 1px #eee;
-        border-radius: 12px;
-        width: 400px;
-        max-width: 500px;
-        height: 55px;
-        padding: 0 16px;
-        font-size: 15px;
-    }
-    .agreement {
-        display: flex;
-        align-items: center;
-        max-width: 400px;
-        font-size: 12px;
-        gap: 8px;
-        cursor: pointer;
-    }
-    #registrationForm button {
-        background: #eb008a;
-        transition: 200ms;
-    }
-    #registrationForm button:hover {
-        background: #eb008a99;
-    }
-    .forms_register h2 {
-        margin: unset;
-        line-height: 60px;
-    }
-    #id_user_agreement {
-        width: 24px;
-        height: 24px;
-    }
-</style>
 
 <div class="page_layout_register">
     <div class="forms_register">
-        <form method="post" id="registrationForm">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <div id="step1" style="display: flex; flex-direction: column; gap: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h2>Регистрация</h2>
-                </div>
-                {{ form.login.errors }}
-                <input type="text" id="id_login" name="login" class="input" placeholder="Логин" value="{{ form.login.value }}" required>
-                {{ form.password1.errors }}
-                <input type="password" id="id_password1" name="password1" class="input" placeholder="Пароль" required>
-                {{ form.password2.errors }}
-                <input type="password" id="id_password2" name="password2" class="input" placeholder="Повторите пароль" required>
-                {{ form.email.errors }}
-                <input type="email" id="id_email" name="email" class="input" placeholder="Электронная почта" value="{{ form.email.value }}" required>
-                {{ form.nickname.errors }}
-                <input type="text" id="id_nickname" name="nickname" class="input" placeholder="Никнейм" value="{{ form.nickname.value }}" required>
-                {{ form.confirmation_code.errors }}
-                <div style="display: flex; gap: 8px; align-items: center; font-size: 12px;">
-                    <input type="text" style="max-width: 60px; text-align: center;" id="id_confirmation_code" name="confirmation_code" class="input" placeholder="Код" value="{{ form.confirmation_code.value }}" required>
-                    <span>Код подтверждения</span>
-                </div>
-                <button type="button" id="nextButton">Дальше</button>
-                <a href="{% url 'login' %}">У вас уже есть аккаунт? Войти</a>
-            </div>
-            <div id="step2" style="display: none; flex-direction: column; gap: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h2>Регистрация</h2>
-                    <button type="button" id="backButton" style="padding: 0 16px; height: 42.5px;">Назад</button>
-                </div>
-                {{ form.birthdate.errors }}
-                <input type="date" id="id_birthdate" name="birthdate" class="input" value="{{ form.birthdate.value }}" required>
-                {{ form.gender.errors }}
-                <select id="id_gender" style="width: 100%; cursor: pointer;" name="gender" class="input" required>
+        <div class="center">
+            <div class="logo"></div>
+        </div>
+        <div class="title_page">Регистрация</div>
+        <div id="registration-form">
+            <div id="question1" class="question-container active">
+                <label for="gender" class="title_form">Какой у Вас пол?</label>
+                <select name="" id="gender" class="input-field input_design" onchange="validateInput(1)">
                     <option selected disabled>Выберите пол</option>
-                    <option value="male" {% if form.gender.value == "male" %}selected{% endif %}>Мужской</option>
-                    <option value="female" {% if form.gender.value == "female" %}selected{% endif %}>Женский</option>
+                    <option value="Женский">Женский</option>
+                    <option value="Мужской">Мужской</option>
                 </select>
-                {{ form.country.errors }}
-                <input type="text" id="id_country" name="country" class="input" placeholder="Страна" value="{{ form.country.value }}" required>
-                {{ form.region.errors }}
-                <input type="text" id="id_region" name="region" class="input" placeholder="Регион" value="{{ form.region.value }}" required>
-                {{ form.city.errors }}
-                <input type="text" id="id_city" name="city" class="input" placeholder="Город" value="{{ form.city.value }}" required>
-                {{ form.user_agreement.errors }}
-                <label for="id_user_agreement" class="agreement">
-                    <input type="checkbox" id="id_user_agreement" name="user_agreement" {% if form.user_agreement.value %}checked{% endif %} required> Я принимаю пользовательское соглашение
-                </label>
-                <button type="submit">Регистрироваться</button>
-                <a href="{% url 'login' %}">У вас уже есть аккаунт? Войти</a>
+                <div class="button-container">
+                    <button class="button_design" id="next1" onclick="nextQuestion(2)" disabled>Далее</button>
+                </div>
             </div>
-        </form>
+    
+            <div id="question2" class="question-container">
+                <label for="age" class="title_form">А возраст какой?</label>
+                <input type="number" id="age" class="input-field input_design" oninput="validateInput(2)">
+                <div class="button-container">
+                    <button class="button_design" onclick="previousQuestion(1)">Назад</button>
+                    <button class="button_design" id="next2" onclick="nextQuestion(3)" disabled>Далее</button>
+                </div>
+            </div>
+    
+            <div id="question3" class="question-container">
+                <label for="country" class="title_form">Из какой вы страны, можно узнать?</label>
+                <input type="text" id="country" class="input-field input_design" placeholder="Какая страна?" oninput="validateInput(3)">
+                <div class="button-container">
+                    <button class="button_design" onclick="previousQuestion(2)">Назад</button>
+                    <button class="button_design" id="next3" onclick="nextQuestion(4)" disabled>Далее</button>
+                </div>
+            </div>
+    
+            <div id="question4" class="question-container">
+                <label for="interested_gender" class="title_form">Какой пол Вам больше интересен?</label>
+                <select name="" id="interested_gender" class="input-field input_design" onchange="validateInput(4)">
+                    <option selected disabled>Выберите пол</option>
+                    <option value="Женский">Женский</option>
+                    <option value="Мужской">Мужской</option>
+                </select>
+                <div class="button-container">
+                    <button class="button_design" onclick="previousQuestion(3)">Назад</button>
+                    <button class="button_design" id="next4" onclick="nextQuestion(5)" disabled>Далее</button>
+                </div>
+            </div>
+    
+            <div id="question5" class="question-container">
+                <label for="nickname" class="title_form">Придумайте логин</label>
+                <input type="text" id="nickname" class="input-field input_design" placeholder="Логин" oninput="validateInput(5)">
+                <div class="button-container">
+                    <button class="button_design" onclick="previousQuestion(4)">Назад</button>
+                    <button class="button_design" id="next5" onclick="nextQuestion(6)" disabled>Далее</button>
+                </div>
+            </div>
+    
+            <div id="question6" class="question-container">
+                <label for="password" class="title_form">И пароль нужно придумать :)</label>
+                <input type="password" id="password" class="input-field input_design" placeholder="Придумайте пароль" oninput="validateInput(6)">
+                <input type="password" id="confirm_password" class="input-field input_design" placeholder="Повторите пароль" oninput="validateInput(6)">
+                <div class="button-container">
+                    <button class="button_design" onclick="previousQuestion(5)">Назад</button>
+                    <button class="button_design" id="submit" onclick="submitForm()" disabled>Регистрация</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script>
-    document.getElementById('nextButton').addEventListener('click', function() {
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step2').style.display = 'flex';
-    });
-    document.getElementById('backButton').addEventListener('click', function() {
-        document.getElementById('step2').style.display = 'none';
-        document.getElementById('step1').style.display = 'flex';
-    });
+    function nextQuestion(questionNumber) {
+        document.querySelectorAll('.question-container').forEach(container => {
+            container.classList.remove('active');
+        });
+        document.getElementById('question' + questionNumber).classList.add('active');
+    }
+
+    function previousQuestion(questionNumber) {
+        document.querySelectorAll('.question-container').forEach(container => {
+            container.classList.remove('active');
+        });
+        document.getElementById('question' + questionNumber).classList.add('active');
+    }
+
+    function validateInput(questionNumber) {
+        let isValid = false;
+        if (questionNumber === 1) {
+            isValid = document.getElementById('gender').value !== 'Выберите пол';
+        } else if (questionNumber === 2) {
+            isValid = document.getElementById('age').value.trim() !== '';
+        } else if (questionNumber === 3) {
+            isValid = document.getElementById('country').value.trim() !== '';
+        } else if (questionNumber === 4) {
+            isValid = document.getElementById('interested_gender').value !== 'Выберите пол';
+        } else if (questionNumber === 5) {
+            isValid = document.getElementById('nickname').value.trim() !== '';
+        } else if (questionNumber === 6) {
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirm_password').value.trim();
+            isValid = password !== '' && confirmPassword !== '' && password === confirmPassword;
+        }
+
+        if (questionNumber <= 5) {
+            document.getElementById('next' + questionNumber).disabled = !isValid;
+        } else if (questionNumber === 6) {
+            document.getElementById('submit').disabled = !isValid;
+        }
+    }
+
+    function submitForm() {
+        const gender = document.getElementById('gender').value;
+        const age = document.getElementById('age').value;
+        const country = document.getElementById('country').value;
+        const interestedGender = document.getElementById('interested_gender').value;
+        const nickname = document.getElementById('nickname').value;
+        const password = document.getElementById('password').value;
+
+        // Здесь вы можете отправить данные на сервер
+        console.log('Регистрация завершена:', { gender, age, country, interestedGender, nickname, password });
+
+        alert('Ураа, вы зарегистрировались!');
+    }
 </script>
 {% endblock %}

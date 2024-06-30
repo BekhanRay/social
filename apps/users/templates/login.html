@@ -1,56 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %} Login {% endblock %}
+{% load static %}
+
+{% block title %} Войти {% endblock %}
 
 {% block body %}
-<style>
-    .page_layout_login {
-        display: grid;
-        place-items: center;
-        min-height: 100vh;
-    }
-    .forms_login_box {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-    .input {
-        outline: unset;
-        border: solid 1px #eee;
-        border-radius: 12px;
-        width: 400px;
-        max-width: 500px;
-        height: 55px;
-        padding: 0 16px;
-        font-size: 15px;
-    }
-    #loginForm button {
-        background: #eb008a;
-        transition: 200ms;
-    }
-    #loginForm button:hover {
-        background: #eb008a99;
-    }
-    .forms_login h2 {
-        margin: unset;
-        line-height: 60px;
-    }
-</style>
-
 <div class="page_layout_login">
     <div class="forms_login">
-        <form method="post" id="loginForm">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <div class="forms_login_box">
-                <h2>Логин</h2>
-                {{ form.username.errors }}
-                <input type="text" id="id_username" name="username" class="input" placeholder="Логин" required>
-                {{ form.password.errors }}
-                <input type="password" id="id_password" name="password" class="input" placeholder="Пароль" required>
-                <button type="submit">Войти</button>
-            </div>
-        </form>
+        <div class="center">
+            <div class="logo"></div>
+        </div>
+        <div class="title_page">Вход</div>
+        <input type="text" class="input_design" placeholder="Логин">
+        <input type="password" class="input_design" placeholder="Пароль">
+        <button class="button_design">Войти</button>
+        <a href="#" class="link_log_in">У Вас есть аккаунт? Войти</a>
     </div>
+        
 </div>
 {% endblock %}

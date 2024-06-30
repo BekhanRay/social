@@ -1,18 +1,10 @@
 {% extends 'base.html' %}
 {% block body %}
-    <h1>Chat Room: {{ chat.room_name }}</h1>
-    <div id="chat-log">
-        {% for message in messages %}
-            <p><strong>{{ message.sender }}:</strong> {{ message.message }}</p>
-        {% empty %}
-            <p>No messages in this chat.</p>
-        {% endfor %}
-    </div>
-    <form id="chat-form" method="POST">
-        {% csrf_token %}
-        <input id="chat-message-input" type="text" name="message" size="100">
-        <button type="button" id="chat-message-submit">Send</button>
-    </form>
+<div align="center">
+    <h1>WebSocket Chat</h1>
+    <div id="chat-log"></div>
+    <input type="text" id="chat-message-input" autocomplete="off">
+    <button id="chat-message-submit">Send</button>
 
     <script>
         // Получение room_name из URL
@@ -20,13 +12,13 @@
         const roomName = pathArray[pathArray.length - 2]; // Предполагается, что URL заканчивается на /chat/room_name/
 
         const chatSocket = new WebSocket(
-            'ws://' + window.location.host + '/chat/' + roomName + '/'
+            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
         );
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             const chatLog = document.querySelector('#chat-log');
-            chatLog.innerHTML += '<div>' + data.sender + ' | ' + data.message + '</div>';
+            chatLog.innerHTML += '<div>' + data.message + '</div>';
         };
 
         chatSocket.onclose = function(e) {
