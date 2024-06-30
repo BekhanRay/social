@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %} Пользователь {{user.nickname}} {% endblock %}
+{% block body %}
+<style>
+.avatar{
+    aspect-ratio: 1/1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 22px;
+}
+.avatar img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    }
+    .user_detail {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #f0f2f5;
+    }
+    .user_card {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+    }
+    .user_card h2 {
+        margin: 0 0 20px;
+        font-size: 28px;
+        color: #333333;
+        text-align: center;
+    }
+    .user_card p {
+        margin: 10px 0;
+        font-size: 18px;
+        color: #666666;
+    }
+    .user_card label {
+        font-weight: bold;
+        color: #333333;
+    }
+    .user_card .field-group {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #eaeaea;
+    }
+    .user_card .field-group:last-child {
+        border-bottom: none;
+    }
+</style>
+
+<div class="user_detail">
+    <div class="user_card">
+        <a href="" class="avatar">
+            <img src="{{user.avatar_photo.file_path.url}}" alt="">
+        </a>
+        <h2>{{ user.nickname }}, {{user.get_age}}</h2>
+        {% if user.id == request.user.id%}
+        <a style="color: red", href="{% url 'logout' %}">Выйти</a>
+        <a style="color: green", href="{% url 'user_change' %}">Изменить профиль</a>
+        {% endif %}
+        <div class="field-group">
+            <label>Почта:</label>
+            <p>{{ user.email }}</p>
+        </div>
+        <div class="field-group">
+            <label>Имя:</label>
+            <p>{{ user.nickname }}</p>
+        </div>
+        <div class="field-group">
+            <label>Возраст:</label>
+            <p>{{ user.get_age }}</p>
+        </div>
+        <div class="field-group">
+            <label>Пол:</label>
+            <p>{{ user.gender }}</p>
+        </div>
+        <div class="field-group">
+            <label>Страна:</label>
+            <p>{{ user.country }}</p>
+        </div>
+        <div class="field-group">
+            <label>Регион:</label>
+            <p>{{ user.region }}</p>
+        </div>
+        <div class="field-group">
+            <label>Город:</label>
+            <p>{{ user.city }}</p>
+        </div>
+        <div class="field-group">
+            <label>Персональная информация:</label>
+            <p>{{ user.profile.personal_info }}</p>
+        </div>
+        <div class="field-group">
+            <label>Общая информация:</label>
+            <p>{{ profile.general_info }}</p>
+        </div>
+        <div class="field-group">
+            <label>Образование и профессия:</label>
+            <p>{{ profile.education_profession }}</p>
+        </div>
+        <div class="field-group">
+            <label>Привычки и предпочтения:</label>
+            <p>{{ profile.habit_preferences }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

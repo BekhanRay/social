@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} Ответ на комментарий {% endblock %}
+{% block body %}
+<h1>Ответить на комментарий</h1>
+<p>{{ parent_comment.content }}</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Ответить</button>
+</form>
+{% endblock %}

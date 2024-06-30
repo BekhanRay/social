@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %} Изменить профиль {% endblock %}
+
+{% block body %}
+<style>
+    .page_layout_profile {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+    }
+    .forms_profile_box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .input {
+        outline: unset;
+        border: solid 1px #eee;
+        border-radius: 12px;
+        width: 400px;
+        max-width: 500px;
+        height: 55px;
+        padding: 0 16px;
+        font-size: 15px;
+    }
+    #profileForm button {
+        background: #eb008a;
+        transition: 200ms;
+    }
+    #profileForm button:hover {
+        background: #eb008a99;
+    }
+    .forms_profile h2 {
+        margin: unset;
+        line-height: 60px;
+    }
+</style>
+
+<div class="page_layout_profile">
+    <div class="forms_profile">
+        <form method="post" id="profileForm">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="forms_profile_box">
+                <h2>Изменить профиль</h2>
+                    {{ form.general_info.errors }}
+                <div class="form-group">
+        <label for="image">Аватарка:</label>
+        <input type="file" id="image" name="image" class="form-control">
+    </div>
+                    <h6>Никнейм</h6>
+                    <input type="text" id="id_nickname" name="nickname" class="input" placeholder="{{user.nickname}}" value="{{ request.GET.nickname }}">
+                    <h6>Почта</h6>
+                    <input type="email" id="id_email" name="email" class="input" placeholder="{{ user.email }}" value="{{ request.GET.email }}">
+                    <h6>Страна</h6>
+                    <input type="text" id="id_country" name="country" class="input" placeholder="{{user.country}}" value="{{ request.GET.country }}">
+                <h6>Регион</h6>
+                    <input type="text" id="id_region" name="region" class="input" placeholder="{{user.region}}" value="{{ request.GET.region }}">
+                <h6>Город</h6>
+                    <input type="text" id="id_city" name="city" class="input" placeholder="{{user.city}}" value="{{ request.GET.city }}">
+                    <h6>Пол</h6>
+                <select id="id_gender" style="width: 100%; cursor: pointer;" name="gender" class="input">
+                    <option selected disabled>Выберите пол</option>
+                    <option value="Мужской" {% if form.gender.value == "Мужской" %}selected{% endif %}>Мужской</option>
+                    <option value="Женский" {% if form.gender.value == "Женский" %}selected{% endif %}>Женский</option>
+                </select>
+                    <h6>Предпочитаемый пол</h6>
+                <select id="id_preffered_gender" style="width: 100%; cursor: pointer;" name="preffered_gender" class="input">
+                    <option selected disabled>Выберите пол</option>
+                    <option value="Все" {% if form.gender.value == "Все" %}selected{% endif %}>Все</option>
+                    <option value="Мужской" {% if form.gender.value == "Мужской" %}selected{% endif %}>Мужской</option>
+                    <option value="Женский" {% if form.gender.value == "Женский" %}selected{% endif %}>Женский</option>
+                </select>
+                <h6>Возраст</h6>
+                    <input type="number" id="id_age" name="age" class="input" value="{{ request.GET.age }}">
+                    <h6>Личная информация</h6>
+                    <textarea id="id_general_info" name="general_info" class="input" placeholder="{{ user.profile.general_info }}"></textarea>
+                    <h6>Общая информация</h6>
+                    <textarea id="id_personal_info" name="personal_info" class="input" placeholder="{{ user.profile.personal_info }}"></textarea>
+                    <h6>Образование и профессия</h6>
+                    <textarea id="id_education_profession" name="education_profession" class="input" placeholder="{{ user.profile.education_profession }}"></textarea>
+                    <h6>Привычки и предпочтения</h6>
+                    <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="{{ user.profile.habits_preferences }}"></textarea>
+                    <button type="submit">Изменить</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="page__layout">
+    <div class="chat_box">
+        <div class="chat_sidebar">
+            {% for chat in chats %}
+            <button class="chat_user" data-user="{{chat.room_name}}">
+                <div class="chat_user_img">
+                    <img src="{{other_user_avatar}}" alt="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg">
+                </div>
+                <div class="chat_user_text">
+                    <div class="chat_user_nickname">{{message.sender}}</div>
+                    <div class="chat_user_data">
+                        <span>Последнее сообщение</span>
+                        <span>- 2 ч.</span>
+                    </div>
+                </div>
+            </button>
+            {% endfor %}
+        </div>
+        <div class="chat_message">
+            <div class="header_chat_message">
+                <a href="{{ receiver.file_path.url }}" class="chat_user_img" id="currentUserImage">
+                    <img src="{{ current_user_avatar }}" alt="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg">
+                </a>
+                <a href="#" class="chat_user_nickname" id="currentUserNickname">{{ chat.receiver.login}}</a>
+            </div>
+            <div class="container_chat_message" id="messageContainer">
+                {% for message in messages %}
+                    <div class="messageContainer">
+                        <div class="chat_message_item self">{{ message.sender.login }}: {{ message.message }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="input_chat_message">
+                <textarea name="message" placeholder="Напишите что-нибудь..." id="messageInput" class="messageInput"></textarea>
+                <button type="submit" class="sendButton" data-user="{{ request.user.login }}">Отправить</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sendButton = document.querySelector('.sendButton');
+        const messageInput = document.getElementById('messageInput');
+        const messageContainer = document.getElementById('messageContainer');
+
+        const pathArray = window.location.pathname.split('/');
+        const roomName = pathArray[pathArray.length - 2];
+        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('chat_message_item');
+            messageElement.textContent = data.sender + ': ' + data.message;
+            messageContainer.appendChild(messageElement);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        sendButton.addEventListener('click', function() {
+            const messageText = messageInput.value.trim();
+            if (messageText !== '') {
+                chatSocket.send(JSON.stringify({
+                    'message': messageText,
+                    'sender': '{{ request.user }}'
+                }));
+                messageInput.value = '';
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+            }
+        });
+
+        messageInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendButton.click();
+            }
+        });
+    });
+</script>
+{% endblock %}

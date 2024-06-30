@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %} Войти {% endblock %}
+
+{% block body %}
+<div class="page_layout_login">
+    <div class="forms_login">
+        <form method="post" id="loginForm">
+            {% csrf_token %}
+            <div class="center">
+                <div class="logo"></div>
+            </div>
+            <div class="title_page">Вход</div>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">
+                            {{ message|safe }}
+                            <a href="#" class="close">✖</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <div class="forms_login_box">
+                {{ form.username.errors }}
+                <input type="text" id="id_username" name="username" class="input_design" placeholder="Логин" required>
+                {{ form.password.errors }}
+                <input type="password" id="id_password" name="password" class="input_design" placeholder="Пароль" required>
+                <button type="submit" class="button_design">Войти</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

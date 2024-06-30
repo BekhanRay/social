@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+
+    <title>{% block title %} {% endblock %}</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header_inside">
+            <div class="logo__filter">
+                <a href="{% url 'home' %}" class="logo"></a>
+                <div class="header_dropdown" data-dropdown="">
+                    <div class="css-header_btn " data-dropdown-button="">
+                        <div class="header_btn">
+                            <span class="header_btn_icon">
+                                <img src="https://i.ibb.co/3hrtrfY/Frame-177.png" alt="">
+                            </span>
+                            <span class="header_btn_text">Фильтрация</span>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-menu_box">
+                             <form method="get" action="">
+                            <div class="page_filter">
+                                <input type="number" class="input_design" placeholder="Мин. возраст" name="min_age" id="min_age" value="{{ request.GET.min_age }}" style="width: 150px;">
+                                <input type="number" class="input_design" placeholder="Макс. возраст" name="max_age" id="max_age" value="{{ request.GET.max_age }}" style="width: 150px;">
+                                <input type="text" id="country" name="country" class="input_design" placeholder="Страна" value="{{ request.GET.country }}">
+                                <input type="text" id="city" name="city" class="input_design" placeholder="Город" value="{{ request.GET.city }}">
+                                <input type="text" id="region" name="region" class="input_design" placeholder="Регион" value="{{ request.GET.region }}">
+                                <select type="text" id="gender" name="gender" class="input_design" required>
+                                    <option selected disabled>Выберите пол</option>
+                                    <option value="Мужской" {% if form.gender.value == "Мужской" %}selected{% endif %}>Мужской</option>
+                                    <option value="Женский" {% if form.gender.value == "Женский" %}selected{% endif %}>Женский</option>
+                                </select>
+                                <button type="submit" class="button_design">Найти</button>
+                            </div>
+                             </form>
+                            <!-- <div class="dropdown-links">
+                                <a href="#my_orders" class="dropdown-link">
+                                    <span class="dropdown-icon">
+                                       
+                                    </span>
+                                    Мои заказы
+                                </a>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'forum_list' %}" class="css-header_btn">
+                    <div class="header_btn">
+                        <span class="header_btn_icon">
+                            <img src="https://i.ibb.co/L1r35Zc/forum-icon.png" alt="">
+                        </span>
+                        <span class="header_btn_text">Форум</span>
+                    </div>
+                </a>
+                <a href="{% url 'chat_list' %}" class="css-header_btn">
+                    <div class="header_btn">
+                        <span class="header_btn_icon"><img src="https://i.ibb.co/N629ssh/Frame-181.png" alt="Frame-181" border="0">
+                        </span>
+                        <span class="header_btn_text">Чат</span>
+                    </div>
+                </a>
+            </div>
+            <div class="header_inside_right">
+                <div class="header_dropdown" data-dropdown="" style="position: relative;">
+                    <div class="css-header_btn" data-dropdown-button="">
+                        <div class="header_btn">
+                            <span class="header_btn_icon">
+                                <img src="https://i.ibb.co/dcGX2xZ/Frame-180.png">
+                            </span>
+                            {% if user.is_authenticated %}
+                            <span class="header_btn_text">{{ request.user.nickname }}</span>
+                            {% else %}
+                            <span class="header_btn_text">Войти</span>
+                            {% endif %}
+
+                        </div>
+                    </div>
+
+
+                    <div class="dropdown-menu" style="max-width: 400px; left: unset; right: 0;">
+                        <div class="dropdown-menu_box">
+                            <div class="dropdown-links">
+                                {% if user.is_authenticated %}
+                                <a href="{% url 'user_detail' user_id=user.id %}" class="dropdown-link">
+                                    <span class="dropdown-icon">
+                                        <img src="https://i.ibb.co/dcGX2xZ/Frame-180.png">
+                                    </span>
+                                    Профиль
+                                </a>
+                                <a href="{% url 'favorites' %}" class="dropdown-link">
+                                    <span class="dropdown-icon">
+                                        <img src="https://i.ibb.co/TK84Hj8/Frame-181.png" alt="Frame-181" border="0">
+                                    </span>
+                                    Отметки "Нравится"
+                                </a>
+                                <a href="#" class="dropdown-link">
+                                    <span class="dropdown-icon">
+                                        <img src="https://i.ibb.co/TWqN4Dr/Frame-181.png" alt="Frame-181" border="0">
+                                    </span>
+                                    Настройки
+                                </a>
+                                <a href="{% url 'logout' %}">
+                                <button class="dropdown-link" style="border-top: solid 1px #eee; margin-top: 8px;">
+                                    <span class="dropdown-icon">
+                                        <img src="https://i.ibb.co/y83BpRq/Frame-181.png" alt="Frame-181" border="0">
+                                     </span>
+                                     Выйти
+                                </button>
+                                    </a>
+                                {% else %}
+                                <a href="{% url 'register' %}" class="dropdown-link">
+                                    <span class="dropdown-icon">
+                                        <img src="https://i.ibb.co/y83BpRq/Frame-181.png" alt="Frame-181" border="0">
+                                    </span>
+                                    Регистрация
+                                </a>
+                                <a href="{% url 'login' %}" class="dropdown-link">
+                                    <span class="dropdown-icon">
+                                        <img src="https://i.ibb.co/y83BpRq/Frame-181.png" alt="Frame-181" border="0">
+                                    </span>
+                                    Вход
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+    {% block body %}
+    <div class="page__layout">
+        <div class="grid_box">
+            {% for profile in profiles %}
+            <div class="user_box">
+                <a href="{% url 'user_detail' user_id=profile.id %}" class="user_box_img"><img src="{{ profile.avatar_photo.file_path.url }}" alt=""></a>
+                <div class="user_box_name__age">
+                    <div class="user_box_name">{{profile.nickname}}</div>
+                    <div class="user_box_age">{{profile.age}}</div>
+                </div>
+
+
+                <div class="reaction_btns">
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}">
+                    <button class="write_btn" data-tooltip="Написать сообщение">
+                       <img src="https://i.ibb.co/NV3czdx/Frame-181.png" alt="Frame-181" border="0">
+                    </button>
+                    <button class="liked_btn" data-tooltip="Нравится">
+                        <img src="https://i.ibb.co/dj8Wmqv/Frame-181.png" alt="Frame-181" border="0">
+                    </button>
+                        </a>
+                    {% else %}
+
+                    <button class="write_btn" data-tooltip="Написать сообщение">
+                       <img src="https://i.ibb.co/NV3czdx/Frame-181.png" alt="Frame-181" border="0">
+                    </button>
+
+                    <button class="liked_btn" data-tooltip="Нравится">
+                        <a href="{% url 'add_favorite' profile.id %}">
+                            <img src="https://i.ibb.co/dj8Wmqv/Frame-181.png" alt="Frame-181" border="0"></a>
+                    </button></a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+{% endblock %}
+<script>
+// Dropdown
+document.addEventListener("mousedown", e => {
+    const isDropdownButton = e.target.matches("[data-dropdown-button]")
+    if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return
+
+    let currentDropdown
+    if (isDropdownButton) {
+      currentDropdown = e.target.closest("[data-dropdown]")
+      currentDropdown.classList.toggle("drop-active")
+    }
+
+    document.querySelectorAll("[data-dropdown].drop-active").forEach( dropdown => {
+      if (dropdown === currentDropdown) return
+      dropdown.classList.remove("drop-active")
+    })
+})
+
+
+
+</script>
+</body>
+</html>
