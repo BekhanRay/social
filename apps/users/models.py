@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.db.models.signals import post_save
@@ -85,6 +86,9 @@ class Photo(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def photo_url(self):
+        return '%s%s' % (settings.HOST, self.photo.url) if self.photo else ''
 
 @receiver(post_save, sender=CustomUser)
 def create_default_avatar(sender, instance, created, **kwargs):
