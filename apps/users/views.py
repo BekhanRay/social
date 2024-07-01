@@ -1,3 +1,4 @@
+
 from datetime import date
 from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -242,3 +243,4 @@ def chat_bridge(request, username):
     response.path = reverse('create_chat', args=[username])
 
     return response
+

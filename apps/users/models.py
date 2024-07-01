@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
@@ -159,3 +160,8 @@ class Favorite(models.Model):
 
     def __str__(self):
         return f"{self.user} -> {self.favorite_user}"
+=======
+from django.db import models
+
+# Create your models here.
+>>>>>>> 7315cff (Initial commit)

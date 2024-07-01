@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -123,3 +124,8 @@ def dislike_comment(request, comment_id):
         reaction.save()
         comment.save()
     return redirect('post_list', forum_id=comment.post.thread.forum.id, thread_id=comment.post.thread.id)
+=======
+from django.shortcuts import render
+
+# Create your views here.
+>>>>>>> 7315cff (Initial commit)
