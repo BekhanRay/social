@@ -1,10 +1,19 @@
-{% extends "base.html" %}
-
 {% load static %}
+<head>
+    <meta charset="UTF-8">
 
-{% block title %} Войти {% endblock %}
 
-{% block body %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+
+    <title>{% block title %} Войти {% endblock %}</title>
+</head>
 <div class="page_layout_login">
     <div class="forms_login">
         <form method="post" id="loginForm">
@@ -33,4 +42,4 @@
         </form>
     </div>
 </div>
-{% endblock %}
+

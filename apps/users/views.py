@@ -12,11 +12,14 @@ from .models import Profile, CustomUser, Photo, Favorite
 
 
 def register(request):
+
+    print(request.POST)
     if request.method == 'POST':
-        if CustomUser.objects.filter(email=request.POST['email']) is not None:
+        email = request.POST.get('email')
+        if email and not CustomUser.objects.filter(email=email).exists():
             user = CustomUser.objects.create_user(
                 login=request.POST['login'],
-                password=request.POST['password1'],
+                password=request.POST['password'],
                 email=request.POST['email'],
                 nickname=request.POST['nickname'],
                 age=request.POST['age'],
