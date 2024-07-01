@@ -12,7 +12,7 @@
                 <a href="{% url 'user_detail' user_id=favorite.favorite_user.id %}" class="user_box_img"><img src="{{ favorite.favorite_user.avatar_photo.file_path.url }}" alt="">
                 <div class="user_box_name__age">
                     <div class="user_box_name">{{favorite.favorite_user.nickname}}</div>
-                    <div class="user_box_age">{{favorite.favorite_user.age}}</div>
+                    <div class="user_box_age">{{favorite.favorite_user.get_age}}</div>
                 </div>
                     </a>
 

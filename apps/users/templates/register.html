@@ -152,7 +152,7 @@
     <input type="checkbox" id="user_agreement" name="user_agreement" class="input-field input_design" value="{{ form.user_agreement.value }}" required oninput="validateInput(12)">
     <div class="button-container">
         <button class="button_design" onclick="previousQuestion(11)">Назад</button>
-        <button class="button_design" id="submit" onclick="submitForm()" disabled>Регистрация</button>
+        <button class="button_design" type="submit" id="submit" disabled>Регистрация</button>
     </div>
 </div>
         </div>
@@ -229,7 +229,6 @@ function submitForm() {
     // Here you can send the data to the server
     console.log('Registration completed:', { gender, age, country, interestedGender, nickname, password });
 
-    alert('Вы успешно зарегистрировались!');
 }
 
 document.addEventListener('DOMContentLoaded', function () {

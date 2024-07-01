@@ -348,18 +348,18 @@ box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
 }
 .active-like svg
 {
-  	fill: #ff5c85;
-  	animation: bounce 250ms cubic-bezier(0.2, 0, 0, 2.5);
+   fill: #ff5c85;
+   animation: bounce 250ms cubic-bezier(0.2, 0, 0, 2.5);
 }
 @keyframes bounce
 {
-  	0% {
-    	transform: scale(1);
-  	}
-  	50% {
-    	transform: scale(1.2);
-  	}
-  	100% {
-    	transform: scale(1);
-  	}
+   0% {
+     transform: scale(1);
+   }
+   50% {
+     transform: scale(1.2);
+   }
+   100% {
+     transform: scale(1);
+   }
 }
