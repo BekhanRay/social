@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -51,7 +51,7 @@
                             <!-- <div class="dropdown-links">
                                 <a href="#my_orders" class="dropdown-link">
                                     <span class="dropdown-icon">
-                                       
+
                                     </span>
                                     Мои заказы
                                 </a>
@@ -151,7 +151,7 @@
                 <a href="{% url 'user_detail' user_id=profile.id %}" class="user_box_img"><img src="{{ profile.avatar_photo.file_path.url }}" alt=""></a>
                 <div class="user_box_name__age">
                     <div class="user_box_name">{{profile.nickname}}</div>
-                    <div class="user_box_age">{{profile.age}}</div>
+                    <div class="user_box_age">{{profile.get_age}}</div>
                 </div>
 
 
@@ -174,7 +174,7 @@
                     <button class="liked_btn" data-tooltip="Нравится">
                         <a href="{% url 'add_favorite' profile.id %}">
                             <img src="https://i.ibb.co/dj8Wmqv/Frame-181.png" alt="Frame-181" border="0"></a>
-                    </button></a>
+                    </button>
                     {% endif %}
                 </div>
             </div>

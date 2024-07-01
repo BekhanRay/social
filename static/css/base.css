@@ -326,7 +326,6 @@ box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
 .reaction_btns button{
     height: 35px;
     width: 100%;
-    background: orange;
     border-radius: 22px;
     background: #ff5b85;
     transition: 150ms;
@@ -337,4 +336,30 @@ box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
 .reaction_btns button img{
     width: 30px;
     height: 30px;
+}
+
+.liked_btn svg{
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+}
+.liked_btn.active-like{
+    background: #ffdae3;
+}
+.active-like svg
+{
+  	fill: #ff5c85;
+  	animation: bounce 250ms cubic-bezier(0.2, 0, 0, 2.5);
+}
+@keyframes bounce
+{
+  	0% {
+    	transform: scale(1);
+  	}
+  	50% {
+    	transform: scale(1.2);
+  	}
+  	100% {
+    	transform: scale(1);
+  	}
 }
