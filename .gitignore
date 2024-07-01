@@ -18,9 +18,9 @@ storage
 core/settings/__pycache__/
 *.pem
 ### types ###
-*.js
+
 *.map
-*.css
+
 *.png
 *.eot
 *.svg
