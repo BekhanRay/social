@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from apps.users.models import CustomUser
 from django.db import models
 
@@ -76,8 +76,4 @@ class CommentReaction(models.Model):
 
     class Meta:
         unique_together = ('user', 'comment')
-=======
-from django.db import models
 
-# Create your models here.
->>>>>>> 7315cff (Initial commit)

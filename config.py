@@ -1,7 +1,6 @@
 from decouple import config
 
 SECRET_KEY = config('SECRET_KEY')
-<<<<<<< HEAD
 DEBUG = config('DEBUG')
 
 # POSTGRES_DB = config('POSTGRES_DB')
@@ -20,6 +19,6 @@ DEBUG = config('DEBUG')
 # EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 # DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 # SERVER_EMAIL = config('SERVER_EMAIL')
-=======
+
 DEBUG = config('DEBUG')
->>>>>>> 7315cff (Initial commit)
+

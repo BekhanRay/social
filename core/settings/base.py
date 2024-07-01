@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-<<<<<<< HEAD
+
 import os
 from pathlib import Path
 
@@ -21,14 +21,14 @@ from .local import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent.parent
-=======
+
 
 from pathlib import Path
 import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
->>>>>>> 7315cff (Initial commit)
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -40,31 +40,24 @@ SECRET_KEY = config.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.DEBUG
 
-<<<<<<< HEAD
-ALLOWED_HOSTS = ['*']
-=======
-ALLOWED_HOSTS = []
 
->>>>>>> 7315cff (Initial commit)
+ALLOWED_HOSTS = ['*']
+
+
+
 
 # Application definition
 APPS = [
     'apps.users',
     'apps.forum',
-<<<<<<< HEAD
     'apps.chat',
-=======
     'apps.statics',
->>>>>>> 7315cff (Initial commit)
 ]
 
 THIRD_PARTY_APPS = [
     'jazzmin',
-<<<<<<< HEAD
     'daphne',
     'channels',
-=======
->>>>>>> 7315cff (Initial commit)
 ]
 
 INSTALLED_APPS = [
@@ -78,7 +71,7 @@ INSTALLED_APPS = [
     *APPS,
 ]
 
-<<<<<<< HEAD
+
 # CHANNEL_LAYERS = {
 #     'default': {
 #         'BACKEND': 'channels.layers.RedisChannelLayer',  # Use Redis as the channel layer backend
@@ -93,8 +86,7 @@ CHANNEL_LAYERS = {
     }
 }
 
-=======
->>>>>>> 7315cff (Initial commit)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -105,14 +97,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-<<<<<<< HEAD
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
 
-=======
->>>>>>> 7315cff (Initial commit)
 ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
@@ -131,14 +121,13 @@ TEMPLATES = [
     },
 ]
 
-<<<<<<< HEAD
+
 # WSGI_APPLICATION = 'core.wsgi.application'
 ASGI_APPLICATION = 'core.asgi.application'
-=======
+
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
->>>>>>> 7315cff (Initial commit)
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -157,14 +146,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-<<<<<<< HEAD
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'Asia/Bishkek'
-=======
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -172,13 +160,13 @@ TIME_ZONE = 'Asia/Bishkek'
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
->>>>>>> 7315cff (Initial commit)
+
 
 USE_I18N = True
 
 USE_TZ = True
 
-<<<<<<< HEAD
+
 # STATIC (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
@@ -191,24 +179,23 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-=======
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
->>>>>>> 7315cff (Initial commit)
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-<<<<<<< HEAD
+
 
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = '/'
 
 
 LOGIN_URL = 'login'
-=======
->>>>>>> 7315cff (Initial commit)
+
