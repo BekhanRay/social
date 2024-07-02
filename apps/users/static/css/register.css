@@ -1,0 +1,59 @@
+    .page_layout_register {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+    .page_layout_register_center{
+        max-width: 450px;
+        width: 100%;
+    }
+    .forms_register{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        padding: 0 16px;
+    }
+    .center .logo{
+        transform: scale(1.8);
+    }
+
+    .question-container {
+            display: none;
+            margin-top: 16px;
+        }
+    .question-container.active {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .button-container{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .title_form{
+            font-size: 18px;
+            font-weight: bold;
+            color: #e91e63;
+        }
+
+        .link_log_in{
+            color: #ff1084;
+            padding: 8px 0;
+            transition: 150ms;
+            font-size: 15px;
+        }
+        .link_log_in:hover{
+            text-decoration: underline;
+            color: #000;
+        }
+
+
+    #agreement{
+        width: 24px;
+        height: 24px;
+    }
+    
