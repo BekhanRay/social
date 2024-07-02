@@ -48,15 +48,16 @@
 
 <div class="page_layout_profile">
     <div class="forms_profile">
-        <form method="post" id="profileForm">
+        <form method="post" id="profileForm" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.non_field_errors }}
             <div class="forms_profile_box">
                 <h2>Профиль</h2>
 
                 <div class="form-group">
-        <label for="image">Аватарка:</label>
-        <input type="file" id="image" name="image" class="form-control">
+        {% csrf_token %}
+        <label for="avatar">Аватарка:</label>
+        <input type="file" id="avatar" name="avatar" class="form-control"><br>
     </div>
                     <h6>Личная информация</h6>
                 {{ form.personal_info.errors }}

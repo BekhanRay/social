@@ -7,7 +7,7 @@
     .page_layout_profile {
         display: grid;
         place-items: center;
-        min-height: 100vh;
+        min-height: 150vh;
     }
     .forms_profile_box {
         display: flex;
@@ -35,19 +35,28 @@
         margin: unset;
         line-height: 60px;
     }
+    .button_design{
+        padding: 0 16px;
+        border-radius: 12px;
+        background-color: #ffd2e2;
+        font-size: 15px;
+        font-weight: bold;
+        transition: 200ms;
+        height: 50px;
+    }
 </style>
 
 <div class="page_layout_profile">
     <div class="forms_profile">
-        <form method="post" id="profileForm">
+        <form method="post" id="profileForm" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.non_field_errors }}
             <div class="forms_profile_box">
                 <h2>Изменить профиль</h2>
                     {{ form.general_info.errors }}
                 <div class="form-group">
-        <label for="image">Аватарка:</label>
-        <input type="file" id="image" name="image" class="form-control">
+        <label for="avatar">Аватарка:</label>
+        <input type="file" id="avatar" name="avatar" class="form-control">
     </div>
                     <h6>Никнейм</h6>
                     <input type="text" id="id_nickname" name="nickname" class="input" placeholder="{{user.nickname}}" value="{{ request.GET.nickname }}">
@@ -82,7 +91,7 @@
                     <textarea id="id_education_profession" name="education_profession" class="input" placeholder="{{ user.profile.education_profession }}"></textarea>
                     <h6>Привычки и предпочтения</h6>
                     <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="{{ user.profile.habits_preferences }}"></textarea>
-                    <button type="submit">Изменить</button>
+                    <button type="submit" class="button_design">Изменить</button>
 
             </div>
         </form>

@@ -1,5 +1,7 @@
 from django import forms
 
+from apps.users.models import Photo
+
 
 class UserFilterForm(forms.Form):
     min_age = forms.IntegerField(required=False, label='Min Age')
@@ -23,3 +25,4 @@ class UserChangeForm(forms.Form):
     personal_info = forms.CharField(widget=forms.Textarea, required=False)
     education_profession = forms.CharField(widget=forms.Textarea, required=False)
     habits_preferences = forms.CharField(widget=forms.Textarea, required=False)
+

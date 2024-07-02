@@ -64,6 +64,11 @@ def profile(request):
     try:
         profile = Profile.objects.get(user=request.user)
         if request.method == 'POST':
+            if 'avatar' in request.FILES.keys():
+                avatar = Photo.objects.get(user=request.user, is_avatar=True)
+                avatar.file_path = request.FILES['avatar']
+                avatar.is_avatar = True
+                avatar.save()
             profile.general_info = request.POST['general_info']
             profile.personal_info = request.POST['personal_info']
             profile.education_profession = request.POST['education_profession']
@@ -150,7 +155,11 @@ def user_change(request):
     if request.method == 'POST':
         form = UserChangeForm(request.POST or None)
         user = CustomUser.objects.get(pk=request.user.pk)
-        print(request.POST)
+        if 'avatar' in request.FILES.keys():
+            avatar = Photo.objects.get(user=user, is_avatar=True)
+            avatar.file_path = request.FILES['avatar']
+            avatar.is_avatar = True
+            avatar.save()
         if form.is_valid():
             nickname = form.cleaned_data["nickname"]
             email = form.cleaned_data["email"]

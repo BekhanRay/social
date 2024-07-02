@@ -21,7 +21,7 @@
         <div class="chat_message">
             <div class="header_chat_message">
                 <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_img" id="currentUserImage">
-                    <img src="{{ current_user_avatar }}" alt="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg">
+                    <img src="{{ chat.receiver.avatar_photo.file_path.url }}" alt="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg">
                 </a>
                 <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_nickname" id="currentUserNickname">{{ chat.receiver.nickname}}</a>
             </div>
