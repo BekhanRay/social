@@ -87,7 +87,7 @@ def get_chat(request, room_name):
 @login_required
 def create_chat(request, username):
     current_user = request.user
-    other_user = get_object_or_404(User, username=username)
+    other_user = get_object_or_404(User, login=username)
 
     if current_user.id > other_user.id:
         room_name = f'{current_user.id}_{other_user.id}'

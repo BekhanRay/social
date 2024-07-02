@@ -170,11 +170,11 @@ USE_TZ = True
 # STATIC (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-# STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'back_static')),)
-
+#STATICFILES_DIRS = [
+#    BASE_DIR / "static",
+#]
+STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'back_static')),)
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # MEDIA (Images, PDF)
 
 MEDIA_URL = '/media/'
@@ -198,4 +198,13 @@ LOGIN_REDIRECT_URL = '/'
 
 
 LOGIN_URL = 'login'
+# CSRF
+CSRF_USE_SESSIONS = True
+CSRF_TRUSTED_ORIGINS = ['http://16.171.6.225/',
+                        'http://localhost/',
+                        ]
 
+
+# Cors
+
+CORS_ALLOW_ALL_ORIGINS = True
