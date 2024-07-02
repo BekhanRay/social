@@ -84,6 +84,7 @@ class Photo(models.Model):
     def photo_url(self):
         return '%s%s' % (settings.HOST, self.photo.url) if self.photo else ''
 
+
 @receiver(post_save, sender=CustomUser)
 def create_default_avatar(sender, instance, created, **kwargs):
     if created and not instance.avatar_photo:

@@ -13,10 +13,9 @@ from .models import Profile, CustomUser, Photo, Favorite
 
 
 def register(request):
-
-    print(request.POST)
     if request.method == 'POST':
         email = request.POST.get('email')
+
         if email and not CustomUser.objects.filter(email=email).exists():
             user = CustomUser.objects.create_user(
                 login=request.POST['login'],
@@ -243,4 +242,8 @@ def chat_bridge(request, username):
     response.path = reverse('create_chat', args=[username])
 
     return response
+
+
+def user_agreement(request):
+    return render(request, 'user_agreement.html')
 

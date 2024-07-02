@@ -20,10 +20,10 @@
         </div>
         <div class="chat_message">
             <div class="header_chat_message">
-                <a href="{{ receiver.file_path.url }}" class="chat_user_img" id="currentUserImage">
+                <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_img" id="currentUserImage">
                     <img src="{{ current_user_avatar }}" alt="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg">
                 </a>
-                <a href="#" class="chat_user_nickname" id="currentUserNickname">{{ chat.receiver.login}}</a>
+                <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_nickname" id="currentUserNickname">{{ chat.receiver.nickname}}</a>
             </div>
             <div class="container_chat_message" id="messageContainer">
                 {% for message in messages %}

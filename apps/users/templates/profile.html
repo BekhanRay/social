@@ -4,6 +4,15 @@
 
 {% block body %}
 <style>
+.button_design{
+        padding: 0 16px;
+        border-radius: 12px;
+        background-color: #ffd2e2;
+        font-size: 15px;
+        font-weight: bold;
+        transition: 200ms;
+        height: 50px;
+    }
     .page_layout_profile {
         display: grid;
         place-items: center;
@@ -44,15 +53,15 @@
             {{ form.non_field_errors }}
             <div class="forms_profile_box">
                 <h2>Профиль</h2>
-                {% if user.is_authenticated %}
-                    {{ form.general_info.errors }}
+
                 <div class="form-group">
         <label for="image">Аватарка:</label>
         <input type="file" id="image" name="image" class="form-control">
     </div>
                     <h6>Личная информация</h6>
+                {{ form.personal_info.errors }}
                     <textarea id="id_general_info" name="general_info" class="input" placeholder="Общая информация">{{ form.general_info }}</textarea>
-                    {{ form.personal_info.errors }}
+                   {{ form.general_info.errors }}
                     <h6>Общая информация</h6>
                     <textarea id="id_personal_info" name="personal_info" class="input" placeholder="Личная информация">{{ form.personal_info }}</textarea>
                     {{ form.education_profession.errors }}
@@ -61,21 +70,10 @@
                     {{ form.habits_preferences.errors }}
                     <h6>Привычки и предпочтения</h6>
                     <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="Привычки и предпочтения">{{ form.habits_preferences }}</textarea>
-                    <button type="submit">Изменить</button>
+                  {% if user.is_authenticated %}
+                <button type="submit" class="button_design"><a href="{% url 'user_detail' user.id %}" style="color:white">Изменить</a></button>
                 {% else %}
-                    {{ form.general_info.errors }}
-                    <h4>Общая информация</h4>
-                    <textarea id="id_general_info" name="general_info" class="input" placeholder="Общая информация">{{ form.general_info.value }}</textarea>
-                    {{ form.personal_info.errors }}
-                    <h6>Личная информация</h6>
-                    <textarea id="id_personal_info" name="personal_info" class="input" placeholder="Личная информация">{{ form.personal_info.value }}</textarea>
-                    {{ form.education_profession.errors }}
-                    <h6>Образование и профессия</h6>
-                    <textarea id="id_education_profession" name="education_profession" class="input" placeholder="Образование и профессия">{{ form.education_profession.value }}</textarea>
-                    {{ form.habits_preferences.errors }}
-                    <h6>Привычки и предпочтения</h6>
-                    <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="Привычки и предпочтения">{{ form.habits_preferences.value }}</textarea>
-                    <button type="submit">Сохранить</button>
+                    <button type="submit" class="button_design"><a href="{% url 'user_detail' user.id %}" style="color:white">Сохранить</a></button>
                 {% endif %}
             </div>
         </form>

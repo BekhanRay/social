@@ -166,11 +166,12 @@
                     </button>
                         </a>
                     {% else %}
-                    <a href="{% url 'create_chat' profile.login %}">
+
                     <button class="write_btn" data-tooltip="Написать сообщение">
-                       <img src="https://i.ibb.co/NV3czdx/Frame-181.png" alt="Frame-181" border="0">
+                        <a href="{% url 'create_chat' profile.login %}">
+                            <img src="https://i.ibb.co/NV3czdx/Frame-181.png" alt="Frame-181" border="0"></a>
                     </button>
-		    </a>
+
 		    
                     <button class="liked_btn" data-tooltip="Нравится">
                         <a href="{% url 'add_favorite' profile.id %}">

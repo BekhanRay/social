@@ -66,6 +66,8 @@
         {% if user.id == request.user.id%}
         <a style="color: red", href="{% url 'logout' %}">Выйти</a>
         <a style="color: green", href="{% url 'user_change' %}">Изменить профиль</a>
+        {% else %}
+        <a href="{% url 'create_chat' user.login %}">Написать сообщение</a>
         {% endif %}
         <div class="field-group">
             <label>Почта:</label>

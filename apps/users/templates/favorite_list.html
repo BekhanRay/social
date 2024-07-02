@@ -2,37 +2,50 @@
 
 {% load static %}
 
-{% block title %} Избранные {% endblock %}
+<head>
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+
+    <title>{% block title %} Избранные {% endblock %}</title>
+</head>
 
 {% block body %}
 <div class="page__layout">
-        <div class="grid_box">
-            {% for favorite in favorites %}
-            <div class="user_box">
-                <a href="{% url 'user_detail' user_id=favorite.favorite_user.id %}" class="user_box_img"><img src="{{ favorite.favorite_user.avatar_photo.file_path.url }}" alt="">
+    <div class="grid_box">
+        {% for favorite in favorites %}
+        <div class="user_box">
+            <a href="{% url 'user_detail' user_id=favorite.favorite_user.id %}" class="user_box_img">
+                <img src="{{ favorite.favorite_user.avatar_photo.file_path.url }}" alt=""></a>
                 <div class="user_box_name__age">
-                    <div class="user_box_name">{{favorite.favorite_user.nickname}}</div>
-                    <div class="user_box_age">{{favorite.favorite_user.get_age}}</div>
+                    <div class="user_box_name">{{ favorite.favorite_user.nickname }}</div>
+                    <div class="user_box_age">{{ favorite.favorite_user.get_age }}</div>
                 </div>
+
+
+            <div class="reaction_btns">
+                <button class="write_btn" data-tooltip="Написать сообщение">
+                    <a href="{% url 'create_chat' favorite.favorite_user.login %}">
+                        <img src="https://i.ibb.co/NV3czdx/Frame-181.png" alt="Frame-181" border="0"></a>
+                </button>
+
+                <button class="liked_btn" data-tooltip="Нравится">
+                    <a href="{% url 'remove_favorite' favorite.favorite_user.id %}">
+                        <img src="https://i.ibb.co/dj8Wmqv/Frame-181.png" alt="Frame-181" border="0">
                     </a>
-
-                <div class="reaction_btns">
-
-
-                    <button class="write_btn" data-tooltip="Написать сообщение">
-                       <img src="https://i.ibb.co/NV3czdx/Frame-181.png" alt="Frame-181" border="0">
-                    </button>
-
-                    <button class="liked_btn" data-tooltip="Нравится">
-                        <a href="{% url 'remove_favorite' favorite.favorite_user.id %}">
-                            <img src="https://i.ibb.co/dj8Wmqv/Frame-181.png" alt="Frame-181" border="0"></a>
-                    </button>
-
-                </div>
+                </button>
             </div>
-            {% endfor %}
-
-
         </div>
+        {% endfor %}
     </div>
+</div>
+
 {% endblock %}

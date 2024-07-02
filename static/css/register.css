@@ -47,3 +47,15 @@
             text-decoration: underline;
             color: #000;
         }
+        #id_agreement{
+        width: 24px;
+        height: 24px;
+    }
+    .agreement {
+        display: flex;
+        align-items: center;
+        max-width: 400px;
+        font-size: 12px;
+        gap: 8px;
+        cursor: pointer;
+    }
