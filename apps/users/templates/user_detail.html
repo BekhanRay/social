@@ -9,7 +9,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    border-radius: 22px;
+    border-radius: 30px;
 }
 .avatar img{
     width: 100%;
@@ -20,7 +20,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh;
+        min-height: 150vh;
         background: #f0f2f5;
     }
     .user_card {
@@ -99,7 +99,7 @@
         </div>
         <div class="field-group">
             <label>Персональная информация:</label>
-            <p>{{ user.profile.personal_info }}</p>
+            <p>{{ profile.personal_info }}</p>
         </div>
         <div class="field-group">
             <label>Общая информация:</label>
@@ -111,7 +111,7 @@
         </div>
         <div class="field-group">
             <label>Привычки и предпочтения:</label>
-            <p>{{ profile.habit_preferences }}</p>
+            <p>{{ profile.habits_preferences }}</p>
         </div>
     </div>
 </div>

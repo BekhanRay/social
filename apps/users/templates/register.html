@@ -179,7 +179,7 @@ function previousQuestion(questionNumber) {
 function validateInput(questionNumber) {
     let isValid = false;
     if (questionNumber === 1) {
-        isValid = document.getElementById('nickname').value.trim !== '';
+        isValid = document.getElementById('nickname').value.trim() !== '';
     } else if (questionNumber === 2) {
         isValid = document.getElementById('gender').value !== 'Выберите пол';
     } else if (questionNumber === 3) {
