@@ -224,7 +224,7 @@ def logout_view(request):
 def add_favorite(request, user_id):
     favorite_user = get_object_or_404(CustomUser, id=user_id)
     Favorite.objects.get_or_create(user=request.user, favorite_user=favorite_user)
-    return redirect(reverse('user_detail', args=[user_id]))
+    return redirect('home')
 
 
 @login_required

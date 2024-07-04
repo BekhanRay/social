@@ -195,7 +195,9 @@ function validateInput(questionNumber) {
     } else if (questionNumber === 8) {
         isValid = document.getElementById('login').value.trim() !== '';
     } else if (questionNumber === 9) {
-        isValid = document.getElementById('email').value.trim() !== '';
+        const email = document.getElementById('email').value.trim();
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        isValid = emailPattern.test(email);
     } else if (questionNumber === 10) {
         isValid = document.getElementById('confirmation_code').value.trim() !== '';
     } else if (questionNumber === 11) {
