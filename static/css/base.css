@@ -323,32 +323,31 @@ box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
     justify-content: space-between;
     gap: 12px;
 }
-.reaction_btns button{
+.liked_btn, .write_btn {
     height: 35px;
     width: 100%;
     border-radius: 22px;
-    background: #ff5b85;
+    background: #ffc2d2;
     transition: 150ms;
+    display: grid;
+    place-items: center;
 }
 .reaction_btns button:hover{
     transform: scale(1.1);
 }
-.reaction_btns button img{
-    width: 30px;
-    height: 30px;
-}
 
-.liked_btn svg{
+
+.liked_btn svg, .write_btn svg{
     width: 24px;
     height: 24px;
-    fill: #fff;
+    fill: #ff5b85;
 }
 .liked_btn.active-like{
-    background: #ffdae3;
+    background: #ff5b85;
 }
 .active-like svg
 {
-   fill: #ff5c85;
+   fill: #fff;
    animation: bounce 250ms cubic-bezier(0.2, 0, 0, 2.5);
 }
 @keyframes bounce
