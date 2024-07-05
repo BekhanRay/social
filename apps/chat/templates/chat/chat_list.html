@@ -1,18 +1,10 @@
+{% extends 'chat/chat.html' %}
 
-<div class="chat_list">
-    <h2>Чаты</h2>
-    <ul>
-        {% for chat in chats %}
-        <li>
-            <a href="{% url 'get_chat' chat.room_name %}">
-                {% if chat.sender == current_user %}
-                    Чат с {{ chat.receiver.nickname }}
-                {% else %}
-                    Чат с {{ chat.sender.nickname }}
-                {% endif %}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
+{% block chat_message %}
+
+        <h2>
+            Выберите чат
+        </h2>
+
+{% endblock %}
 

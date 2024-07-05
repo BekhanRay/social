@@ -73,8 +73,7 @@ def get_chat(request, room_name):
     messages = Message.objects.filter(chat=chat).order_by('timestamp')
     receiver = CustomUser.objects.get(id=chat.receiver.id)
     current_user = CustomUser.objects.get(id=chat.sender.id)
-    chats = Chat.objects.filter(sender=current_user).union(Chat.objects.filter(receiver=current_user))
-    print(receiver.avatar_photo.file_path.url)
+    chats = Chat.objects.filter(sender=current_user).union(Chat.objects.filter(sender=current_user))
     return render(request, 'chat/chat.html', {
         'chat': chat,
         'chats': chats,

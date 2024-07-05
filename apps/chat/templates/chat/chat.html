@@ -4,21 +4,25 @@
     <div class="chat_box">
         <div class="chat_sidebar">
             {% for chat in chats %}
+            <a href="{% url 'create_chat' chat.receiver.login %}">
             <button class="chat_user" data-user="{{chat.room_name}}">
                 <div class="chat_user_img">
-                    <img src="{{other_user_avatar}}" alt="">
+                    <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
                 </div>
                 <div class="chat_user_text">
-                    <div class="chat_user_nickname">{{message.sender}}</div>
+                    <div class="chat_user_nickname">{{chat.receiver.nickname}}</div>
                     <div class="chat_user_data">
                         <span>Последнее сообщение</span>
-                        <span>- 2 ч.</span>
+                        <span>{{chat.messages.last.get_message_time}}</span>
                     </div>
                 </div>
             </button>
+                </a>
             {% endfor %}
         </div>
+
         <div class="chat_message">
+            {% block chat_message %}
             <div class="header_chat_message">
                 <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_img" id="currentUserImage">
                     <img src="{{ chat.receiver.avatar_photo.file_path.url }}" alt="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg">
@@ -36,7 +40,9 @@
                 <textarea name="message" placeholder="Напишите что-нибудь..." id="messageInput" class="messageInput"></textarea>
                 <button type="submit" class="sendButton" data-user="{{ request.user.login }}">Отправить</button>
             </div>
+            {% endblock %}
         </div>
+
     </div>
 </div>
 <script>

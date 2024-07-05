@@ -4,12 +4,15 @@ from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 
 from .forms import UserFilterForm, UserChangeForm
 from .models import Profile, CustomUser, Photo, Favorite
+
+current_path = None
 
 
 def register(request):
@@ -101,6 +104,7 @@ def profile(request):
 def user_list(request):
     form = UserFilterForm(request.GET or None)
     users = CustomUser.objects.exclude(pk=request.user.pk)
+    favorites = request.user.favorites.values_list('favorite_user', flat=True)
     if not request.user.is_authenticated:
         return redirect('register')
     match request.user.preffered_gender:
@@ -138,7 +142,9 @@ def user_list(request):
         if is_online is not None:
             users = users.filter(is_online=is_online)
 
-    return render(request, 'base.html', {'form': form, 'profiles': users})
+    return render(request, 'base.html', {'form': form,
+                                         'profiles': users,
+                                         'favorites': favorites})
 
 
 def user_detail(request, user_id):
@@ -224,7 +230,7 @@ def logout_view(request):
 def add_favorite(request, user_id):
     favorite_user = get_object_or_404(CustomUser, id=user_id)
     Favorite.objects.get_or_create(user=request.user, favorite_user=favorite_user)
-    return redirect('home')
+    return JsonResponse({'status': 'ok'})
 
 
 @login_required
@@ -232,7 +238,7 @@ def remove_favorite(request, user_id):
     favorite_user = get_object_or_404(CustomUser, id=user_id)
     favorite = get_object_or_404(Favorite, user=request.user, favorite_user=favorite_user)
     favorite.delete()
-    return redirect('favorites')
+    return JsonResponse({'status': 'ok'})
 
 
 @login_required
