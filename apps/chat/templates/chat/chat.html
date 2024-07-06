@@ -19,40 +19,48 @@
 <body>
     <div class="page__layout" style="padding: 0;">
         <div class="chat_box">
-            <div class="chat_sidebar">
+            <div class="chat_sidebar" id="sidebar">
                 <div class="sidebar_header">
-                    <a href="#" class="sidebar_header_btn">бла</a>
-                    <a href="#" class="logo"></a>
-                    <a href="#" class="sidebar_header_btn">Бла</a>
+                    <a href="{% url 'home' %}" class="sidebar_header_btn" data-tooltip="Назад">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </a>
+                    <a href="{% url 'home' %}" class="logo"></a>
+                    <div class="sidebar_header_btn"></div>
                 </div>
                 {% for chat in chats %}
-                {% if user.id == chat.sender.id%}
-                <a href="{% url 'create_chat' chat.receiver.login %}"  class="chat_user" data-user="{{chat.room_name}}">
-                        <div class="chat_user_img">
-                            <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
+                {% if user.id == chat.sender.id %}
+                <a href="#" class="chat_user" data-user="{{chat.room_name}}" onclick="openChat('{{ chat.room_name }}')">
+                    <div class="chat_user_img">
+                        <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
+                    </div>
+                    <div class="chat_user_text">
+                        <div class="chat_user_nickname">{{chat.receiver.nickname}}</div>
+                        {% else %}
+                        <a href="#" class="chat_user" data-user="{{chat.room_name}}" onclick="openChat('{{ chat.room_name }}')">
+                    <div class="chat_user_img">
+                        <img src="{{chat.sender.avatar_photo.file_path.url}}" alt="">
+                    </div>
+                    <div class="chat_user_text">
+                        <div class="chat_user_nickname">{{chat.sender.nickname}}</div>
+                        {% endif %}
+                        <div class="chat_user_data">
+                            <span>Последнее сообщение</span>
+                            <span>{{chat.messages.last.get_message_time}}</span>
                         </div>
-                        <div class="chat_user_text">
-                            <div class="chat_user_nickname">{{chat.receiver.nickname}}</div>
-                            {% else %}
-                            <a href="{% url 'create_chat' chat.receiver.login %}"  class="chat_user" data-user="{{chat.room_name}}">
-                        <div class="chat_user_img">
-                            <img src="{{chat.sender.avatar_photo.file_path.url}}" alt="">
-                        </div>
-                        <div class="chat_user_text">
-                            <div class="chat_user_nickname">{{chat.sender.nickname}}</div>
-                            {% endif %}
-                            <div class="chat_user_data">
-                                <span>Последнее сообщение</span>
-                                <span>{{chat.messages.last.get_message_time}}</span>
-                            </div>
-                        </div>
+                    </div>
                 </a>
                 {% endfor %}
             </div>
-
-            <div class="chat_message">
+    
+            <div class="chat_message" id="chat">
                 {% block chat_message %}
                 <div class="header_chat_message">
+                    <button class="back-button sidebar_header_btn" onclick="closeChat()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
+                    </svg></button>
                     <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_img" id="currentUserImage">
                         <img src="{{ receiver.avatar_photo.file_path.url }}" alt="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg">
                     </a>
@@ -62,22 +70,70 @@
                     {% for message in messages %}
                     <div class="messageContainer">
                         {% if message.sender.login == request.user.login %}
-                            <div class="chat_message_item right">{{ message.sender.login }}: {{ message.message }}</div>
+                            <div class="chat_message_item right">{{ message.message }}</div>
                         {% else %}
-                            <div class="chat_message_item left">{{ message.sender.login }}: {{ message.message }}</div>
+                        <div class="chat_img_message">
+                            <a href="#" class="chat_img" id="currentUserImage">
+                                <img src="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg" alt="">
+                            </a>
+                            <div class="chat_message_item left">{{ message.message }}</div>
+                        </div>
                         {% endif %}
                     </div>
-
                     {% endfor %}
                 </div>
                 <div class="input_chat_message">
                     <textarea name="message" placeholder="Напишите что-нибудь..." id="messageInput" class="messageInput"></textarea>
+                    <div class="header_dropdown" data-dropdown="" style="position: relative;">
+                        <div class="css-header_btn" data-dropdown-button="">
+                            <div class="header_btn">
+                                <span class="header_btn_icon">
+                                    <img src="https://i.ibb.co/dcGX2xZ/Frame-180.png">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" style="max-width: 400px; left: unset; right: 0; top: unset; bottom: calc(100% + 8px);">
+                            <div class="dropdown-menu_box">
+                                <div class="emojies">
+                                    <div class="emoji">😄</div>
+                                    <div class="emoji">😃</div>
+                                    <div class="emoji">😄</div>
+                                    <div class="emoji">😁</div>
+                                    <div class="emoji">😆</div>
+                                    <div class="emoji">😅</div>
+                                    <div class="emoji">🤣</div>
+                                    <div class="emoji">😂</div>
+                                    <div class="emoji">🙂</div>
+                                    <div class="emoji">🙃</div>
+                                    <div class="emoji">🫠</div>
+                                    <div class="emoji">😉</div>
+                                    <div class="emoji">😊</div>
+                                    <div class="emoji">😇</div>
+                                    <div class="emoji">🥰</div>
+                                    <div class="emoji">😍</div>
+                                    <div class="emoji">🤩</div>
+                                    <div class="emoji">😘</div>
+                                    <div class="emoji">😗</div>
+                                    <div class="emoji">😹</div>
+                                    <div class="emoji">😸</div>
+                                    <div class="emoji">😻</div>
+                                    <div class="emoji">😼</div>
+                                    <div class="emoji">😽</div>
+                                    <div class="emoji">🙀</div>
+                                    <div class="emoji">😿</div>
+                                    <div class="emoji">😾</div>
+                                    <div class="emoji">🙈</div>
+                                    <div class="emoji">🙉</div>
+                                    <div class="emoji">🙊</div>
+                                    <div class="emoji">💋</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button type="submit" class="sendButton" data-user="{{ request.user.login }}">Отправить</button>
                 </div>
                 {% endblock %}
             </div>
-
-
         </div>
     </div>
 </body>
@@ -136,6 +192,50 @@
             sendButton.click();
         }
     });
+});
+ // Dropdown
+ document.addEventListener("mousedown", e => {
+    const isDropdownButton = e.target.matches("[data-dropdown-button]")
+    if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return
+
+    let currentDropdown
+    if (isDropdownButton) {
+      currentDropdown = e.target.closest("[data-dropdown]")
+      currentDropdown.classList.toggle("drop-active")
+    }
+
+    document.querySelectorAll("[data-dropdown].drop-active").forEach( dropdown => {
+      if (dropdown === currentDropdown) return
+      dropdown.classList.remove("drop-active")
+    })
+})
+
+const like = document.querySelectorAll('.liked_btn')
+  for (let i=0; like.length>i; i++) {
+    like[i].onclick=function() {
+      like[i].classList.toggle('active-like')
+    }
+  }
+
+  function openChat(roomName) {
+    if (window.innerWidth <= 600) {
+        document.getElementById('sidebar').style.transform = 'translateX(-100%)';
+        document.getElementById('chat').style.transform = 'translateX(0)';
+    }
+}
+
+function closeChat() {
+    if (window.innerWidth <= 600) {
+        document.getElementById('sidebar').style.transform = 'translateX(0)';
+        document.getElementById('chat').style.transform = 'translateX(100%)';
+    }
+}
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 600) {
+        document.getElementById('sidebar').style.transform = 'translateX(0)';
+        document.getElementById('chat').style.transform = 'translateX(0)';
+    }
 });
 
 </script>
