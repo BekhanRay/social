@@ -96,7 +96,7 @@
                         <div class="dropdown-menu_box">
                             <div class="dropdown-links">
                                 {% if user.is_authenticated %}
-                                <a href="{% url 'user_detail' user_id=user.id %}" class="dropdown-link">
+                                <a href="{% url 'user_detail' user_id=request.user.id %}" class="dropdown-link">
                                     <span class="dropdown-icon">
                                         <img src="https://i.ibb.co/dcGX2xZ/Frame-180.png">
                                     </span>

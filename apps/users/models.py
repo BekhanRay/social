@@ -27,7 +27,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     region = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     user_agreement = models.BooleanField(default=False)
-    confirmation_code = models.CharField(max_length=50)
+    confirmation_code = models.CharField(max_length=50, null=True, blank=True)
     avatar_photo = models.ForeignKey('Photo', null=True, blank=True, on_delete=models.SET_NULL,
                                      related_name='avatar_user')
     is_online = models.BooleanField(default=False)
@@ -105,49 +105,6 @@ class Forum(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-
-
-class Action(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
-    image_path = models.CharField(max_length=255, blank=True, null=True)
-    is_active = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class UserAction(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    action = models.ForeignKey(Action, on_delete=models.CASCADE)
-    is_participating = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class Search(models.Model):
-    GENDER_CHOICES = [
-        ('male', 'Male'),
-        ('female', 'Female'),
-    ]
-
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='searches')
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
-    min_age = models.IntegerField()
-    max_age = models.IntegerField()
-    country = models.CharField(max_length=50, blank=True, null=True)
-    region = models.CharField(max_length=50, blank=True, null=True)
-    city = models.CharField(max_length=50, blank=True, null=True)
-    with_photo = models.BooleanField(default=False)
-    with_video = models.BooleanField(default=False)
-    is_online = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-class Statistics(models.Model):
-    total_users = models.IntegerField(default=0)
-    users_online = models.IntegerField(default=0)
-    new_users = models.TextField()
-    random_photos = models.TextField()
 
 
 class Favorite(models.Model):

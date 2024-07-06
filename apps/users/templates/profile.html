@@ -71,11 +71,7 @@
                     {{ form.habits_preferences.errors }}
                     <h6>Привычки и предпочтения</h6>
                     <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="Привычки и предпочтения">{{ form.habits_preferences }}</textarea>
-                  {% if user.is_authenticated %}
-                <button type="submit" class="button_design"><a href="{% url 'user_detail' user.id %}" style="color:white">Изменить</a></button>
-                {% else %}
                     <button type="submit" class="button_design"><a href="{% url 'user_detail' user.id %}" style="color:white">Сохранить</a></button>
-                {% endif %}
             </div>
         </form>
     </div>

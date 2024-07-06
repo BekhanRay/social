@@ -31,6 +31,7 @@
                 <label for="nickname">Как вас зовут?</label>
                 {{ form.nickname.errors }}
                 <input type="text" id="nickname" name="nickname" class="input-field input_design" placeholder="Имя" value="{{ form.nickname.value }}" required onchange="validateInput(1)">
+                <a href="{% url 'login' %}" class="link_log_in">У Вас есть аккаунт? Войти</a>
                 <div class="button-container">
                     <button class="button_design" id="next1" onclick="nextQuestion(2)" disabled>Далее</button>
                 </div>
@@ -157,7 +158,7 @@
     </div>
 </div>
         </div>
-        <a href="{% url 'login' %}" class="link_log_in">У Вас есть аккаунт? Войти</a>
+
         </form>
     </div>
 </div>

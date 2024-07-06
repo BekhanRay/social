@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %} Пользователь {{user.nickname}} {% endblock %}
+{% block title %}
+{% if user.id == request.user.id %} Мой профиль
+{% else %}
+Пользователь {{user.nickname}}
+{%endif%}
+{% endblock %}
 {% block body %}
 <style>
 .avatar{
@@ -69,10 +74,7 @@
         {% else %}
         <a href="{% url 'create_chat' user.login %}">Написать сообщение</a>
         {% endif %}
-        <div class="field-group">
-            <label>Почта:</label>
-            <p>{{ user.email }}</p>
-        </div>
+
         <div class="field-group">
             <label>Имя:</label>
             <p>{{ user.nickname }}</p>
