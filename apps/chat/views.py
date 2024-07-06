@@ -60,6 +60,7 @@
 # #         users = CustomUser.objects.filter()
 # #         return render(request, 'chat/chat_list.html', {'chats': chats, 'users': request.user })
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
 from .models import Chat, Message
@@ -67,21 +68,26 @@ from ..users.models import CustomUser
 
 User = get_user_model()
 
+
 @login_required
 def get_chat(request, room_name):
     chat = get_object_or_404(Chat, room_name=room_name)
     messages = Message.objects.filter(chat=chat).order_by('timestamp')
-    receiver = CustomUser.objects.get(id=chat.receiver.id)
-    current_user = CustomUser.objects.get(id=chat.sender.id)
-    chats = Chat.objects.filter(sender=current_user).union(Chat.objects.filter(sender=current_user))
+
+    current_user = request.user
+    receiver = chat.receiver
+    # Get all chats where the current user is the sender
+    chats = Chat.objects.filter(Q(sender=current_user) | Q(receiver=current_user))
+    print(chats)
     return render(request, 'chat/chat.html', {
         'chat': chat,
         'chats': chats,
         'messages': messages,
         'receiver': receiver,
         'current_user_avatar': current_user.avatar_photo.file_path.url if current_user.avatar_photo else 'user_photos/default_user_photo.jpg',
-        'other_user_avatar': current_user.avatar_photo.file_path.url if receiver.avatar_photo else 'user_photos/default_user_photo.jpg',
+        'other_user_avatar': receiver.avatar_photo.file_path.url if receiver.avatar_photo else 'user_photos/default_user_photo.jpg',
     })
+
 
 @login_required
 def create_chat(request, username):

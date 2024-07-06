@@ -17,6 +17,7 @@ class UserChangeForm(forms.Form):
     nickname = forms.CharField(max_length=50, required=False)
     email = forms.EmailField(max_length=100, required=False)
     gender = forms.CharField(max_length=7, required=False)
+    preffered_gender = forms.CharField(max_length=7, required=False)
     age = forms.IntegerField(required=False)
     region = forms.CharField(max_length=50, required=False)
     city = forms.CharField(max_length=50, required=False)

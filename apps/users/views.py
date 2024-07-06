@@ -104,9 +104,10 @@ def profile(request):
 def user_list(request):
     form = UserFilterForm(request.GET or None)
     users = CustomUser.objects.exclude(pk=request.user.pk)
-    favorites = request.user.favorites.values_list('favorite_user', flat=True)
     if not request.user.is_authenticated:
         return redirect('register')
+    else:
+        favorites = request.user.favorites.values_list('favorite_user', flat=True)
     match request.user.preffered_gender:
         case 'Мужской':
             users = CustomUser.objects.filter(gender='Мужской').exclude(pk=request.user.pk)
@@ -170,6 +171,7 @@ def user_change(request):
             nickname = form.cleaned_data["nickname"]
             email = form.cleaned_data["email"]
             gender = form.cleaned_data["gender"]
+            preffered_gender = form.cleaned_data["preffered_gender"]
             age = form.cleaned_data["age"]
             region = form.cleaned_data["region"]
             city = form.cleaned_data["city"]
@@ -187,6 +189,9 @@ def user_change(request):
 
             if gender:
                 user.gender = gender
+
+            if preffered_gender:
+                user.preffered_gender =preffered_gender
 
             if age:
                 user.age = age

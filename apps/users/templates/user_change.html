@@ -77,9 +77,9 @@
                     <h6>Предпочитаемый пол</h6>
                 <select id="id_preffered_gender" style="width: 100%; cursor: pointer;" name="preffered_gender" class="input">
                     <option selected disabled>Выберите пол</option>
-                    <option value="Все" {% if form.gender.value == "Все" %}selected{% endif %}>Все</option>
-                    <option value="Мужской" {% if form.gender.value == "Мужской" %}selected{% endif %}>Мужской</option>
-                    <option value="Женский" {% if form.gender.value == "Женский" %}selected{% endif %}>Женский</option>
+                    <option value="Все" {% if form.preffered_gender.value == "Все" %}selected{% endif %}>Все</option>
+                    <option value="Мужской" {% if form.preffered_gender.value == "Мужской" %}selected{% endif %}>Мужской</option>
+                    <option value="Женский" {% if form.preffered_gender.value == "Женский" %}selected{% endif %}>Женский</option>
                 </select>
                 <h6>Возраст</h6>
                     <input type="number" id="id_age" name="age" class="input" placeholder="{{ user.get_age }}">
