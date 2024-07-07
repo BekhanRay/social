@@ -2,10 +2,22 @@
 {% block title %} Форум {% endblock %}
 {% block body %}
 <h1>Форум</h1>
-    <ul>
-        {% for forum in forums %}
-            <li><a href="{% url 'thread_list' forum_id=forum.pk %}">{{ forum.title }}</a></li>
-        <p>{{ forum.description }}</p>
-        {% endfor %}
-    </ul>
+     <h2>Forums</h2>
+  <ul>
+    {% for forum in forums %}
+      <li>
+        <h3>{{ forum.title }}</h3>
+        <ul>
+          {% for thread in forum.threads.all %}
+            <li>
+              <h4>{{ thread.title }}</h4>
+              <p>{{ thread.content }}</p>
+            </li>
+          {% empty %}
+            <li>No threads in this forum.</li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
 {% endblock %}

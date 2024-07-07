@@ -4,8 +4,7 @@ from apps.forum import views
 
 urlpatterns = [
     path('forum/', views.forum_list, name='forum_list'),
-    path('forum/<int:forum_id>/', views.thread_list, name='thread_list'),
-    path('forum/<int:forum_id>/thread/<int:thread_id>/', views.post_list, name='post_list'),
+    path('forum/thread/<int:thread_id>/', views.post_list, name='post_list'),
     path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
     path('comment/<int:comment_id>/reply/', views.reply_comment, name='reply_comment'),
     path('comment/<int:comment_id>/edit/', views.edit_comment, name='edit_comment'),
