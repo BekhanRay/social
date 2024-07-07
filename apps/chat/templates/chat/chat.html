@@ -31,7 +31,7 @@
                 </div>
                 {% for chat in chats %}
                 {% if user.id == chat.sender.id %}
-                <a href="#" class="chat_user" data-user="{{chat.room_name}}" onclick="openChat('{{ chat.room_name }}')">
+                <a href="{% url 'create_chat' chat.receiver.login %}" class="chat_user" data-user="{{chat.room_name}}" onclick="openChat('{{ chat.room_name }}')">
                     <div class="chat_user_img">
                         <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
                     </div>
@@ -159,7 +159,7 @@
             // Создаем элемент для самого сообщения
             const messageItSelf = document.createElement('div');
             messageItSelf.classList.add('chat_message_item', data.sender === '{{ message.sender.id }}' ? 'left' : 'right');
-            messageItSelf.textContent = `{{ request.user.login }}: ${data.message}`;
+            messageItSelf.textContent = `${data.message}`;
 
             // Добавляем сообщение в контейнер
             messageElement.appendChild(messageItSelf);

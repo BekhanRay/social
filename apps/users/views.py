@@ -15,6 +15,7 @@ current_path = None
 
 
 def register(request):
+    print(request.POST)
     if request.method == 'POST':
         email = request.POST.get('email')
 
