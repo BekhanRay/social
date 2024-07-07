@@ -46,6 +46,7 @@ ALLOWED_HOSTS = ['*']
 
 
 
+
 # Application definition
 APPS = [
     'apps.users',
@@ -97,11 +98,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+PASSWORD_RESET_TIMEOUT = 3600
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST=config.EMAIL_HOST
+EMAIL_PORT=config.EMAIL_PORT
+EMAIL_HOST_USER=config.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD=config.EMAIL_HOST_PASSWORD
+EMAIL_USE_SSL=config.EMAIL_USE_SSL
+
+DEFAULT_FROM_EMAIL = config.EMAIL_HOST_USER
+SERVER_EMAIL = config.EMAIL_HOST_USER
+EMAIL_ADMIN = config.EMAIL_HOST_USER
 
 ROOT_URLCONF = 'core.urls'
 
@@ -149,9 +162,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
-
-TIME_ZONE = 'Asia/Bishkek'
 
 
 # Internationalization
@@ -184,7 +194,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
 
 # Default primary key field type
@@ -208,3 +217,6 @@ CSRF_TRUSTED_ORIGINS = ['http://16.171.6.225/',
 # Cors
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+

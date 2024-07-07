@@ -1,15 +1,14 @@
-
-from datetime import date
 from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect, JsonResponse
+from django.contrib.auth.views import PasswordChangeView, PasswordResetView
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 
-from .forms import UserFilterForm, UserChangeForm
+from .forms import UserFilterForm, UserChangeForm, UserPasswordChangeForm
 from .models import Profile, CustomUser, Photo, Favorite
 
 current_path = None
@@ -66,6 +65,7 @@ def login_view(request):
 def profile(request):
     try:
         profile = Profile.objects.get(user=request.user)
+        print(request.POST, request.FILES)
         if request.method == 'POST':
             if 'avatar' in request.FILES.keys():
                 avatar = Photo.objects.get(user=request.user, is_avatar=True)
@@ -79,7 +79,7 @@ def profile(request):
             profile.updated_at = timezone.now()
             profile.save()
             # Optionally, you could add a message to indicate success
-            return render(request, 'profile.html', {"form": profile, "message": "Profile updated successfully"})
+            return render(request, 'user_detail.html', {"profile": profile, "message": "Profile updated successfully"})
         else:
             return render(request, 'profile.html', {"form": profile})
     except Profile.DoesNotExist:
@@ -107,7 +107,7 @@ def user_list(request):
     if not request.user.is_authenticated:
         return redirect('register')
     else:
-        favorites = request.user.favorites.values_list('favorite_user', flat=True)
+        favorites = request.user.favorites.values_list('favorite_user_id', flat=True)
     match request.user.preffered_gender:
         case 'Мужской':
             users = CustomUser.objects.filter(gender='Мужской').exclude(pk=request.user.pk)
@@ -252,18 +252,22 @@ def favorite_list(request):
     return render(request, 'favorite_list.html', {'favorites': favorites})
 
 
-@login_required
-def chat_bridge(request, username):
-    # Perform any intermediate logic here, if needed
-    user = get_object_or_404(CustomUser, login=username)
-
-    # Redirect to the chat creation view
-    response = redirect('create_chat', username=username)
-    response.path = reverse('create_chat', args=[username])
-
-    return response
-
-
 def user_agreement(request):
     return render(request, 'user_agreement.html')
 
+
+class UserPasswordChange(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    success_url = reverse_lazy("password_change_done")
+    template_name = "password_change_form.html"
+
+
+class CustomPasswordResetView(PasswordResetView):
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        if not CustomUser.objects.filter(email=email).exists():
+            # Если email не найден в базе данных, верните ошибку
+            form.add_error('email', 'Пользователь с таким email не найден')
+            return self.form_invalid(form)
+        # Если email найден, продолжайте с обычной обработкой
+        return super().form_valid(form)

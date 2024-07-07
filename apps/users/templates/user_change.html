@@ -83,6 +83,7 @@
                 </select>
                 <h6>Возраст</h6>
                     <input type="number" id="id_age" name="age" class="input" placeholder="{{ user.get_age }}">
+
                     <h6>Личная информация</h6>
                     <textarea id="id_general_info" name="general_info" class="input" placeholder="{{ user.profile.general_info }}"></textarea>
                     <h6>Общая информация</h6>
@@ -91,6 +92,7 @@
                     <textarea id="id_education_profession" name="education_profession" class="input" placeholder="{{ user.profile.education_profession }}"></textarea>
                     <h6>Привычки и предпочтения</h6>
                     <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="{{ user.profile.habits_preferences }}"></textarea>
+                    <a href="{% url 'password_change' %}">Изменить пароль</a>
                     <button type="submit" class="button_design">Изменить</button>
 
             </div>

@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.utils import timezone
 
 from .managers import UserManager
 
@@ -32,6 +31,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                                      related_name='avatar_user')
     is_online = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

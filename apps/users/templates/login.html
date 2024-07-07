@@ -37,6 +37,7 @@
                 <input type="text" id="id_username" name="username" class="input_design" placeholder="Логин" required>
                 {{ form.password.errors }}
                 <input type="password" id="id_password" name="password" class="input_design" placeholder="Пароль" required>
+                <a href="{% url 'password_reset' %}" class="link_log_in">Забыли пароль?</a>
                 <button type="submit" class="button_design">Войти</button>
             </div>
         </form>

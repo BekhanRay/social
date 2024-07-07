@@ -1,14 +1,24 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% load static %}
 <head>
     <meta charset="UTF-8">
+
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пользовательское соглашение</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+
+    <title>{% block title %} Пользовательское соглашение {% endblock %}</title>
 </head>
-<body>
+<div class="page_layout_register">
+    <div class="forms_register">
     <div class="container">
         <h1>Пользовательское соглашение</h1>
-        <p>Дата вступления в силу: [Дата]</p>
+        <p>Дата вступления в силу: 22.06.2024г</p>
 
         <h2>1. Введение</h2>
         <p>Добро пожаловать на наш сайт знакомств. Настоящее Пользовательское соглашение регулирует использование вами нашего веб-сайта и услуг. Пожалуйста, внимательно прочитайте это соглашение перед использованием нашего сайта.</p>
@@ -34,5 +44,5 @@
         <h2>8. Связь с нами</h2>
         <p>Если у вас есть вопросы или предложения по поводу настоящего соглашения, пожалуйста, свяжитесь с нами по адресу: [Ваш адрес электронной почты или контактная информация].</p>
     </div>
-</body>
+</div></div>
 </html>

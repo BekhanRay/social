@@ -1,6 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
 
-from apps.users.models import Photo
 
 
 class UserFilterForm(forms.Form):
@@ -27,3 +27,8 @@ class UserChangeForm(forms.Form):
     education_profession = forms.CharField(widget=forms.Textarea, required=False)
     habits_preferences = forms.CharField(widget=forms.Textarea, required=False)
 
+
+class UserPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(label="Старый пароль", widget=forms.PasswordInput(attrs={'class': 'input_design'}))
+    new_password1 = forms.CharField(label="Новый пароль", widget=forms.PasswordInput(attrs={'class': 'input_design'}))
+    new_password2 = forms.CharField(label="Подтверждение пароля", widget=forms.PasswordInput(attrs={'class': 'input_design'}))
