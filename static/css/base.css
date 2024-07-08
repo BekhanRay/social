@@ -1,4 +1,4 @@
-    *{
+*{
         box-sizing: border-box;
         padding: 0;
         margin: 0;
@@ -39,6 +39,7 @@
         box-sizing: border-box;
         font-size: 15px;
         font-weight: 500;
+
     }
     .input_design:focus{
         border: solid 1px #000;

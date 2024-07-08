@@ -38,7 +38,7 @@
                     <div class="chat_user_text">
                         <div class="chat_user_nickname">{{chat.receiver.nickname}}</div>
                         {% else %}
-                        <a href="#" class="chat_user" data-user="{{chat.room_name}}" onclick="openChat('{{ chat.room_name }}')">
+                        <a href="{% url 'create_chat' chat.sender.login %}" class="chat_user" data-user="{{chat.room_name}}" onclick="openChat('{{ chat.room_name }}')">
                     <div class="chat_user_img">
                         <img src="{{chat.sender.avatar_photo.file_path.url}}" alt="">
                     </div>
@@ -61,11 +61,19 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
                     </svg></button>
+                    {% if user.id == chat.sender.id %}
                     <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_img" id="currentUserImage">
-                        <img src="{{ receiver.avatar_photo.file_path.url }}" alt="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg">
+                        <img src="{{ receiver.avatar_photo.file_path.url }}">
                     </a>
                     <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_nickname" id="currentUserNickname">{{ receiver.nickname}}</a>
-                </div>
+                {% else %}
+                    <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_img" id="currentUserImage">
+                        <img src="{{ chat.sender.avatar_photo.file_path.url }}">
+                    </a>
+                    <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_nickname" id="currentUserNickname">{{ sender.nickname}}</a>
+
+
+                {% endif %}</div>
                 <div class="container_chat_message" id="messageContainer">
                     {% for message in messages %}
                     <div class="messageContainer">
@@ -74,7 +82,7 @@
                         {% else %}
                         <div class="chat_img_message">
                             <a href="#" class="chat_img" id="currentUserImage">
-                                <img src="https://yobte.ru/uploads/posts/2019-11/ulybajuschiesja-devushki-70-foto-23.jpg" alt="">
+                                <img src="{{ message.sender.avatar_photo.file_path.url }}" alt="">
                             </a>
                             <div class="chat_message_item left">{{ message.message }}</div>
                         </div>
@@ -95,37 +103,38 @@
                         <div class="dropdown-menu" style="max-width: 400px; left: unset; right: 0; top: unset; bottom: calc(100% + 8px);">
                             <div class="dropdown-menu_box">
                                 <div class="emojies">
-                                    <div class="emoji">😄</div>
-                                    <div class="emoji">😃</div>
-                                    <div class="emoji">😄</div>
-                                    <div class="emoji">😁</div>
-                                    <div class="emoji">😆</div>
-                                    <div class="emoji">😅</div>
-                                    <div class="emoji">🤣</div>
-                                    <div class="emoji">😂</div>
-                                    <div class="emoji">🙂</div>
-                                    <div class="emoji">🙃</div>
-                                    <div class="emoji">🫠</div>
-                                    <div class="emoji">😉</div>
-                                    <div class="emoji">😊</div>
-                                    <div class="emoji">😇</div>
-                                    <div class="emoji">🥰</div>
-                                    <div class="emoji">😍</div>
-                                    <div class="emoji">🤩</div>
-                                    <div class="emoji">😘</div>
-                                    <div class="emoji">😗</div>
-                                    <div class="emoji">😹</div>
-                                    <div class="emoji">😸</div>
-                                    <div class="emoji">😻</div>
-                                    <div class="emoji">😼</div>
-                                    <div class="emoji">😽</div>
-                                    <div class="emoji">🙀</div>
-                                    <div class="emoji">😿</div>
-                                    <div class="emoji">😾</div>
-                                    <div class="emoji">🙈</div>
-                                    <div class="emoji">🙉</div>
-                                    <div class="emoji">🙊</div>
-                                    <div class="emoji">💋</div>
+                                    <div class="emoji" onclick="addEmoji('😄')">😄</div>
+                                    <div class="emoji" onclick="addEmoji('😃')">😃</div>
+                                    <div class="emoji" onclick="addEmoji('😄')">😄</div>
+                                    <div class="emoji" onclick="addEmoji('😁')">😁</div>
+                                    <div class="emoji" onclick="addEmoji('😆')">😆</div>
+                                    <div class="emoji" onclick="addEmoji('😅')">😅</div>
+                                    <div class="emoji" onclick="addEmoji('🤣')">🤣</div>
+                                    <div class="emoji" onclick="addEmoji('😂')">😂</div>
+                                    <div class="emoji" onclick="addEmoji('🙂')">🙂</div>
+                                    <div class="emoji" onclick="addEmoji('🙃')">🙃</div>
+                                    <div class="emoji" onclick="addEmoji('❤️')">❤️</div>
+                                    <div class="emoji" onclick="addEmoji('😉')">😉</div>
+                                    <div class="emoji" onclick="addEmoji('😊')">😊</div>
+                                    <div class="emoji" onclick="addEmoji('😇')">😇</div>
+                                    <div class="emoji" onclick="addEmoji('🥰')">🥰</div>
+                                    <div class="emoji" onclick="addEmoji('😍')">😍</div>
+                                    <div class="emoji" onclick="addEmoji('🤩')">🤩</div>
+                                    <div class="emoji" onclick="addEmoji('😘')">😘</div>
+                                    <div class="emoji" onclick="addEmoji('😗')">😗</div>
+                                    <div class="emoji" onclick="addEmoji('😹')">😹</div>
+                                    <div class="emoji" onclick="addEmoji('😸')">😸</div>
+                                    <div class="emoji" onclick="addEmoji('😻')">😻</div>
+                                    <div class="emoji" onclick="addEmoji('😼')">😼</div>
+                                    <div class="emoji" onclick="addEmoji('😽')">😽</div>
+                                    <div class="emoji" onclick="addEmoji('🙀')">🙀</div>
+                                    <div class="emoji" onclick="addEmoji('😿')">😿</div>
+                                    <div class="emoji" onclick="addEmoji('😾')">😾</div>
+                                    <div class="emoji" onclick="addEmoji('🙈')">🙈</div>
+                                    <div class="emoji" onclick="addEmoji('🙉')">🙉</div>
+                                    <div class="emoji" onclick="addEmoji('🙊')">🙊</div>
+                                    <div class="emoji" onclick="addEmoji('💋')">💋</div>
+
                                 </div>
                             </div>
                         </div>
@@ -223,6 +232,11 @@ const like = document.querySelectorAll('.liked_btn')
         document.getElementById('chat').style.transform = 'translateX(0)';
     }
 }
+
+function addEmoji(emoji) {
+            const textField = document.getElementById('messageInput');
+            textField.value += emoji;
+        }
 
 function closeChat() {
     if (window.innerWidth <= 600) {

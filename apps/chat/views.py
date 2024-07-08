@@ -1,70 +1,10 @@
-# from django.contrib.auth.decorators import login_required
-# from django.shortcuts import render, redirect
-# from django.contrib.auth import get_user_model
-# from .models import Chat, Message
-# from ..users.models import CustomUser
-#
-# User = get_user_model()
-#
-# @login_required
-# def get_chat(request, room_name):
-#     print('get_chat')
-#     if request.method == "GET":
-#         chat = Chat.objects.get(room_name=room_name)
-#         messages = Message.objects.filter(chat=chat).order_by('-timestamp')
-#         receiver = CustomUser.objects.get(id=chat.receiver.id)
-#         print(messages)
-#         return render(request, 'chat/chat.html', {'chat': chat, 'messages': messages, 'receivers': receiver})
-#
-#     elif request.method == "POST":
-#         sender = request.user
-#         if str(room_name).split('_')[0] != sender.id:
-#             receiver = str(room_name).split('_')[0]
-#         else:
-#             receiver = str(room_name).split('_')[1]
-#         receiver = User.objects.get(id=receiver)
-#         print(receiver, sender)
-#         chat = Chat.objects.get(room_name=room_name)
-#         message = Message.objects.create(
-#             chat=chat,
-#             sender=receiver,
-#             message=request.POST['message'],
-#         )
-#         message.save()
-#         messages = Message.objects.filter(chat=chat)
-#         print(messages)
-#         return render(request, 'chat/chat.html', {'chat': chat, 'messages': messages})
-#
-# @login_required
-# def create_chat(request, username):
-#     current_user = request.user
-#     other_user = User.objects.get(login=username)
-#
-#     if current_user.id > other_user.id:
-#         room_name = f'{current_user.id}_{other_user.id}'
-#     else:
-#         room_name = f'{other_user.id}_{current_user.id}'
-#
-#     Chat.objects.create(
-#         room_name=room_name,
-#         sender=current_user,
-#         receiver=other_user,
-#     )
-#
-#     return redirect('get_chat', room_name)
-#
-# # @login_required
-# # def chat_view(request):
-# #     if request.method == "GET":
-# #         chats = Chat.objects.filter(sender=request.user).prefetch_related('Messages', 'CustomUser')
-# #         users = CustomUser.objects.filter()
-# #         return render(request, 'chat/chat_list.html', {'chats': chats, 'users': request.user })
-from django.contrib.auth.decorators import login_required
-from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q, OuterRef, Subquery
+from django.db.models.functions import Coalesce
+from django.shortcuts import render, redirect, get_object_or_404
+
 from .models import Chat, Message
-from ..users.models import CustomUser
 
 User = get_user_model()
 
@@ -76,9 +16,16 @@ def get_chat(request, room_name):
 
     current_user = request.user
     receiver = chat.receiver
-    # Get all chats where the current user is the sender
-    chats = Chat.objects.filter(Q(sender=current_user) | Q(receiver=current_user))
-    print(chats)
+    latest_message_subquery = Message.objects.filter(
+        chat=OuterRef('pk')
+    ).order_by('-timestamp').values('timestamp')[:1]
+
+    # Filter chats for the current user and annotate with the latest message time
+    chats = Chat.objects.filter(
+        Q(sender=current_user) | Q(receiver=current_user)
+    ).annotate(
+        last_message_time=Coalesce(Subquery(latest_message_subquery), None)
+    ).order_by('-last_message_time')
     return render(request, 'chat/chat.html', {
         'chat': chat,
         'chats': chats,

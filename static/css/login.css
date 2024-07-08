@@ -16,3 +16,9 @@
     width: 100%;
     padding: 0 16px;
 }
+.forms_login_box{
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
