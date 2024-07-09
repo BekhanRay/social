@@ -15,7 +15,6 @@ current_path = None
 
 
 def register(request):
-    print(request.POST)
     if request.method == 'POST':
         email = request.POST.get('email')
         if email and not CustomUser.objects.filter(email=email).exists():
@@ -65,7 +64,6 @@ def login_view(request):
 def profile(request):
     try:
         profile = Profile.objects.get(user=request.user)
-        print(request.POST, request.FILES)
         if request.method == 'POST':
             if 'avatar' in request.FILES.keys():
                 avatar = Photo.objects.get(user=request.user, is_avatar=True)
@@ -271,3 +269,7 @@ class CustomPasswordResetView(PasswordResetView):
             return self.form_invalid(form)
         # Если email найден, продолжайте с обычной обработкой
         return super().form_valid(form)
+
+
+def index_page(request):
+    return render(request, 'index.html')

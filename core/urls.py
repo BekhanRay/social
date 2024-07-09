@@ -21,9 +21,11 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 
 from apps import users
+from apps.users.views import index_page
 from core.settings import base
 
 urlpatterns = [
+    path('', index_page, name='index_page'),
     path('admin/', admin.site.urls),
     path('user/', include('apps.users.urls')),
     path('forum/', include('apps.forum.urls')),

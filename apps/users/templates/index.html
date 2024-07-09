@@ -1,0 +1,72 @@
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <title>Amici - сайт знакомств и поиска своей второй половинки</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="app">
+  <div class='true'>
+   <div class='first-child-app'>
+
+    <div class='navWrap'>
+     <div class='logo'>Amici</div>
+     <div class='navigation'>
+      <div class='nav'>
+       <div class='singin'>
+        <img id='singin'
+         src="https://www.funnyart.club/uploads/posts/2022-05/1654004745_12-www-funnyart-club-p-kartinki-belii-kvadrat-krasivo-12.png"
+         style="display:inline-block; max-width:20px; max-height:20px; margin-right:10px" alt=" singin" />
+        <div> <a href="{% url 'login' %}">Вход</a></div>
+       </div>
+       <div style="cursor:pointer"> <a href="{% url 'register' %}">Регистрация</a></div>
+
+       <div class="dropdown">
+        <div class='dropDownMenu'
+         style="display:flex; flex-wrap:nowrap ; align-items : center; justify-content : space-between">
+         <img
+          src="https://www.funnyart.club/uploads/posts/2022-05/1654004745_12-www-funnyart-club-p-kartinki-belii-kvadrat-krasivo-12.png"
+          style=" display : block ; max-width : 20px ; max-height : 12px ; margin-right: 10px " alt=" menu" />
+         <div id='menu'>Меню</div>
+        </div>
+
+        <div class="dropdown-content">
+        </div>
+
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+
+
+  </div>
+  <div class='height'>
+   <div class='conteiner'>
+    <div class='findWrapImage'>
+     <p class='findTextTitle'>
+      <bold>
+       Этот сайт создан для друзей и тех, кто ищет спутника жизни. <br />
+       Возможно он поможет обрести уверенность в себе,
+       или решится сделать тот самый первый шаг навстречу своей судьбе.
+      </bold>
+     </p>
+     <p class='findTextP'>
+      И от нас самих ничего на этой земле не останется… <br />
+      Кроме памяти в каком-то сердце,<br />
+      Сильно любившем нас…<br />
+      Э.М. Ремарк
+     </p>
+     <img class='findImage' src="media/index_page/index_page_image.png" alt="img" />
+    </div>
+
+   </div>
+  </div>
+ </div>
+ </div>
+<!-- partial -->
+
+</body>
