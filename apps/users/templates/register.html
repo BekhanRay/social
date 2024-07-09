@@ -108,11 +108,15 @@
 
             <div id="question8" class="question-container">
                 <label for="login">Придумайте логин</label>
+                <ul>
+                    <li style="font-size: 14px;">Логин должен быть больше 7 и меньше 20 символов.</li>
+                    <li style="font-size: 14px;">Логин должен состоять только из латинских букв и цифр.</li>
+                </ul>
                 {{ form.login.errors }}
                 <input type="text" name="login" id="login" class="input-field input_design" placeholder="Логин" value="{{ form.login.value }}" required oninput="validateInput(8)">
                 <div class="button-container">
                     <button class="button_design" onclick="previousQuestion(7)">Назад</button>
-                    <button class="button_design" type="submit" id="next8" onclick="nextQuestion(9)" disabled>Далее</button>
+                    <button class="button_design" id="next8" onclick="nextQuestion(9)" disabled>Далее</button>
                 </div>
             </div>
 
@@ -194,7 +198,9 @@ function validateInput(questionNumber) {
     } else if (questionNumber === 7) {
         isValid = document.getElementById('interested_gender').value !== 'Выберите пол';
     } else if (questionNumber === 8) {
-        isValid = document.getElementById('login').value.trim() !== '';
+        const login = document.getElementById('login').value.trim();
+        const loginRegex = /^[a-zA-Z0-9_]{8,19}$/;
+        isValid = loginRegex.test(login);
     } else if (questionNumber === 9) {
         const email = document.getElementById('email').value.trim();
         const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;

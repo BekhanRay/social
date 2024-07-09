@@ -18,7 +18,6 @@ def register(request):
     print(request.POST)
     if request.method == 'POST':
         email = request.POST.get('email')
-
         if email and not CustomUser.objects.filter(email=email).exists():
             user = CustomUser.objects.create_user(
                 login=request.POST['login'],
