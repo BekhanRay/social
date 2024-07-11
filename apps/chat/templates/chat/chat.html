@@ -31,14 +31,14 @@
                 </div>
                 {% for chat in chats %}
                 {% if user.id == chat.sender.id %}
-                <a href="{% url 'create_chat' chat.receiver.login %}" class="chat_user" data-user="{{chat.room_name}}" onclick="openChat('{{ chat.room_name }}')">
+                <a href="{% url 'create_chat' chat.receiver.login %}" class="chat_user">
                     <div class="chat_user_img">
                         <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
                     </div>
                     <div class="chat_user_text">
                         <div class="chat_user_nickname">{{chat.receiver.nickname}}</div>
                         {% else %}
-                        <a href="{% url 'create_chat' chat.sender.login %}" class="chat_user" data-user="{{chat.room_name}}" onclick="openChat('{{ chat.room_name }}')">
+                        <a href="{% url 'create_chat' chat.sender.login %}" class="chat_user" data-user="{{chat.room_name}}" onclick="event.preventDefault(); loadChat('{{ chat.room_name }}')">
                     <div class="chat_user_img">
                         <img src="{{chat.sender.avatar_photo.file_path.url}}" alt="">
                     </div>
@@ -53,6 +53,7 @@
                 </a>
                 {% endfor %}
             </div>
+
 
             <div class="chat_message" id="chat">
                 {% block chat_message %}
@@ -70,7 +71,7 @@
                     <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_img" id="currentUserImage">
                         <img src="{{ chat.sender.avatar_photo.file_path.url }}">
                     </a>
-                    <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_nickname" id="currentUserNickname">{{ sender.nickname}}</a>
+                    <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_nickname" id="currentUserNickname">{{ chat.sender.nickname}}</a>
 
 
                 {% endif %}</div>
@@ -226,12 +227,6 @@ const like = document.querySelectorAll('.liked_btn')
     }
   }
 
-  function openChat(roomName) {
-    if (window.innerWidth <= 600) {
-        document.getElementById('sidebar').style.transform = 'translateX(-100%)';
-        document.getElementById('chat').style.transform = 'translateX(0)';
-    }
-}
 
 function addEmoji(emoji) {
             const textField = document.getElementById('messageInput');
