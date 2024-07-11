@@ -21,12 +21,12 @@
         <div class="chat_box">
             <div class="chat_sidebar" id="sidebar">
                 <div class="sidebar_header">
-                    <a href="{% url 'home' %}" class="sidebar_header_btn" data-tooltip="Назад">
+                    <a href="{% url 'home' %}" class="sidebar_header_btn" >
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </a>
-                    <a href="{% url 'home' %}" class="logo"></a>
+                    <a href="{% url 'home' %}" class="logo">Amici</a>
                     <div class="sidebar_header_btn"></div>
                 </div>
                 {% for chat in chats %}

@@ -10,6 +10,7 @@
         min-height: 150vh;
     }
     .forms_profile_box {
+        margin-top: 100px;
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -25,11 +26,11 @@
         font-size: 15px;
     }
     #profileForm button {
-        background: #eb008a;
+        background: #5555aa;
         transition: 200ms;
     }
     #profileForm button:hover {
-        background: #eb008a99;
+        background: #5555aa99;
     }
     .forms_profile h2 {
         margin: unset;
@@ -92,7 +93,9 @@
                     <textarea id="id_education_profession" name="education_profession" class="input" placeholder="{{ user.profile.education_profession }}"></textarea>
                     <h6>Привычки и предпочтения</h6>
                     <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="{{ user.profile.habits_preferences }}"></textarea>
+                    <br>
                     <a href="{% url 'password_change' %}">Изменить пароль</a>
+                    <br>
                     <button type="submit" class="button_design">Изменить</button>
 
             </div>

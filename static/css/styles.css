@@ -3,7 +3,7 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -103,7 +103,7 @@ button:hover {
  align-items: center;
  padding: 0px;
 }
-.logo {
+.navlogo {
  display: block;
  font-family: 'Harrington' ;
  /* margin-top: 100px; */
@@ -233,9 +233,9 @@ button:hover {
   /* -webkit-text-fill-color: transparent; */
  }
 
- .logo {
+ .navlogo {
   display: block;
-  margin-top: 0.5em;
+  margin-top: 1em;
   margin-left: 1em;
   height: 45px;
   font-size: 34px;

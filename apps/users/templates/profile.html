@@ -4,7 +4,7 @@
 
 {% block body %}
 <style>
-.button_design{
+    .button_design {
         padding: 0 16px;
         border-radius: 12px;
         background-color: #ffd2e2;
@@ -13,16 +13,20 @@
         transition: 200ms;
         height: 50px;
     }
+
     .page_layout_profile {
         display: grid;
         place-items: center;
         min-height: 100vh;
     }
+
     .forms_profile_box {
+        margin-top: 100px;
         display: flex;
         flex-direction: column;
         gap: 8px;
     }
+
     .input {
         outline: unset;
         border: solid 1px #eee;
@@ -33,13 +37,16 @@
         padding: 0 16px;
         font-size: 15px;
     }
+
     #profileForm button {
-        background: #eb008a;
+        background: #5555aa;
         transition: 200ms;
     }
+
     #profileForm button:hover {
-        background: #eb008a99;
+        background: #5555aa99;
     }
+
     .forms_profile h2 {
         margin: unset;
         line-height: 60px;
@@ -55,23 +62,28 @@
                 <h2>Профиль</h2>
 
                 <div class="form-group">
-        {% csrf_token %}
-        <label for="avatar">Аватарка:</label>
-        <input type="file" id="avatar" name="avatar" class="form-control"><br>
-    </div>
-                    <h6>Личная информация</h6>
+                    {% csrf_token %}
+                    <label for="avatar">Аватарка:</label>
+                    <input type="file" id="avatar" name="avatar" class="form-control"><br>
+                </div>
+                <h6>Личная информация</h6>
                 {{ form.personal_info.errors }}
-                    <textarea id="id_general_info" name="general_info" class="input" placeholder="Общая информация">{{ form.general_info }}</textarea>
-                   {{ form.general_info.errors }}
-                    <h6>Общая информация</h6>
-                    <textarea id="id_personal_info" name="personal_info" class="input" placeholder="Личная информация">{{ form.personal_info }}</textarea>
-                    {{ form.education_profession.errors }}
-                    <h6>Образование и профессия</h6>
-                    <textarea id="id_education_profession" name="education_profession" class="input" placeholder="Образование и профессия">{{ form.education_profession }}</textarea>
-                    {{ form.habits_preferences.errors }}
-                    <h6>Привычки и предпочтения</h6>
-                    <textarea id="id_habits_preferences" name="habits_preferences" class="input" placeholder="Привычки и предпочтения">{{ form.habits_preferences }}</textarea>
-                    <button type="submit" class="button_design"><a href="{% url 'user_detail' user.id %}" style="color:white">Сохранить</a></button>
+                <textarea id="id_general_info" name="general_info" class="input"
+                    placeholder="Общая информация">{{ form.general_info }}</textarea>
+                {{ form.general_info.errors }}
+                <h6>Общая информация</h6>
+                <textarea id="id_personal_info" name="personal_info" class="input"
+                    placeholder="Личная информация">{{ form.personal_info }}</textarea>
+                {{ form.education_profession.errors }}
+                <h6>Образование и профессия</h6>
+                <textarea id="id_education_profession" name="education_profession" class="input"
+                    placeholder="Образование и профессия">{{ form.education_profession }}</textarea>
+                {{ form.habits_preferences.errors }}
+                <h6>Привычки и предпочтения</h6>
+                <textarea id="id_habits_preferences" name="habits_preferences" class="input"
+                    placeholder="Привычки и предпочтения">{{ form.habits_preferences }}</textarea>
+                <button type="submit" class="button_design"><a href="{% url 'user_detail' user.id %}"
+                        style="color:white">Сохранить</a></button>
             </div>
         </form>
     </div>

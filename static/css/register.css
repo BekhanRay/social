@@ -12,9 +12,11 @@
         max-width: 450px;
         width: 100%;
         padding: 0 16px;
+        min-width: 900px;
     }
     .center .logo{
-        transform: scale(1.8);
+        /* transform: scale(1.8); */
+
     }
 
     .question-container {
@@ -34,11 +36,11 @@
         .title_form{
             font-size: 18px;
             font-weight: bold;
-            color: #e91e63;
+            color: #44cad3;
         }
 
         .link_log_in{
-            color: #ff1084;
+            color: #9e9ebf;
             padding: 8px 0;
             transition: 150ms;
             font-size: 15px;
