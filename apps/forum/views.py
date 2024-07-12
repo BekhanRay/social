@@ -25,10 +25,13 @@ def add_post(request, thread_id):
     thread = get_object_or_404(Thread, id=thread_id)
     if request.method == 'POST':
         form = PostForm(request.POST)
+
         if form.is_valid():
             post = form.save(commit=False)
             post.thread = thread
             post.author = request.user
+            if 'photo' in request.FILES.keys():
+                post.photo = request.FILES['photo']
             post.save()
             return redirect(reverse('post_list', args=[thread_id]))
     else:

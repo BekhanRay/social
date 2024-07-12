@@ -2,9 +2,10 @@
 {% block title %} Add Post {% endblock %}
 {% block body %}
     <h2>Add a new post</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        <input type="file" id="photo" name="photo">
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 {% endblock %}

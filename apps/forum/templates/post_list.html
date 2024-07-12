@@ -28,6 +28,9 @@
 {% for post in posts %}
     <div>
         <h2>{{ post.title }}</h2>
+        {% if post.photo %}
+        <img src="{{ post.photo.url }}" alt="">
+        {% endif %}
         <p>{{ post.content }}</p>
         <p>Posted by {{ post.author.username }} on {{ post.created_at }}</p>
         <a href="{% url 'add_comment' post.id %}">Добавить комментарий</a>

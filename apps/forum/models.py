@@ -24,6 +24,7 @@ class Thread(models.Model):
 class Post(models.Model):
     thread = models.ForeignKey(Thread, related_name='posts', on_delete=models.CASCADE)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='post_photos/', blank=True, null=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
