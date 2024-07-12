@@ -10,8 +10,9 @@
         <ul>
           {% for thread in forum.threads.all %}
             <li>
+              <a href="{% url 'post_list' thread.id %}">
               <h4>{{ thread.title }}</h4>
-              <p>{{ thread.content }}</p>
+                </a>
             </li>
           {% empty %}
             <li>No threads in this forum.</li>
