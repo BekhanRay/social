@@ -33,9 +33,7 @@
         <a href="{% url 'add_comment' post.id %}">Добавить комментарий</a>
         <div>
             {% for comment in post.comments.all %}
-                {% if not comment.parent %}
                 {% include "comment.html" with comment=comment %}
-            {% endif %}
             {% endfor %}
         </div>
     </div>

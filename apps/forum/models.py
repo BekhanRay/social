@@ -28,7 +28,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Post by {self.author.username} in {self.thread.title}"
+        return f"Опубликовано {self.author} в {self.thread}"
 
 
 class Comment(models.Model):
@@ -36,23 +36,11 @@ class Comment(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
     likes = models.PositiveIntegerField(default=0)
     dislikes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f'Commented by {self.author} to {self.post} post'
-
-    @property
-    def get_replies(self):
-        return self.replies.all()
-
-    @property
-    def reply_count(self):
-        count = self.replies.count()
-        if not count:
-            return ''
-        return count
 
     @property
     def get_dislikes(self):
