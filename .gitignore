@@ -21,7 +21,6 @@ core/settings/__pycache__/
 
 *.map
 
-*.png
 *.eot
 *.svg
 *.ttf
