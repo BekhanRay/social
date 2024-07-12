@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<head>
+<!-- <head>
   <meta charset="UTF-8">
 
 
@@ -14,23 +14,30 @@
   <link rel="stylesheet" href="{% static 'css/login.css' %}">
   <link rel="stylesheet" href="{% static 'css/register.css' %}">
   <link rel="stylesheet" href="{% static 'css/chat.css' %}">
-  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   <link rel="stylesheet" href="{% static 'css/forum.css' %}">
 
 
   <title>{% block title %} Форум {% endblock %}</title>
+</head> -->
+
+<head>
+  <meta charset="UTF-8">
+  <title>Форум</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
 </head>
 {% block body %}
-<div class="forumWrap">
+<div style="display:block; margin-top: 100px;">
 
-  <h1>Форум</h1>
-  <h2>Forums</h2>
-  <ul>
-    {% for forum in forums %}
-    <li>
-      <h3>{{ forum.title }}</h3>
-      <ul>
-        {% for thread in forum.threads.all %}
+  <div class="forumWrap">
+
+    <ul class="ul_flex">
+      {% for forum in forums %}
+      <li>
+        <h3>{{ forum.title }}</h3>
+        <ul style="margin-left:12px">
+          {% for thread in forum.threads.all %}
         <li>
           <a href="{% url 'post_list' thread.id %}">
             <h4>{{ thread.title }}</h4>
@@ -39,10 +46,11 @@
         {% empty %}
         <li>No threads in this forum.</li>
         {% endfor %}
-      </ul>
-    </li>
-    {% endfor %}
-  </ul>
+        </ul>
+        </li>
+        {% endfor %}
+        </ul>
+  </div>
 </div>
 
 {% endblock %}

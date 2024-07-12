@@ -1,0 +1,21 @@
+<h1>Форум</h1>
+<h2>Forums</h2>
+<ul>
+ {% for forum in forums %}
+ <li>
+  <h3>{{ forum.title }}</h3>
+  <ul>
+   {% for thread in forum.threads.all %}
+   <li>
+    <a href="{% url 'post_list' thread.id %}">
+     <h4>{{ thread.title }}</h4>
+    </a>
+   </li>
+   {% empty %}
+   <li>No threads in this forum.</li>
+   {% endfor %}
+  </ul>
+ </li>
+ {% endfor %}
+</ul>
+{% endblock %}

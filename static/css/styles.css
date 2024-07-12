@@ -408,3 +408,18 @@ button:hover {
  }
 }
 
+/* post_list */
+.postWrap {
+ margin-top: 100px;
+}
+.forumWrap {
+ margin-top: 100px;
+ max-width: 1080px;
+ padding: 16px;
+ margin: 0 auto;
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ gap: 24px 16px;
+ background-color: green;
+}
