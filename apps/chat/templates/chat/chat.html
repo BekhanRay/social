@@ -82,7 +82,7 @@
                             <div class="chat_message_item right">{{ message.message }}</div>
                         {% else %}
                         <div class="chat_img_message">
-                            <a href="#" class="chat_img" id="currentUserImage">
+                            <a href="" class="chat_img" id="currentUserImage">
                                 <img src="{{ message.sender.avatar_photo.file_path.url }}" alt="">
                             </a>
                             <div class="chat_message_item left">{{ message.message }}</div>
@@ -185,7 +185,8 @@
         if (messageText !== '') {
             chatSocket.send(JSON.stringify({
                 'message': messageText,
-                'sender': '{{ request.user.id }}'
+                'sender': '{{ request.user.id }}',
+
             }));
             messageInput.value = '';
 

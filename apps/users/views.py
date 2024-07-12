@@ -100,6 +100,8 @@ def profile(request):
 
 
 def user_list(request):
+    if not request.user.is_authenticated:
+        return render(request, 'index.html')
     form = UserFilterForm(request.GET or None)
     users = CustomUser.objects.exclude(pk=request.user.pk)
     if not request.user.is_authenticated:

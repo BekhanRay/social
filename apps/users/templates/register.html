@@ -30,7 +30,7 @@
             <div id="question1" class="question-container active">
                 <label for="nickname">Как вас зовут?</label>
                 {{ form.nickname.errors }}
-                <input type="text" id="nickname" name="nickname" class="input-field input_design" placeholder="Имя" value="{{ form.nickname.value }}" required onchange="validateInput(1)">
+                <input type="text" id="nickname" name="nickname" class="input_design" placeholder="Имя" value="{{ form.nickname.value }}" required onchange="validateInput(1)">
                 <a href="{% url 'login' %}" class="link_log_in">У Вас есть аккаунт? Войти</a>
                 <div class="button-container">
                     <button class="button_design" id="next1" onclick="nextQuestion(2)" disabled>Далее</button>
@@ -40,7 +40,7 @@
             <div id="question2" class="question-container">
                 {{ form.gender.errors }}
                 <label for="gender">Какой у Вас пол?</label>
-                <select name="gender" id="gender" class="input-field input_design" oninput="validateInput(2)">
+                <select name="gender" id="gender" class="input_design" oninput="validateInput(2)">
                     <option selected disabled>Выберите пол</option>
                     <option value="Женский">Женский</option>
                     <option value="Мужской">Мужской</option>
@@ -54,7 +54,7 @@
             <div id="question3" class="question-container">
                 <label for="age">А возраст какой?</label>
                 {{ form.age.errors }}
-                <input type="number" id="age" name="age" class="input-field input_design" value="{{ form.age.value }}" required oninput="validateInput(3)">
+                <input type="number" id="age" name="age" class="input_design" value="{{ form.age.value }}" required oninput="validateInput(3)">
                 <div class="button-container">
                     <button class="button_design" onclick="previousQuestion(2)">Назад</button>
                     <button class="button_design" id="next3" onclick="nextQuestion(4)" disabled>Далее</button>
