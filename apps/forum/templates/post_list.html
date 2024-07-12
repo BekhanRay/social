@@ -1,5 +1,25 @@
 {% extends 'base.html' %}
-{% block title %} {{ thread.title }} {% endblock %}
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/register.css' %}">
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+  <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+
+
+  <title>{% block title %} Форум {% endblock %}</title>
+</head>
 {% block body %}
 <script>
     function toggleReplies(commentId) {
@@ -26,7 +46,8 @@
 <a href="{% url 'add_post' thread.id %}">Add Post</a>
 
 {% for post in posts %}
-    <div>
+    <div class="postWrap">
+        <button>Add post</button>
         <h2>{{ post.title }}</h2>
         {% if post.photo %}
         <img src="{{ post.photo.url }}" alt="">

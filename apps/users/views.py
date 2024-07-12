@@ -273,5 +273,3 @@ class CustomPasswordResetView(PasswordResetView):
         return super().form_valid(form)
 
 
-def index_page(request):
-    return render(request, 'index.html')

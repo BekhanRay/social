@@ -11,5 +11,6 @@ admin.site.register(Video)
 admin.site.register(Forum)
 admin.site.unregister(Group)
 admin.site.site_header = 'Админка'
-
+ 
+ 
 
