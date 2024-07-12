@@ -1,5 +1,20 @@
 {% extends 'base.html' %}
-{% block title %} Форум {% endblock %}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+
+    <title>{% block title %} форум {% endblock %}</title>
+</head>
 {% block body %}
 <h1>Форум</h1>
      <h2>Forums</h2>

@@ -21,9 +21,9 @@ class UserChangeForm(forms.Form):
     age = forms.IntegerField(required=False)
     region = forms.CharField(max_length=50, required=False)
     city = forms.CharField(max_length=50, required=False)
-    country = forms.CharField(max_length=255, required=False)
+    country = forms.CharField(max_length=50, required=False)
     general_info = forms.CharField(widget=forms.Textarea, required=False)
-    personal_info = forms.CharField(widget=forms.Textarea, required=False)
+    personal_info = forms.CharField(widget=forms.Textarea, required=True)
     education_profession = forms.CharField(widget=forms.Textarea, required=False)
     habits_preferences = forms.CharField(widget=forms.Textarea, required=False)
 
