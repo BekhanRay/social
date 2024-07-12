@@ -48,10 +48,12 @@
         <img src="{{ comment.author.avatar_photo.file_path.url }}" alt="">
         </a>
         <p>{{comment.author.nickname}}</p>
+        <p>{{comment.author.nickname}}</p>
 
     </div>
 
     <p>{{ comment.content }}</p>
+    <p>Дата: {{ comment.created_at }}</p>
     <p>Дата:  {{ comment.created_at }}</p>
 
     <a href="{% url 'like_comment' comment.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hand-thumbs-up" viewBox="0 0 16 16">

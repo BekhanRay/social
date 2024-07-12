@@ -152,9 +152,11 @@ def user_detail(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
     user_photos = Photo.objects.filter(user=user) or 'Нет фоток'
     profile = Profile.objects.get(user=user)
+    favorites = Favorite.objects.filter(user=request.user).select_related('favorite_user')
     return render(request, 'user_detail.html', {'user': user,
                                                 'photos': user_photos,
-                                                'profile': profile})
+                                                'profile': profile,
+                                                'favorites': favorites})
 
 
 @login_required
@@ -244,12 +246,6 @@ def remove_favorite(request, user_id):
     favorite = get_object_or_404(Favorite, user=request.user, favorite_user=favorite_user)
     favorite.delete()
     return JsonResponse({'status': 'ok'})
-
-
-@login_required
-def favorite_list(request):
-    favorites = Favorite.objects.filter(user=request.user).select_related('favorite_user')
-    return render(request, 'favorite_list.html', {'favorites': favorites})
 
 
 def user_agreement(request):

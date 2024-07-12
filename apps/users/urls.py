@@ -2,12 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
     PasswordResetCompleteView, PasswordChangeDoneView
 from django.urls import path, reverse_lazy
-from .views import register, login_view, profile, user_detail, logout_view, user_change, favorite_list, add_favorite, \
+from .views import register, login_view, profile, user_detail, logout_view, user_change, add_favorite, \
+    remove_favorite, user_agreement, UserPasswordChange, CustomPasswordResetView
+from .views import register, login_view, profile, user_detail, logout_view, user_change, add_favorite, \
     remove_favorite, user_agreement, UserPasswordChange, CustomPasswordResetView
 
 urlpatterns = [
     path('register/', register, name='register'),
-    path('favorites/', favorite_list, name='favorites'),
     path('add_favorite/<int:user_id>/', add_favorite, name='add_favorite'),
     path('remove_favorite/<int:user_id>/', remove_favorite, name='remove_favorite'),
     path('login/', login_view, name='login'),
