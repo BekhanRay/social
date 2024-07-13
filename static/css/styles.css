@@ -342,7 +342,8 @@ button:hover {
         margin-top: 0px;
         gap: 0px 0px;
         /* margin-top: 100px; */
-        margin-top: 14vh;
+        margin-top: 0vh;
+        overflow-y: hidden;
     }
     .findWrapImage {
         position: relative;
@@ -350,16 +351,17 @@ button:hover {
         grid-template-columns: 1.1fr 1fr 0.9fr;
         grid-template-rows: 1fr 1fr 1fr;
         grid-area: 2 / 1 / 4 / 4;
+        overflow-y: hidden;
     }
     .findTextTitle {
         grid-area: 1 / 1 / 2 / 4;
-        margin-top: 10px;
+        /* margin-top: 10px; */
         font-weight: 500;
         max-width: 97%;
         margin-left: 10px;
     }
     .findTextP {
-        margin-top: 10vh;
+        /* margin-top: 10vh; */
         grid-area: 3 / 1 / 4 / 4;
         color: #515151;
     }
