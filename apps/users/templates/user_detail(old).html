@@ -1,0 +1,484 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if user.id == request.user.id %} Мой профиль
+{% else %}
+Пользователь {{user.nickname}}
+{%endif%}
+{% endblock %}
+{% block body %}
+<style>
+    body {
+        box-sizing: border-box;
+    }
+
+    .user_detail {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .user_card {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .user_card h2 {
+        margin: 0 0 20px;
+        font-size: 28px;
+        color: #333333;
+        text-align: center;
+    }
+
+    .user_card p {
+        margin: 10px 0;
+        font-size: 18px;
+        color: #666666;
+    }
+
+    .user_card label {
+        font-weight: bold;
+        color: #333333;
+    }
+
+    .user_card .field-group {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+    .user_card .field-group:last-child {
+        border-bottom: none;
+    }
+
+    .page_layout_profile {
+        max-width: 1080px;
+        padding: 120px 16px 16px 16px;
+        margin: 0 auto;
+    }
+
+    .profile_box_one {
+        display: flex;
+        gap: 44px;
+        padding-top: 16px;
+        align-items: flex-end;
+    }
+
+    .profile_box_one_img {
+        min-width: 150px;
+        width: 150px;
+        max-width: 150px;
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .profile_box_one_data {}
+
+    .avatar {
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 30px;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
+    .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile_box_one_data {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .profile_box_one_data_name {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .profile_box_one_data_text {
+        font-size: 16px;
+    }
+
+    .profile_box_one_data_name__modalbtn {
+        display: flex;
+        gap: 16px;
+    }
+
+    .profile_box_one_data_modalbtn {
+        padding: 8px 16px;
+        font-size: 16px;
+        background-color: #f2f2f2;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+
+    @media screen and (max-width: 799px) {
+
+        .profile_box_one_data_modalbtn {
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: #f2f2f2;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .profile_box_one_data_name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .profile_box_one {
+            display: flex;
+            gap: 44px;
+            padding-top: 16px;
+            align-items: flex-end;
+        }
+
+        #modalImg {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #f2f2f2;
+            border-radius: 8px;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+    }
+
+    .profile_box_one_data_modalbtn:hover {
+        background-color: #eee;
+    }
+
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+        overflow: auto;
+        width: 100%;
+        height: 100%;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    body.modal-open {
+        overflow: hidden;
+    }
+
+    .profile_box_two_tabs {
+        margin-top: 70px;
+    }
+
+
+    .tabs {
+        overflow: hidden;
+        background-color: #f1f1f1;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+    }
+
+    .tablinks {
+        background-color: inherit;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        width: 100%;
+        font-weight: bold;
+        font-size: 16px;
+        border-top: solid 2px transparent;
+    }
+
+    .tablinks:hover {
+        border-top: solid 2px #000;
+    }
+
+    .tablinks.active {
+        background-color: #ccc;
+    }
+
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border-top: none;
+    }
+
+
+    .tabcontent h3 {
+        margin-top: 0;
+    }
+
+.img_container {
+    width: 256px; /* Задайте ширину контейнера */
+    height: 300px; /* Задайте высоту контейнера */
+    overflow: hidden; /* Обрезка содержимого, выходящего за границы контейнера */
+    position: relative;
+}
+.img_container img {
+    width: 100%; /* Изображение будет заполнять ширину контейнера */
+    height: 100%; /* Изображение будет заполнять высоту контейнера */
+    object-fit: cover; /* Изображение будет обрезаться, чтобы заполнить контейнер */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+</style>
+
+<div id="modalOverlay" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div class="user_detail">
+            <div class="user_card">
+                <a href="" class="avatar">
+                    <img src="{{user.avatar_photo.file_path.url}}" alt="">
+                </a>
+                <h2>{{ user.nickname }}, {{user.get_age}}</h2>
+                {% if user.id == request.user.id%}
+                <a style="color: green" , href="{% url 'user_change' %}">Изменить профиль</a>
+                {% else %}
+                <a href="{% url 'create_chat' user.login %}">Написать сообщение</a>
+                {% endif %}
+
+                <div class="field-group">
+                    <label>Имя:</label>
+                    <p>{{ user.nickname }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Возраст:</label>
+                    <p>{{ user.get_age }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Пол:</label>
+                    <p>{{ user.gender }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Страна:</label>
+                    <p>{{ user.country }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Регион:</label>
+                    <p>{{ user.region }}</p>
+                </div>
+                <div class="field-group">
+                    <label>Город:</label>
+                    <p>{{ user.city }}</p>
+                </div>
+                {% if profile.personal_info %}
+                <div class="field-group">
+                    <label>Персональная информация:</label>
+                    <p>{{ profile.personal_info }}</p>
+                </div>
+                {% elif profile.general_info %}
+                <div class="field-group">
+                    <label>Общая информация:</label>
+                    <p>{{ profile.general_info }}</p>
+                </div>
+                {% elif profile.education_profession %}
+                <div class="field-group">
+                    <label>Образование и профессия:</label>
+                    <p>{{ profile.education_profession }}</p>
+                </div>
+                {% elif profile.habits_preferences %}
+                <div class="field-group">
+                    <label>Привычки и предпочтения:</label>
+                    <p>{{ profile.habits_preferences }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page_layout_profile">
+    <div class="profile_box_one">
+        <div class="profile_box_one_img">
+            <div class="avatar">
+                <img src="{{user.avatar_photo.file_path.url}}" alt="">
+            </div>
+        </div>
+        <div class="profile_box_one_data">
+            <div class="profile_box_one_data_name__modalbtn">
+                <div class="profile_box_one_data_name">{{ user.nickname }}, {{user.get_age}}</div>
+                <button class="profile_box_one_data_modalbtn">Подробнee</button>
+            </div>
+            <span style="opacity: 60%;">О себе</span>
+            <div class="profile_box_one_data_text">{{ profile.personal_info }}</div>
+        </div>
+    </div>
+    <div class="profile_box_two">
+        <div class="profile_box_two_tabs">
+            <div class="tabs">
+                <button class="tablinks" onclick="openTab(event, 'Gallery')"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="25" height="25" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+                        <path
+                            d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z" />
+                    </svg></button>
+                {% if user.id == request.user.id %}
+                <button class="tablinks" onclick="openTab(event, 'Likes')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-calendar-heart" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM1 14V4h14v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1m7-6.507c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
+                    </svg>
+                </button>
+                {% endif %}
+            </div>
+            {% if photos %}
+            <div id="Gallery" class="tabcontent">
+                <div style="
+   display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 50px;
+    gap:1;
+    justify-content: flex-start;">
+                    <!-- JS срабатывает только на первый img -->
+                    {% for photo in photos %}
+                    <div class="modalImg">
+                        <div class="img_container">
+                        <img style="width:240px ;height:240px" src="{{photo.file_path.url}}" alt="">
+                            </div>
+                    </div>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+            {% else %}
+            <div id="Gallery" class="tabcontent">
+                <div style="
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: column-reverse;
+                align-items: center;
+                margin-top: 50px;
+                opacity: 0.5;">
+                    <p>Галерея пуста.</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-images"
+                        viewBox="0 0 16 16">
+                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+                        <path
+                            d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z" />
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+        {% endif %}
+
+        <div id="Likes" class="tabcontent">
+            {% include 'favorite_list.html' with favorites=favorites %}
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modalBtn = document.querySelector('.profile_box_one_data_modalbtn');
+        const modalImgBtn = document.querySelector('.modalImg');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeButton = document.querySelector('.close-button');
+        const userDetailBtn = document.querySelector('.user_detail');
+        const userCard = document.querySelector('.user_card');
+
+        console.log(modalImgBtn, "сработало");
+        function closeModal() {
+            modalOverlay.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        modalBtn.addEventListener('click', () => {
+            modalOverlay.style.display = 'flex';
+            document.body.classList.add('modal-open');
+        });
+        // добавляется событие на 
+        modalImgBtn.addEventListener('click', () => {
+            modalOverlay.style.display = 'flex';
+            document.body.classList.add('modal-open');
+        });
+
+        closeButton.addEventListener('click', closeModal);
+        userDetailBtn.addEventListener('click', closeModal);
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        // Stop event propagation on modal content and user card to prevent closing modal
+        document.querySelector('.modal-content').addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Add this if you need to prevent close on user_card specifically
+        userCard.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    });
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+
+        // Скрыть все содержимое вкладок
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Удалить класс "active" со всех кнопок вкладок
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Показать текущую вкладку и добавить класс "active" к кнопке, которая открыла вкладку
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Открыть вкладку по умолчанию
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".tablinks").click();
+    });
+
+
+
+</script>
+{% endblock %}

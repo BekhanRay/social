@@ -55,6 +55,9 @@
             </div>
 
 
+
+
+
             <div class="chat_message" id="chat">
                 {% block chat_message %}
                 <div class="header_chat_message">
@@ -91,17 +94,6 @@
                     </div>
                     {% endfor %}
                 </div>
-{#                    <div class="container_chat_message" id="messageContainer">#}
-{#    {% for message in messages %}#}
-{#    <div class="messageContainer">#}
-{#        {% if message.sender.id == request.user.id %}#}
-{#            <div class="chat_message_item right">{{ message.message }}</div>#}
-{#        {% else %}#}
-{#            <div class="chat_message_item left">{{ message.message }}</div>#}
-{#        {% endif %}#} 
-{#    </div>#}
-{#    {% endfor %}#}
-{#</div>#}
 
                 <div class="input_chat_message">
                     <textarea name="message" placeholder="Напишите что-нибудь..." id="messageInput" class="messageInput"></textarea>
@@ -159,6 +151,9 @@
         </div>
     </div>
 </body>
+
+
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

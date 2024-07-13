@@ -11,8 +11,6 @@ from django.utils import timezone
 from .forms import UserFilterForm, UserChangeForm, UserPasswordChangeForm
 from .models import Profile, CustomUser, Photo, Favorite
 
-current_path = None
-
 
 def register(request):
     if request.method == 'POST':
@@ -64,6 +62,7 @@ def login_view(request):
 def profile(request):
     try:
         profile = Profile.objects.get(user=request.user)
+        user_photos = Photo.objects.filter(user=request.user, is_avatar=False)
         if request.method == 'POST':
             if 'avatar' in request.FILES.keys():
                 avatar = Photo.objects.get(user=request.user, is_avatar=True)
@@ -77,7 +76,9 @@ def profile(request):
             profile.updated_at = timezone.now()
             profile.save()
             # Optionally, you could add a message to indicate success
-            return render(request, 'user_detail.html', {"profile": profile, "message": "Profile updated successfully"})
+            return render(request, 'user_detail.html', {"profile": profile,
+                                                        "photos": user_photos,
+                                                        "message": "Profile updated successfully"})
         else:
             return render(request, 'profile.html', {"form": profile})
     except Profile.DoesNotExist:
