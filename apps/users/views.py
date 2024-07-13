@@ -102,12 +102,11 @@ def profile(request):
 def user_list(request):
     if not request.user.is_authenticated:
         return render(request, 'index.html')
-    form = UserFilterForm(request.GET or None)
-    users = CustomUser.objects.exclude(pk=request.user.pk)
-    if not request.user.is_authenticated:
-        return redirect('register')
     else:
         favorites = request.user.favorites.values_list('favorite_user_id', flat=True)
+    form = UserFilterForm(request.GET or None)
+    users = CustomUser.objects.exclude(pk=request.user.pk)
+
     match request.user.preffered_gender:
         case 'Мужской':
             users = CustomUser.objects.filter(gender='Мужской').exclude(pk=request.user.pk)
@@ -150,7 +149,7 @@ def user_list(request):
 
 def user_detail(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
-    user_photos = Photo.objects.filter(user=user) or 'Нет фоток'
+    user_photos = Photo.objects.filter(user=user, is_avatar=False)
     profile = Profile.objects.get(user=user)
     favorites = Favorite.objects.filter(user=request.user).select_related('favorite_user')
     return render(request, 'user_detail.html', {'user': user,
@@ -230,7 +229,7 @@ def user_change(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('register')
+    return redirect(request, 'index.html')
 
 
 @login_required
@@ -269,3 +268,5 @@ class CustomPasswordResetView(PasswordResetView):
         return super().form_valid(form)
 
 
+def redirect_to_home(request):
+    return redirect('home')

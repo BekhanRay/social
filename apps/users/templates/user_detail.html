@@ -240,6 +240,22 @@
     .tabcontent h3 {
         margin-top: 0;
     }
+
+.img_container {
+    width: 300px; /* Задайте ширину контейнера */
+    height: 300px; /* Задайте высоту контейнера */
+    overflow: hidden; /* Обрезка содержимого, выходящего за границы контейнера */
+    position: relative;
+}
+
+.img_container img {
+    width: 100%; /* Изображение будет заполнять ширину контейнера */
+    height: 100%; /* Изображение будет заполнять высоту контейнера */
+    object-fit: cover; /* Изображение будет обрезаться, чтобы заполнить контейнер */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 </style>
 
 <div id="modalOverlay" class="modal-overlay">
@@ -310,9 +326,9 @@
 <div class="page_layout_profile">
     <div class="profile_box_one">
         <div class="profile_box_one_img">
-            <a href="" class="avatar">
+            <div class="avatar">
                 <img src="{{user.avatar_photo.file_path.url}}" alt="">
-            </a>
+            </div>
         </div>
         <div class="profile_box_one_data">
             <div class="profile_box_one_data_name__modalbtn">
@@ -350,40 +366,22 @@
     flex-direction: row;
     align-items: center;
     margin-top: 50px;
-    opacity: 0.5;
     gap:1;
     justify-content: flex-start;">
                     <!-- JS срабатывает только на первый img -->
+                    {% for photo in photos %}
                     <div class="modalImg">
-                        <img style="width:250px ;height:250px" src="{{user.avatar_photo.file_path.url}}" alt="">
+                        <div class="img_container">
+                        <img style="width:250px ;height:250px" src="{{photo.file_path.url}}" alt="">
+                            </div>
                     </div>
-                    <div id="modalImg" style="width:250px ;height:250px">
-                        <img style="width:250px ;height:250px" src="{{user.avatar_photo.file_path.url}}" alt="">
-                    </div>
-                    <div id="modalImg" style="width:250px ;height:250px">
-                        <img style="width:250px ;height:250px" src="{{user.avatar_photo.file_path.url}}" alt="">
-                    </div>
-                    <div id="modalImg" style="width:250px ;height:250px">
-                        <img style="width:250px ;height:250px" src="{{user.avatar_photo.file_path.url}}" alt="">
-                    </div>
-                    <div id="modalImg" style="width:250px ;height:250px">
-                        <img style="width:250px ;height:250px" src="{{user.avatar_photo.file_path.url}}" alt="">
-                    </div>
-                    <div id="modalImg" style="width:250px ;height:250px">
-                        <img style="width:250px ;height:250px" src="{{user.avatar_photo.file_path.url}}" alt="">
-                    </div>
-                    <div id="modalImg" style="width:250px ;height:250px">
-                        <img style="width:250px ;height:250px" src="{{user.avatar_photo.file_path.url}}" alt="">
-                    </div>
-                    <div id="modalImg" style="width:250px ;height:250px">
-                        <img style="width:250px ;height:250px" src="{{user.avatar_photo.file_path.url}}" alt="">
-                    </div>
+                    {% endfor %}
+
 
                 </div>
             </div>
-
-            <!-- РАБОЧИЙ ВАРИАНТ НЕТ ФОТО  -->
-            <!-- <div id="Gallery" class="tabcontent">
+            {% else %}
+            <div id="Gallery" class="tabcontent">
                 <div style="
                 display: flex;
                 flex-wrap: nowrap;
@@ -399,11 +397,7 @@
                             d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z" />
                     </svg>
                 </div>
-            </div> -->
-            <!--КОНЕЦ  РАБОЧИЙ ВАРИАНТ НЕТ ФОТО   -->
-            {% else %}
-
-            <p>Галерея</p>
+            </div>
 
         </div>
         {% endif %}

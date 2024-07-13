@@ -21,11 +21,12 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 
 from apps import users
-from apps.users.views import user_list
+from apps.users.views import user_list, redirect_to_home
 from core.settings import base
 
 urlpatterns = [
-    path('', user_list),
+    path('', redirect_to_home, name='redirect_to_home'),
+    path('home/', user_list),
     path('admin/', admin.site.urls),
     path('user/', include('apps.users.urls')),
     path('forum/', include('apps.forum.urls')),
