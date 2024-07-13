@@ -60,6 +60,7 @@
         justify-content: space-between;
         text-align: left;
         flex-wrap: wrap;
+        overflow: hidden;
     }
 
     .user_card .field-group:last-child {
@@ -219,7 +220,7 @@ body.modal-open {
 
 .profile_grid{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     width: 100%;
     gap: 1px;
 }
@@ -231,6 +232,7 @@ body.modal-open {
 .profile_grid_post_img img{
     width: 100%;
     height: 100%;
+    object-fit: cover;
 }
 .profile_grid_post_img:hover{
     opacity: .7;
@@ -323,20 +325,7 @@ body.modal-open {
         margin-top: 7px;
     }
 }
-.img_container {
-    width: 256px; /* Задайте ширину контейнера */
-    height: 300px; /* Задайте высоту контейнера */
-    overflow: hidden; /* Обрезка содержимого, выходящего за границы контейнера */
-    position: relative;
-}
-.img_container img {
-    width: 100%; /* Изображение будет заполнять ширину контейнера */
-    height: 100%; /* Изображение будет заполнять высоту контейнера */
-    object-fit: cover; /* Изображение будет обрезаться, чтобы заполнить контейнер */
-    position: absolute;
-    top: 0;
-    left: 0;
-}
+
 </style>
 
 <div id="modalOverlay" class="modal-overlay">
@@ -453,10 +442,7 @@ body.modal-open {
 
                     <div class="profile_grid_post">
                         <div class="profile_grid_post_img">
-                        <div class="img_container">
-
-                            <img style="width:240px ;height:240px" src="{{photo.file_path.url}}" alt="">
-                            </div>
+                            <img src="{{photo.file_path.url}}" alt="">
                         </div>
                     </div>
                     {% endfor %}
