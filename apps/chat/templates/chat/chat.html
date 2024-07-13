@@ -55,6 +55,9 @@
             </div>
 
 
+
+
+
             <div class="chat_message" id="chat">
                 {% block chat_message %}
                 <div class="header_chat_message">
@@ -91,6 +94,10 @@
                     </div>
                     {% endfor %}
                 </div>
+
+
+
+
                 <div class="input_chat_message">
                     <textarea name="message" placeholder="Напишите что-нибудь..." id="messageInput" class="messageInput"></textarea>
                     <div class="header_dropdown" data-dropdown="" style="position: relative;">
@@ -148,8 +155,11 @@
     </div>
 </body>
 
+
+
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const sendButton = document.querySelector('.sendButton');
     const messageInput = document.getElementById('messageInput');
     const messageContainer = document.getElementById('messageContainer');
@@ -157,24 +167,36 @@
     const pathArray = window.location.pathname.split('/');
     const roomName = pathArray[pathArray.length - 2];
     const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
-        // Прокручиваем контейнер до последнего сообщения при загрузке страницы
+
+    // Прокручиваем контейнер до последнего сообщения при загрузке страницы
     messageContainer.scrollTop = messageContainer.scrollHeight;
+
     chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
+        const data = JSON.parse(e.data);
 
-            // Создаем элемент для контейнера сообщения
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('messageContainer');
+        // Создаем элемент для контейнера сообщения
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('messageContainer');
 
-            // Создаем элемент для самого сообщения
-            const messageItSelf = document.createElement('div');
-            messageItSelf.classList.add('chat_message_item', data.sender === '{{ message.sender.id }}' ? 'left' : 'right');
-            messageItSelf.textContent = `${data.message}`;
+        // Создаем элемент для самого сообщения
+        const messageItSelf = document.createElement('div');
+        messageItSelf.classList.add('chat_message_item');
+        if (data.sender === {{ request.user.id }}) {
+            messageItSelf.classList.add('right');
+        } else {
+            messageItSelf.classList.add('left');
+        }
+        messageItSelf.textContent = `${data.message}`;
 
-            // Добавляем сообщение в контейнер
-            messageElement.appendChild(messageItSelf);
-            messageContainer.appendChild(messageElement);
-        };
+        // Добавляем сообщение в контейнер
+        messageElement.appendChild(messageItSelf);
+        messageContainer.appendChild(messageElement);
+
+        // Прокручиваем контейнер до последнего сообщения
+        setTimeout(() => {
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }, 100);  // Небольшая задержка для правильной прокрутки
+    };
 
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
@@ -186,7 +208,6 @@
             chatSocket.send(JSON.stringify({
                 'message': messageText,
                 'sender': '{{ request.user.id }}',
-
             }));
             messageInput.value = '';
 
@@ -203,49 +224,6 @@
             sendButton.click();
         }
     });
-});
- // Dropdown
- document.addEventListener("mousedown", e => {
-    const isDropdownButton = e.target.matches("[data-dropdown-button]")
-    if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return
-
-    let currentDropdown
-    if (isDropdownButton) {
-      currentDropdown = e.target.closest("[data-dropdown]")
-      currentDropdown.classList.toggle("drop-active")
-    }
-
-    document.querySelectorAll("[data-dropdown].drop-active").forEach( dropdown => {
-      if (dropdown === currentDropdown) return
-      dropdown.classList.remove("drop-active")
-    })
-})
-
-const like = document.querySelectorAll('.liked_btn')
-  for (let i=0; like.length>i; i++) {
-    like[i].onclick=function() {
-      like[i].classList.toggle('active-like')
-    }
-  }
-
-
-function addEmoji(emoji) {
-            const textField = document.getElementById('messageInput');
-            textField.value += emoji;
-        }
-
-function closeChat() {
-    if (window.innerWidth <= 600) {
-        document.getElementById('sidebar').style.transform = 'translateX(0)';
-        document.getElementById('chat').style.transform = 'translateX(100%)';
-    }
-}
-
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 600) {
-        document.getElementById('sidebar').style.transform = 'translateX(0)';
-        document.getElementById('chat').style.transform = 'translateX(0)';
-    }
 });
 
 </script>

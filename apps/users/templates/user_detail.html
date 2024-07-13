@@ -430,10 +430,23 @@ body.modal-open {
     <div class="profile_box_two">
         <div class="profile_box_two_tabs">
             <div class="tabs">
-                <button class="tablinks" onclick="openTab(event, 'Gallery')">Галерея</button>
-                <button class="tablinks" onclick="openTab(event, 'Likes')">Нравится</button>
+                <button class="tablinks" onclick="openTab(event, 'Gallery')"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="25" height="25" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+                        <path
+                            d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z" />
+                    </svg></button>
+                {% if user.id == request.user.id %}
+                <button class="tablinks" onclick="openTab(event, 'Likes')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-calendar-heart" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4zM1 14V4h14v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1m7-6.507c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
+                    </svg>
+                </button>
+                {% endif %}
             </div>
-        
+            {% if photos %}
             <div id="Gallery" class="tabcontent">
                 <div class="profile_grid">
                     {% for photo in photos %}
@@ -449,10 +462,29 @@ body.modal-open {
                     {% endfor %}
                 </div>
             </div>
+            {% else %}
+            <div id="Gallery" class="tabcontent">
+                <div style="
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: column-reverse;
+                align-items: center;
+                margin-top: 50px;
+                opacity: 0.5;">
+                    <p>Галерея пуста.</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-images"
+                        viewBox="0 0 16 16">
+                        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+                        <path
+                            d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z" />
+                    </svg>
+                </div>
+            </div>
+            </div>
+        {% endif %}
         
             <div id="Likes" class="tabcontent">
-                <h3>Отметки нравится</h3>
-                <p>Здесь будут отметки нравится.</p>
+                {% include 'favorite_list.html' with favorites=favorites %}
             </div>
         </div>
     </div>
