@@ -242,12 +242,11 @@
     }
 
 .img_container {
-    width: 300px; /* Задайте ширину контейнера */
+    width: 256px; /* Задайте ширину контейнера */
     height: 300px; /* Задайте высоту контейнера */
     overflow: hidden; /* Обрезка содержимого, выходящего за границы контейнера */
     position: relative;
 }
-
 .img_container img {
     width: 100%; /* Изображение будет заполнять ширину контейнера */
     height: 100%; /* Изображение будет заполнять высоту контейнера */
@@ -372,7 +371,7 @@
                     {% for photo in photos %}
                     <div class="modalImg">
                         <div class="img_container">
-                        <img style="width:250px ;height:250px" src="{{photo.file_path.url}}" alt="">
+                        <img style="width:240px ;height:240px" src="{{photo.file_path.url}}" alt="">
                             </div>
                     </div>
                     {% endfor %}
