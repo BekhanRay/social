@@ -1,3 +1,4 @@
+import random
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
@@ -18,6 +19,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     login = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=255)
     email = models.EmailField(max_length=100, unique=True)
+    email_verified = models.BooleanField(default=False)
     nickname = models.CharField(max_length=50)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=7, choices=GENDER_CHOICES, default='Другой')
@@ -26,7 +28,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     region = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     user_agreement = models.BooleanField(default=False)
-    confirmation_code = models.CharField(max_length=50, null=True, blank=True)
+    confirmation_code = models.CharField(max_length=50, default=random.randrange(10000, 999999), blank=True)
     avatar_photo = models.ForeignKey('Photo', null=True, blank=True, on_delete=models.SET_NULL,
                                      related_name='avatar_user')
     is_online = models.BooleanField(default=False)
@@ -44,6 +46,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.login
 
     @property
+    def get_confirmation_code(self):
+        return self.confirmation_code
+
+    @property
     def get_age(self):
         if len(str(self.age)) == 1 \
                 and self.age == 1 \
@@ -58,6 +64,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                 and self.age not in (11, 12, 13, 14,):
             return f'{self.age} года'
         return f'{self.age} лет'
+
+    @staticmethod
+    def create_user(data: dict):
+        return CustomUser.objects.create(**data)
 
 
 class Profile(models.Model):

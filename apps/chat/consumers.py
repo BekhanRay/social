@@ -73,4 +73,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
         messages = Message.objects.filter(chat=chat)
         return messages
 
-

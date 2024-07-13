@@ -122,6 +122,7 @@
 
             <div id="question9" class="question-container">
                 <label for="email">Укажите почту</label>
+                {{ user. }}
                 {{ form.email.errors }}
                 <input type="email" id="email" name="email" class="input-field input_design" placeholder="Email" value="{{ form.email.value }}" required oninput="validateInput(9)">
                 <div class="button-container">

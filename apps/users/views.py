@@ -229,7 +229,7 @@ def user_change(request):
 
 def logout_view(request):
     logout(request)
-    return redirect(request, 'index.html')
+    return render(request, 'index.html')
 
 
 @login_required

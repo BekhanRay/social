@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from config import SECRET_KEY, DEBUG, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT
+from config import SECRET_KEY
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # DB
 

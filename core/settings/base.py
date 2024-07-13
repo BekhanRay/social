@@ -11,41 +11,19 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
-from pathlib import Path
-
-import config
-# from .prod import *
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
 from .local import *
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-
 from pathlib import Path
 import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config.SECRET_KEY
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.DEBUG
 
-
 ALLOWED_HOSTS = ['*']
-
-
-
-
 
 # Application definition
 APPS = [
@@ -110,7 +88,7 @@ EMAIL_HOST=config.EMAIL_HOST
 EMAIL_PORT=config.EMAIL_PORT
 EMAIL_HOST_USER=config.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD=config.EMAIL_HOST_PASSWORD
-EMAIL_USE_SSL=config.EMAIL_USE_SSL
+EMAIL_USE_TLS=config.EMAIL_USE_SSL
 
 DEFAULT_FROM_EMAIL = config.EMAIL_HOST_USER
 SERVER_EMAIL = config.EMAIL_HOST_USER
@@ -138,10 +116,7 @@ TEMPLATES = [
 # WSGI_APPLICATION = 'core.wsgi.application'
 ASGI_APPLICATION = 'core.asgi.application'
 
-WSGI_APPLICATION = 'core.wsgi.application'
 
-
-# Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -162,11 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
@@ -180,21 +150,13 @@ USE_TZ = True
 # STATIC (CSS, JavaScript, Images)
 
 STATIC_URL = '/static/'
-#STATICFILES_DIRS = [
-#    BASE_DIR / "static",
-#]
-STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'back_static')),)
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = ((os.path.join(BASE_DIR, 'static/')),)
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 # MEDIA (Images, PDF)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

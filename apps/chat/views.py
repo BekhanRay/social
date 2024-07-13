@@ -54,7 +54,7 @@ def create_chat(request, username):
     return redirect('get_chat', room_name)
 
 @login_required
-def chat_list_view(request):
+def chat_list(request):
     current_user = request.user
     chats = Chat.objects.filter(sender=current_user).union(Chat.objects.filter(receiver=current_user))
     return render(request, 'chat/chat_list.html', {'chats': chats, 'current_user': current_user})

@@ -11,3 +11,14 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# CSRF
+CSRF_USE_SESSIONS = True
+CSRF_TRUSTED_ORIGINS = ['http://social_back/',
+                        'http://localhost/',
+                        ]
+
+
+# Cors
+
+CORS_ALLOW_ALL_ORIGINS = True
