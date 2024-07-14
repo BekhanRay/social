@@ -20,6 +20,13 @@ def post_list(request, thread_id):
                                               'thread': thread})
 
 
+def post_detail(request, thread_id, post_id):
+    thread = Thread.objects.get(id=thread_id)
+    post = Post.objects.get(id=post_id)
+    return render(request, 'post_detail.html', {'post': post,
+                                                'thread': thread})
+
+
 @login_required
 def add_post(request, thread_id):
     thread = get_object_or_404(Thread, id=thread_id)
