@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пост</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+{% block body %}
+<body>
+    <main style="margin-top: 65px;" id="post-details" class="main">
+        <div class="container">
+            <div class="post-details-container">
+                <section class="details-main-content">
+                    <div class="details-top">
+                        <div class="details-user">
+                            <img class="details-user-image" src="{{post.author.avatar_photo.file_path.url}}" alt="user image">
+                            <span class="details-user-name">{{post.author.nickname}}</span>
+                        </div>
+                        <h2 class="details-title">{{post.title}}</h2>
+                        <span class="details-date">{{post.created_at}}</span>
+                    </div>
+                    <div class="details-description">
+                        {% if post.photo %}
+                        <img src="{{post.photo.url}}" alt="post image" class="details-image">
+                        {% endif %}
+                        <p class="details-text">{{post.content}}
+                        </p>
+                    </div>
+                    <div class="details-actions">
+                        <span class="details-comments-container">
+                            <a href="#comments" class="details-comments-button"></a> {{post.count_comments}}
+                        </span>
+                    </div>
+                </section>
+                <section class="details-comments">
+                    <h2 id="comments" class="details-comments-title">Комментарии <span class="details-comments-count">{{post.count_comments}}</span></h2>
+                    <div class="comments">
+                        <form method="post" class="comments-form">
+                            {% csrf_token %}
+                            <input type="text" class="comments-input" name="comment" placeholder="Написать комментарии">
+                            <button type=submit class="comments-button"></button>
+                        </form>
+                        <div class="comments-row">
+                            {% for comment in post.comments.all %}
+                            <div class="comment">
+                                <div class="comment-user-info">
+                                    <span style="background-image: url('{{ comment.author.avatar_photo.file_path.url }}')" class="comment-user-image"></span>
+                                    <span class="comment-user-name">{{comment.author.nickname}}</span>
+                                    <span class="comment-user-date">{{comment.created_at}}</span>
+                                </div>
+                                <p class="comment-text">
+                                    {{comment.content}}
+                                </p>
+                                <div class="comment-action">
+                                    <a href="{% url 'like_comment' comment.id %}" class="comment-like">&nbsp</a>{{comment.get_likes}}
+                                    <a href="{% url 'dislike_comment' comment.id %}"  class="comment-dislike">&nbsp</a>{{comment.get_dislikes}}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var showCommentsButton = document.querySelector('.comments-hidden-list');
+        showCommentsButton.addEventListener('click', function() {
+            var hiddenComments = document.querySelectorAll('.comment.hidden');
+            var countToShow = 2;
+            for (var i = 0; i < countToShow; i++) {
+                if (hiddenComments[i]) {
+                    hiddenComments[i].classList.remove('hidden');
+                }
+            }
+            hiddenComments = document.querySelectorAll('.comment.hidden');
+            if (hiddenComments.length === 0) {
+                showCommentsButton.style.display = 'none';
+            }
+        });
+    });
+</script>
+</body>
+{% endblock %}
+</html>

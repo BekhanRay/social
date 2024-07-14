@@ -1,11 +1,82 @@
-{% extends 'base.html' %}
-{% block title %} Add Post {% endblock %}
+{% extends "base.html" %}
+
+{% block title %} Добавить пост {% endblock %}
+
 {% block body %}
-    <h2>Add a new post</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="file" id="photo" name="photo">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+<style>
+
+
+    .button_design {
+        padding: 0 16px;
+        border-radius: 12px;
+        background-color: #ffd2e2;
+        font-size: 15px;
+        font-weight: bold;
+        transition: 200ms;
+        height: 50px;
+    }
+
+    .page_layout_profile {
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+    }
+
+    .forms_profile_box {
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .input {
+        outline: unset;
+        border: solid 1px #eee;
+        border-radius: 12px;
+        width: 400px;
+        max-width: 500px;
+        height: 55px;
+        padding: 0 16px;
+        font-size: 15px;
+    }
+
+    #profileForm button {
+        background: #5555aa;
+        transition: 200ms;
+    }
+
+    #profileForm button:hover {
+        background: #5555aa99;
+    }
+
+    .forms_profile h2 {
+        margin: unset;
+        line-height: 60px;
+    }
+</style>
+
+<div class="page_layout_profile">
+    <div class="forms_profile">
+        <form method="post" id="profileForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="forms_profile_box">
+                <h2>Добавить пост</h2>
+
+                <div class="form-group">
+                    {% csrf_token %}
+                    <label for="avatar">Фото поста:</label>
+                    <input type="file" id="photo" name="photo" class="form-control"><br>
+                </div>
+                <h6>Текст поста</h6>
+                {{ form.content.errors }}
+                <textarea id="id_content" name="content" class="input"
+                    placeholder="Напишите что нибудь.."></textarea>
+
+                <button type="submit" class="button_design"><a href="{% url 'add_post' thread.id %}"
+                        style="color:white">Добавить</a></button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

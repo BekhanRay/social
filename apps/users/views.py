@@ -1,16 +1,45 @@
+import io
+
+from PIL import Image
+from django.contrib import messages
 from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib import messages
 from django.contrib.auth.views import PasswordChangeView, PasswordResetView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 
 from .forms import UserFilterForm, UserChangeForm, UserPasswordChangeForm
-from .models import Profile, CustomUser, Photo, Favorite
+from .models import Profile, CustomUser, Photo, Favorite, UserPromotion, Promotion
 
+
+@login_required
+def promotion_list(request):
+    promotions = Promotion.objects.filter(is_active=True)
+
+    return render(request, 'promotion_list.html', {'promotions': promotions})
+
+
+@login_required
+def print_flyer(request, promotion_id):
+    promotion = Promotion.objects.get(id=promotion_id, is_active=True)
+    user_promotion = UserPromotion.objects.get_or_create(user=request.user, promotion=promotion, is_participating=True)
+
+    flyer_path = promotion.flyer.path  # Ensure `flyer` is an ImageField in your model
+    flyer_image = Image.open(flyer_path)
+
+    # Convert the image to PDF
+    pdf_buffer = io.BytesIO()
+    flyer_image.convert('RGB').save(pdf_buffer, format='PDF')
+    pdf_buffer.seek(0)
+
+    # Set response as PDF file
+    response = HttpResponse(pdf_buffer, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="flyer_{promotion.title}.pdf"'
+
+    return response
 
 def register(request):
     if request.method == 'POST':

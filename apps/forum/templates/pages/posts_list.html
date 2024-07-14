@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{thread.title}}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+</head>
+{% block body %}
+    <main style="margin-top: 75px;" class="main-section">
+        <div class="container">
+            <section class="posts-row">
+                <button style="margin-right: 80%;" class="button_design"><a style="color: white" href="{% url 'add_post' thread.id %}"> Добавить пост</a></button>
+                {% for post in posts %}
+                <div class="post">
+                    <a href="{% url 'user_detail' post.author.id %}">
+                    <div class="post-user-info">
+                        <span style="background-image: url('{{ post.author.avatar_photo.file_path.url }}');" class="post-user-image"></span>
+                        <h3 class="post-user-name">{{post.author.nickname}}</h3>
+                        <span class="post-user-date">{{post.created_at}}</span>
+
+                    </div></a>
+                    {% if post.photo %}
+                    <a href="{% url 'post_detail' post.thread.id post.id %}">
+                        <img src="{{post.photo.url}}" alt="Post Image" class="post-image">
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'post_detail' post.thread.id post.id %}" class="post-text">
+                        <h2 class="post-title">{{post.title}}</h2>
+                        <p class="post-description">{{post.content}}</p>
+                    </a>
+                    <div class="post-actions">
+                        <span class="post-comment-container">
+                            <a href="{% url 'post_detail' post.thread.id post.id %}" class="post-comments-button"></a>
+                            <span class="post-comments-counter">16</span>
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </section>
+        </div>
+    </main>
+{% endblock %}
+</html>

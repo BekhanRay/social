@@ -14,7 +14,7 @@ class Forum(models.Model):
 
 class Thread(models.Model):
     forum = models.ForeignKey(Forum, related_name='threads', on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=25)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -26,7 +26,12 @@ class Post(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='post_photos/', blank=True, null=True)
     content = models.TextField()
+    title = models.CharField(max_length=50, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def count_comments(self):
+        return self.comments.count()
 
     def __str__(self):
         return f"Опубликовано {self.author} в {self.thread}"

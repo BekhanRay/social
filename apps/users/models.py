@@ -102,7 +102,6 @@ class Video(models.Model):
 class Forum(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='forums')
     title = models.CharField(max_length=255)
-    content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -119,3 +118,22 @@ class Favorite(models.Model):
         return f"{self.user} -> {self.favorite_user}"
 
 
+class Promotion(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=False)
+    flyer = models.ImageField(upload_to='promotions/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+
+class UserPromotion(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    promotion = models.ForeignKey(Promotion, on_delete=models.CASCADE)
+    is_participating = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.promotion.title}"

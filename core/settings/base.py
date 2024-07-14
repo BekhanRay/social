@@ -118,6 +118,12 @@ EMAIL_ADMIN = config.EMAIL_HOST_USER
 
 ROOT_URLCONF = 'core.urls'
 
+WKHTMLTOPDF_PATH = '/usr/local/bin/wkhtmltopdf'
+PDFKIT_OPTIONS = {
+    'page-size': 'A4',
+    'encoding': 'UTF-8',
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

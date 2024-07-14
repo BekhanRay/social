@@ -1,10 +1,7 @@
-
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-
-from .forms import CommentForm, PostForm
+from .forms import PostForm
 from .models import Forum, Thread, Post, Comment, CommentReaction
 
 
@@ -16,15 +13,22 @@ def forum_list(request):
 def post_list(request, thread_id):
     thread = Thread.objects.get(id=thread_id)
     posts = Post.objects.filter(thread=thread_id)
-    return render(request, 'post_list.html', {'posts': posts,
-                                              'thread': thread})
+    return render(request, 'pages/posts_list.html', {'posts': posts,
+                                                     'thread': thread})
 
 
 def post_detail(request, thread_id, post_id):
     thread = Thread.objects.get(id=thread_id)
     post = Post.objects.get(id=post_id)
-    return render(request, 'post_detail.html', {'post': post,
-                                                'thread': thread})
+    if request.method == 'POST':
+        comment = Comment.objects.create(
+            post=post,
+            author=request.user,
+            content=request.POST.get('comment', None)
+        )
+        comment.save()
+    return render(request, 'pages/post_detail.html', {'post': post,
+                                                      'thread': thread})
 
 
 @login_required
@@ -46,29 +50,6 @@ def add_post(request, thread_id):
     return render(request, 'add_post.html', {'form': form, 'thread': thread})
 
 
-@login_required
-def add_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-            return redirect('post_list', thread_id=post.thread.id)
-    else:
-        form = CommentForm()
-    return render(request, 'add_comment.html', {'form': form})
-
-
-@login_required
-def delete_comment(request, comment_id):
-    comment = get_object_or_404(Comment, id=comment_id)
-    if request.user == comment.author:
-        comment.delete()
-    return redirect('post_list', thread_id=comment.post.thread.id)
-
 
 @login_required
 def like_comment(request, comment_id):
@@ -81,7 +62,7 @@ def like_comment(request, comment_id):
         reaction.reaction_type = 'like'
         reaction.save()
         comment.save()
-    return redirect('post_list', thread_id=comment.post.thread.id)
+    return redirect('post_detail', thread_id=comment.post.thread.id, post_id=comment.post.id)
 
 
 @login_required
@@ -95,5 +76,5 @@ def dislike_comment(request, comment_id):
         reaction.reaction_type = 'dislike'
         reaction.save()
         comment.save()
-    return redirect('post_list', thread_id=comment.post.thread.id)
+    return redirect('post_detail', thread_id=comment.post.thread.id, post_id=comment.post.id)
 
