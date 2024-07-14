@@ -22,7 +22,6 @@ core/settings/__pycache__/
 *.map
 
 *.eot
-*.svg
 *.ttf
 *.woff
 *.woff2
