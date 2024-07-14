@@ -1,0 +1,51 @@
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+
+    <title>{% block title %} Подтверждение кода {% endblock %}</title>
+</head>
+
+
+<div class="page_layout_register">
+    <div class="forms_register">
+        <form method="post" id="registrationForm">
+            {% csrf_token %}
+            <div class="center">
+                <div class="logo">Amici</div>
+            </div>
+            <div class="title_page">Подтверждение почты</div>
+            <div id="registration-form">
+                <div id="validate_confirmation_code" class="question-container active">
+                    <label for="confirmation_code">Укажите код, отправленный вам на почту</label>
+                    <input type="number" id="confirmation_code" name="confirmation_code" class="input-field input_design" placeholder="Код"
+                        value="{{ form.confirmation_code.value }}" required oninput="validate_confirmation_code()">
+                    <div class="button-container">
+                        <button type="submit" id="sendCodeButton" class="button_design" disabled>Отправить код</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function validate_confirmation_code() {
+        const code = document.getElementById('confirmation_code').value.trim();
+        const isValid = /^\d{6}$/.test(code);
+
+        const sendCodeButton = document.getElementById('sendCodeButton');
+        sendCodeButton.disabled = !isValid; // Disable button if code is not valid
+    }
+</script>

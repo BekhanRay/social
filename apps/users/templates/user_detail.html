@@ -224,7 +224,11 @@ body.modal-open {
     width: 100%;
     gap: 1px;
 }
+
+
+
 .profile_grid_post_img{
+    position: relative;
     overflow: hidden;
     aspect-ratio: 1/1;
     cursor: pointer;
@@ -324,9 +328,68 @@ body.modal-open {
     .tabcontent{
         margin-top: 7px;
     }
+
 }
 
+.gallery_modal {
+    display: none; /* Модальное окно скрыто по умолчанию */
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+.galleryModal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    max-width: 500px;
+    max-height: 600px;
+    text-align: center;
+}
+
+.gallery_close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.gallery_close:hover,
+.gallery_close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.delete-photo-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
 </style>
+
+<div id="gallery_modal" class="gallery_modal">
+        <div class="galleryModal-content">
+            <span class="gallery_close">&times;</span>
+            <form id="uploadForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h2>Загрузить фото</h2>
+                <input type="file" id="avatar" name="photo" class="form-control">
+                <button type="submit">Загрузить</button>
+            </form>
+        </div>
+    </div>
 
 <div id="modalOverlay" class="modal-overlay">
     <div class="modal-content">
@@ -443,6 +506,12 @@ body.modal-open {
                     <div class="profile_grid_post">
                         <div class="profile_grid_post_img">
                             <img src="{{photo.file_path.url}}" alt="">
+                            <button class="delete-photo-btn"><a style="color: white;" href="{% url 'delete_photo' photo.id %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+</svg></a>
+                            </button>
                         </div>
                     </div>
                     {% endfor %}
@@ -567,6 +636,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 });
+
+// Получаем элементы
+var modal = document.getElementById("gallery_modal");
+var openModalBtn = document.getElementById("galleryOpenModalBtn");
+var closeBtn = document.getElementsByClassName("gallery_close")[0];
+
+// Открытие модального окна при нажатии на кнопку
+openModalBtn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// Закрытие модального окна при нажатии на крестик
+closeBtn.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Закрытие модального окна при нажатии вне его
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
 
 </script>

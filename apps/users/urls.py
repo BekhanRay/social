@@ -4,15 +4,17 @@ from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfir
     PasswordResetCompleteView, PasswordChangeDoneView
 from django.urls import path, reverse_lazy
 from .views import register, login_view, profile, user_detail, user_change, add_favorite, \
-    remove_favorite, user_agreement, UserPasswordChange, CustomPasswordResetView, logout_view
+    remove_favorite, user_agreement, UserPasswordChange, CustomPasswordResetView, logout_view, delete_photo, code_confirmation
 
 urlpatterns = [
     path('register/', register, name='register'),
+    path('code_confirmation/', code_confirmation),
     path('add_favorite/<int:user_id>/', add_favorite, name='add_favorite'),
     path('remove_favorite/<int:user_id>/', remove_favorite, name='remove_favorite'),
     path('login/', login_view, name='login'),
     path('logout/', login_required(logout_view), name='logout'),
     path('profile/', login_required(profile), name='profile'),
+    path('delete_gallery_photo/<int:photo_id>/', delete_photo, name='delete_photo'),
     path('user/<int:user_id>/', login_required(user_detail), name='user_detail'),
     path('profile/change/', user_change, name='user_change'),
     path('user_agreement/', user_agreement, name='user_agreement'),

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<!-- <head>
+<head>
   <meta charset="UTF-8">
 
 
@@ -14,42 +14,67 @@
   <link rel="stylesheet" href="{% static 'css/login.css' %}">
   <link rel="stylesheet" href="{% static 'css/register.css' %}">
   <link rel="stylesheet" href="{% static 'css/chat.css' %}">
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/chat.css' %}">
   <link rel="stylesheet" href="{% static 'css/forum.css' %}">
 
 
   <title>{% block title %} Форум {% endblock %}</title>
-</head> -->
-
-<head>
-  <meta charset="UTF-8">
-  <title>Форум</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-
 </head>
 {% block body %}
-<div style="display:block; margin-top: 100px;">
 
-  <div class="forumWrap">
+<style>
+  .page_layout_forum{
+    padding-top: 100px;
+  }
+  .page_forum{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .page_forum_links{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .page_forum_links_column{
+    display: inline-flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .page_forum_links_column a{
+    padding: 8px 12px;
+    background-color: #5555aa;
+    border-radius: 22px;
+    transition: 150ms;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  .page_forum_links_column a:hover{
+    transform: scale(1.1);
+  }
+  .page_forum_links_column span{
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+</style>
 
-    <ul class="ul_flex">
+
+<div class="page_layout_forum">
+  <div class="page_forum">
+    <div class="page_forum_links">
       {% for forum in forums %}
-      <li>
-        <h3>{{ forum.title }}</h3>
-        <ul style="margin-left:12px">
+        <div class="page_forum_links_column">
+          <span>{{forum.title}}</span>
           {% for thread in forum.threads.all %}
-        <li>
-          <a href="{% url 'post_list' thread.id %}">
-            <h4>{{ thread.title }}</h4>
-          </a>
-        </li>
-        {% empty %}
-        <li>No threads in this forum.</li>
-        {% endfor %}
-        </ul>
-        </li>
-        {% endfor %}
-        </ul>
+          <a href="{% url 'post_list' thread.id %}">{{ thread.title }}</a>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
   </div>
 </div>
 

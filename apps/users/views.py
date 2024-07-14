@@ -22,7 +22,6 @@ def register(request):
                 email=request.POST['email'],
                 nickname=request.POST['nickname'],
                 age=request.POST['age'],
-                confirmation_code=request.POST['confirmation_code'],
                 gender=request.POST['gender'],
                 preffered_gender=request.POST['preffered_gender'],
                 country=request.POST['country'],
@@ -148,7 +147,22 @@ def user_list(request):
                                          'favorites': favorites})
 
 
+@login_required
+def delete_photo(request, photo_id):
+    if photo_id:
+        Photo.objects.get(user=request.user,
+                          id=photo_id).delete()
+    return redirect(reverse("user_detail", args=[request.user.id]))
+
+
+def code_confirmation(request):
+    return render(request, 'code_confirm.html')
+
 def user_detail(request, user_id):
+    if 'photo' in request.FILES.keys():
+        photo = Photo.objects.create(user=request.user,
+                                     file_path=request.FILES['photo'])
+        photo.save()
     user = get_object_or_404(CustomUser, id=user_id)
     user_photos = Photo.objects.filter(user=user, is_avatar=False)
     profile = Profile.objects.get(user=user)
@@ -157,7 +171,6 @@ def user_detail(request, user_id):
                                                 'photos': user_photos,
                                                 'profile': profile,
                                                 'favorites': favorites})
-
 
 @login_required
 def user_change(request):

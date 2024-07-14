@@ -142,11 +142,13 @@
                 </div>
 
                 <div id="question10" class="question-container">
-                    <label for="confirmation_code">Код подтверждения</label>
-                    {{ form.email.errors }}
-                    <input type="number" id="confirmation_code" name="confirmation_code"
-                        class="input-field input_design" placeholder="Код подтверждения"
-                        value="{{ form.confirmation_code.value }}" required oninput="validateInput(10)">
+                    <label for="password">И пароль нужно придумать :)</label>
+                    {{ form.password.errors }}
+                    <input type="password" id="password" name="password" class="input-field input_design"
+                        placeholder="Придумайте пароль" value="{{ form.password.value }}" required
+                        oninput="validateInput(10)">
+                    <input type="password" id="confirm_password" name="confirm_password"
+                        class="input-field input_design" placeholder="Повторите пароль" oninput="validateInput(10)">
                     <div class="button-container">
                         <button class="button_design" onclick="previousQuestion(9)">Назад</button>
                         <button class="button_design" id="next10" onclick="nextQuestion(11)" disabled>Далее</button>
@@ -154,20 +156,6 @@
                 </div>
 
                 <div id="question11" class="question-container">
-                    <label for="password">И пароль нужно придумать :)</label>
-                    {{ form.password.errors }}
-                    <input type="password" id="password" name="password" class="input-field input_design"
-                        placeholder="Придумайте пароль" value="{{ form.password.value }}" required
-                        oninput="validateInput(11)">
-                    <input type="password" id="confirm_password" name="confirm_password"
-                        class="input-field input_design" placeholder="Повторите пароль" oninput="validateInput(11)">
-                    <div class="button-container">
-                        <button class="button_design" onclick="previousQuestion(10)">Назад</button>
-                        <button class="button_design" id="next11" onclick="nextQuestion(12)" disabled>Далее</button>
-                    </div>
-                </div>
-
-                <div id="question12" class="question-container">
                     <label for="id_agreement" class="agreement">
                         <input type="checkbox" id="id_agreement" name="user_agreement"
                             value="{{ form.user_agreement.value }}" required> <a href="{% url 'user_agreement' %}"
@@ -224,18 +212,16 @@
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
             isValid = emailPattern.test(email);
         } else if (questionNumber === 10) {
-            isValid = document.getElementById('confirmation_code').value.trim() !== '';
-        } else if (questionNumber === 11) {
             const password = document.getElementById('password').value.trim();
             const confirmPassword = document.getElementById('confirm_password').value.trim();
             isValid = password !== '' && confirmPassword !== '' && password === confirmPassword;
-        } else if (questionNumber === 12) {
+        } else if (questionNumber === 11) {
             isValid = document.getElementById('id_agreement').checked;
         }
 
-        if (questionNumber <= 11) {
+        if (questionNumber <= 10) {
             document.getElementById('next' + questionNumber).disabled = !isValid;
-        } else if (questionNumber === 12) {
+        } else if (questionNumber === 11) {
             document.getElementById('submit').disabled = !isValid;
         }
     }
@@ -250,7 +236,6 @@
         const interestedGender = document.getElementById('interested_gender').value;
         const login = document.getElementById('login').value;
         const email = document.getElementById('email').value;
-        const confirmation_code = document.getElementById('confirmation_code').value;
         const password = document.getElementById('password').value;
         const user_agreement = document.getElementById('id_agreement').value;
 
@@ -263,7 +248,7 @@
         // Initialize the initial state of the button
         validateInput(1);
         document.getElementById('id_agreement').addEventListener('change', function () {
-            validateInput(12);
+            validateInput(11);
         });
     });
 </script>

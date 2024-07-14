@@ -105,6 +105,12 @@
                                     </span>
                                     Профиль
                                 </a>
+                                <button id="galleryOpenModalBtn" class="dropdown-link">
+                                    <span class="dropdown-icon">
+                                        <img src="https://i.ibb.co/BKZk5Mw/Frame-279.png">
+                                    </span>
+                                    Загрузить фото
+                                </button>
                                 <a href="{% url 'user_change' %}" class="dropdown-link">
                                     <span class="dropdown-icon">
                                         <img src="https://i.ibb.co/TWqN4Dr/Frame-181.png" alt="Frame-181" border="0">
@@ -212,7 +218,11 @@
     });
 });
 
-
+function updateFileName() {
+    var input = document.getElementById('avatar');
+    var fileName = input.files.length > 0 ? input.files[0].name : 'Файл не выбран';
+    document.getElementById('file-name').innerText = fileName;
+}
 
     // Dropdown
 document.addEventListener("mousedown", e => {
@@ -237,7 +247,10 @@ const like = document.querySelectorAll('.liked_btn')
       like[i].classList.toggle('active-like')
     }
   }
-            </script>
+
+
+
+</script>
 
 </body>
 </html>

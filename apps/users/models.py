@@ -26,7 +26,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     region = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     user_agreement = models.BooleanField(default=False)
-    confirmation_code = models.CharField(max_length=50, null=True, blank=True)
     avatar_photo = models.ForeignKey('Photo', null=True, blank=True, on_delete=models.SET_NULL,
                                      related_name='avatar_user')
     is_online = models.BooleanField(default=False)
