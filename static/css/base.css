@@ -119,7 +119,7 @@ select {
 .logo__filter {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 1px;
 }
 .logo {
     display: block;
@@ -132,7 +132,7 @@ select {
     font-weight: bolder;
     font-style: italic;
     cursor: pointer;
-    min-width: 140px;
+    min-width: 118px;
     margin-top: 20px;
     margin-bottom: 25px;
 }
