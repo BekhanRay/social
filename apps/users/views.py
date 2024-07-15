@@ -10,9 +10,11 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import UserFilterForm, UserChangeForm, UserPasswordChangeForm
 from .models import Profile, CustomUser, Photo, Favorite, UserPromotion, Promotion
+from .utils import send_verification_mail
 
 
 @login_required
@@ -41,6 +43,33 @@ def print_flyer(request, promotion_id):
 
     return response
 
+
+# def register(request):
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         if email and not CustomUser.objects.filter(email=email).exists():
+#             user = CustomUser.objects.create_user(
+#                 login=request.POST['login'],
+#                 password=request.POST['password'],
+#                 email=request.POST['email'],
+#                 nickname=request.POST['nickname'],
+#                 age=request.POST['age'],
+#                 gender=request.POST['gender'],
+#                 preffered_gender=request.POST['preffered_gender'],
+#                 country=request.POST['country'],
+#                 region=request.POST['region'],
+#                 city=request.POST['city'],
+#                 user_agreement=bool([True if request.POST['user_agreement'] == 'on' else False]),
+#             )
+#             Profile.objects.create(user=user)
+#             if user:
+#                 send_verification_mail(request.POST.get('email'))
+#                 auth_login(request, user)
+#             else:
+#                 return redirect('register')
+#         return redirect('profile')
+#     return render(request, 'register.html')
+@csrf_exempt
 def register(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -56,14 +85,15 @@ def register(request):
                 country=request.POST['country'],
                 region=request.POST['region'],
                 city=request.POST['city'],
-                user_agreement=bool([True if request.POST['user_agreement'] == 'on' else False]),
+                user_agreement='user_agreement' in request.POST,
             )
             Profile.objects.create(user=user)
-            if user:
-                auth_login(request, user)
-            else:
-                return redirect('register')
-        return redirect('profile')
+            send_verification_mail(user.email)
+            auth_login(request, user)
+            return redirect('profile')
+        else:
+            messages.error(request, 'Email already exists or is invalid.')
+            return redirect('register')
     return render(request, 'register.html')
 
 
