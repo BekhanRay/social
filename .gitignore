@@ -26,13 +26,13 @@ core/settings/__pycache__/
 *.woff
 *.woff2
 LICENSE.*
-back_static
+#back_static
 back_media
 ### Django ###
 
 minus_migration.py
 delete_migrations.py
-
+*_initial.py
 *.log
 *.pot
 *.pyc

@@ -1,0 +1,24 @@
+.center .logo{
+    transform: scale(1.8);
+}
+.page_layout_login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+.forms_login{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 450px;
+    width: 100%;
+    padding: 0 16px;
+}
+.forms_login_box{
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
