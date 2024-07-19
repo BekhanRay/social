@@ -29,6 +29,17 @@
             <div id="registration-form">
                 <div id="validate_confirmation_code" class="question-container active">
                     <label for="confirmation_code">Укажите код, отправленный вам на почту</label>
+                    {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        {% if message.message == 'Неверный код подтверждения.' %}
+                        <li class="{{ message.tags }}">
+                            {{ message|safe }}
+                        </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
                     <input type="number" id="confirmation_code" name="confirmation_code" class="input-field input_design" placeholder="Код"
                         value="{{ form.confirmation_code.value }}" required oninput="validate_confirmation_code()">
                     <div class="button-container">

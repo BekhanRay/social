@@ -434,22 +434,27 @@ body.modal-open {
                     <label>Город:</label>
                     <p>{{ user.city }}</p>
                 </div>
+                {% if profile.personal_info%}
                 <div class="field-group">
                     <label>Персональная информация:</label>
                     <p>{{ profile.personal_info }}</p>
                 </div>
+                {% elif profile.general_info%}
                 <div class="field-group">
                     <label>Общая информация:</label>
                     <p>{{ profile.general_info }}</p>
                 </div>
+                {% elif profile.education_profession %}
                 <div class="field-group">
                     <label>Образование и профессия:</label>
                     <p>{{ profile.education_profession }}</p>
                 </div>
+                {% elif profile.habits_preferences %}
                 <div class="field-group">
                     <label>Привычки и предпочтения:</label>
                     <p>{{ profile.habits_preferences }}</p>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -476,7 +481,7 @@ body.modal-open {
                 <button  class="profile_box_one_data_modalbtn">Подробнee</button>
             </div>
                
-           <div class="profile_box_one_data_text">{{ profile.general_info }} Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis, architecto nobis! Veritatis possimus </div>
+           <div class="profile_box_one_data_text">{{ profile.personal_info }}</div>
         </div>
     </div>
     <div class="profile_box_two">
