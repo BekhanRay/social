@@ -73,26 +73,44 @@ def print_flyer(request, promotion_id):
 def register(request):
     if request.method == 'POST':
         email = request.POST.get('email')
+        code = request.POST.get('confirmation_code')
         if email and not CustomUser.objects.filter(email=email).exists():
-            user = CustomUser.objects.create_user(
-                login=request.POST['login'],
-                password=request.POST['password'],
-                email=request.POST['email'],
-                nickname=request.POST['nickname'],
-                age=request.POST['age'],
-                gender=request.POST['gender'],
-                preffered_gender=request.POST['preffered_gender'],
-                country=request.POST['country'],
-                region=request.POST['region'],
-                city=request.POST['city'],
-                user_agreement='user_agreement' in request.POST,
-            )
-            Profile.objects.create(user=user)
-            send_verification_mail(user.email)
-            auth_login(request, user)
-            return redirect('profile')
+            request.session['login'] = request.POST['login']
+            request.session['password'] = request.POST['password']
+            request.session['email'] = request.POST['email']
+            request.session['nickname'] = request.POST['nickname']
+            request.session['age'] = request.POST['age']
+            request.session['gender'] = request.POST['gender']
+            request.session['preffered_gender'] = request.POST['preffered_gender']
+            request.session['country'] = request.POST['country']
+            request.session['region'] = request.POST['region']
+            request.session['city'] = request.POST['city']
+            request.session['user_agreement'] = request.POST['user_agreement']
+            request.session['confirmation_code'] = send_verification_mail(email)
+            return render(request, 'code_confirm.html')
+        if code:
+            if code == request.session['confirmation_code']:
+                user = CustomUser.objects.create_user(
+                    login=request.session['login'],
+                    password=request.session['password'],
+                    email=request.session['email'],
+                    nickname=request.session['nickname'],
+                    age=request.session['age'],
+                    gender=request.session['gender'],
+                    preffered_gender=request.session['preffered_gender'],
+                    country=request.session['country'],
+                    region=request.session['region'],
+                    city=request.session['city'],
+                    user_agreement='user_agreement' in request.session,
+                )
+                Profile.objects.create(user=user)
+                auth_login(request, user)
+                return redirect('profile')
+            else:
+                messages.error(request, 'Неверный код подтверждения.')
+                return render(request, 'code_confirm.html')
         else:
-            messages.error(request, 'Email already exists or is invalid.')
+            messages.error(request, 'Почта неверна или уже существует.')
             return redirect('register')
     return render(request, 'register.html')
 
@@ -213,9 +231,6 @@ def delete_photo(request, photo_id):
                           id=photo_id).delete()
     return redirect(reverse("user_detail", args=[request.user.id]))
 
-
-def code_confirmation(request):
-    return render(request, 'code_confirm.html')
 
 def user_detail(request, user_id):
     if 'photo' in request.FILES.keys():

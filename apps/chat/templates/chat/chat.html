@@ -31,7 +31,7 @@
                 </div>
                 {% for chat in chats %}
                 {% if user.id == chat.sender.id %}
-                <a href="{% url 'create_chat' chat.receiver.login %}" class="chat_user">
+                <a href="{% url 'get_chat' chat.room_name %}" class="chat_user">
                     <div class="chat_user_img">
                         <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
                     </div>
@@ -217,6 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);  // Небольшая задержка для правильной прокрутки
         }
     });
+
 
 
    function addEmoji(emoji) {
