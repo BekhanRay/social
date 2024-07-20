@@ -26,7 +26,7 @@ class Post(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='post_photos/', blank=True, null=True)
     content = models.TextField()
-    title = models.CharField(max_length=50, blank=True, null=True)
+    title = models.CharField(max_length=50, default='')
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property

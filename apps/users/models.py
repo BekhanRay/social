@@ -92,19 +92,6 @@ def create_default_avatar(sender, instance, created, **kwargs):
         instance.save()
 
 
-class Video(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='videos')
-    url = models.URLField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-
-class Forum(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='forums')
-    title = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
 class Favorite(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='favorites', on_delete=models.CASCADE)
     favorite_user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='favorited_by', on_delete=models.CASCADE)

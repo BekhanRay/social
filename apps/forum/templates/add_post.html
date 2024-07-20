@@ -68,6 +68,11 @@
                     <label for="avatar">Фото поста:</label>
                     <input type="file" id="photo" name="photo" class="form-control"><br>
                 </div>
+                <h6>Название поста</h6>
+                {{ form.title.errors }}
+                <textarea id="id_title" name="title" class="input"
+                    placeholder="Название поста"></textarea>
+
                 <h6>Текст поста</h6>
                 {{ form.content.errors }}
                 <textarea id="id_content" name="content" class="input"

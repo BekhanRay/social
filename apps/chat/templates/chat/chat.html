@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
     <link rel="stylesheet" href="{% static 'css/chat.css' %}">
 
-    <title>{% block title %} {% endblock %}</title>
+    <title>{% block title %} Чаты {% endblock %}</title>
 </head>
 <body>
     <div class="page__layout" style="padding: 0;">
@@ -31,14 +31,14 @@
                 </div>
                 {% for chat in chats %}
                 {% if user.id == chat.sender.id %}
-                <a href="{% url 'get_chat' chat.room_name %}" class="chat_user">
+                <a href="{% url 'get_chat' chat.room_name %}" class="chat_user" >
                     <div class="chat_user_img">
                         <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
                     </div>
                     <div class="chat_user_text">
                         <div class="chat_user_nickname">{{chat.receiver.nickname}}</div>
                         {% else %}
-                        <a href="{% url 'create_chat' chat.sender.login %}" class="chat_user" data-user="{{chat.room_name}}" onclick="event.preventDefault(); loadChat('{{ chat.room_name }}')">
+                        <a href="{% url 'get_chat' chat.room_name %}" class="chat_user">
                     <div class="chat_user_img">
                         <img src="{{chat.sender.avatar_photo.file_path.url}}" alt="">
                     </div>
@@ -85,9 +85,8 @@
                             <div class="chat_message_item right">{{ message.message }}</div>
                         {% else %}
                         <div class="chat_img_message">
-                            <a href="" class="chat_img" id="currentUserImage">
-                                <img src="{{ message.sender.avatar_photo.file_path.url }}" alt="">
-                            </a>
+                            <div class="chat_img" id="currentUserImage">
+                            </div>
                             <div class="chat_message_item left">{{ message.message }}</div>
                         </div>
                         {% endif %}
@@ -220,10 +219,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-   function addEmoji(emoji) {
-            const textField = document.getElementById('messageInput');
-            textField.value += emoji;
+   // Dropdown toggle
+    document.addEventListener("mousedown", e => {
+        const isDropdownButton = e.target.matches("[data-dropdown-button]");
+        if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return;
+
+        let currentDropdown;
+        if (isDropdownButton) {
+            currentDropdown = e.target.closest("[data-dropdown]");
+            currentDropdown.classList.toggle("drop-active");
         }
+
+        document.querySelectorAll("[data-dropdown].drop-active").forEach(dropdown => {
+            if (dropdown === currentDropdown) return;
+            dropdown.classList.remove("drop-active");
+        });
+    });
+
+    // Emoji insertion function
+    window.addEmoji = function(emoji) {
+        const textField = document.getElementById('messageInput');
+        textField.value += emoji;
+        textField.focus(); // Keep focus on the input after adding emoji
+    };
 
     messageInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
