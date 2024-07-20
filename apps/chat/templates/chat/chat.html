@@ -31,7 +31,7 @@
                 </div>
                 {% for chat in chats %}
                 {% if user.id == chat.sender.id %}
-                <a href="{% url 'create_chat' chat.receiver.login %}" class="chat_user">
+                <a href="{% url 'get_chat' chat.room_name %}" class="chat_user" >
                     <div class="chat_user_img">
                         <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
                     </div>
@@ -66,8 +66,14 @@
                         <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
                     </svg></button>
                     {% if user.id == chat.sender.id %}
+                    <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_img" id="currentUserImage">
+                        <img src="{{ receiver.avatar_photo.file_path.url }}">
+                    </a>
                     <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_nickname" id="currentUserNickname">{{ receiver.nickname}}</a>
                 {% else %}
+                    <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_img" id="currentUserImage">
+                        <img src="{{ chat.sender.avatar_photo.file_path.url }}">
+                    </a>
                     <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_nickname" id="currentUserNickname">{{ chat.sender.nickname}}</a>
 
 
@@ -79,7 +85,10 @@
                             <div class="chat_message_item right">{{ message.message }}</div>
                         {% else %}
                         <div class="chat_img_message">
+                            <div class="chat_img" id="currentUserImage">
+                            </div>
                             <div class="chat_message_item left">{{ message.message }}</div>
+                        </div>
                         {% endif %}
                     </div>
                     {% endfor %}
@@ -208,26 +217,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-        document.querySelectorAll("[data-dropdown].drop-active").forEach(dropdown => {
-            if (dropdown === currentDropdown) return;
-            dropdown.classList.remove("drop-active");
-        });
-    });
 
-    // Emoji insertion function
-    window.addEmoji = function(emoji) {
-        const textField = document.getElementById('messageInput');
-        textField.value += emoji;
-        textField.focus(); // Keep focus on the input after adding emoji
-    };
 
-    messageInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            sendButton.click();
-        }
-    });
-});
+   // Dropdown toggle
     document.addEventListener("mousedown", e => {
         const isDropdownButton = e.target.matches("[data-dropdown-button]");
         if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return;
@@ -250,5 +242,13 @@ document.addEventListener('DOMContentLoaded', function() {
         textField.value += emoji;
         textField.focus(); // Keep focus on the input after adding emoji
     };
+
+    messageInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            sendButton.click();
+        }
+    });
+});
 
 </script>
