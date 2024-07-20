@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
     <link rel="stylesheet" href="{% static 'css/chat.css' %}">
 
-    <title>{% block title %} {% endblock %}</title>
+    <title>{% block title %} Чаты {% endblock %}</title>
 </head>
 <body>
     <div class="page__layout" style="padding: 0;">
@@ -38,7 +38,7 @@
                     <div class="chat_user_text">
                         <div class="chat_user_nickname">{{chat.receiver.nickname}}</div>
                         {% else %}
-                        <a href="{% url 'create_chat' chat.sender.login %}" class="chat_user" data-user="{{chat.room_name}}" onclick="event.preventDefault(); loadChat('{{ chat.room_name }}')">
+                        <a href="{% url 'get_chat' chat.room_name %}" class="chat_user">
                     <div class="chat_user_img">
                         <img src="{{chat.sender.avatar_photo.file_path.url}}" alt="">
                     </div>
@@ -78,6 +78,7 @@
                         {% if message.sender.login == request.user.login %}
                             <div class="chat_message_item right">{{ message.message }}</div>
                         {% else %}
+                        <div class="chat_img_message">
                             <div class="chat_message_item left">{{ message.message }}</div>
                         {% endif %}
                     </div>
@@ -206,10 +207,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);  // Небольшая задержка для правильной прокрутки
         }
     });
-   function addEmoji(emoji) {
-            const textField = document.getElementById('messageInput');
-            textField.value += emoji;
-        }
+
+        document.querySelectorAll("[data-dropdown].drop-active").forEach(dropdown => {
+            if (dropdown === currentDropdown) return;
+            dropdown.classList.remove("drop-active");
+        });
+    });
+
+    // Emoji insertion function
+    window.addEmoji = function(emoji) {
+        const textField = document.getElementById('messageInput');
+        textField.value += emoji;
+        textField.focus(); // Keep focus on the input after adding emoji
+    };
 
     messageInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {

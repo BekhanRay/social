@@ -40,7 +40,7 @@
                     <div class="post-actions">
                         <span class="post-comment-container">
                             <a href="{% url 'post_detail' post.thread.id post.id %}" class="post-comments-button"></a>
-                            <span class="post-comments-counter">16</span>
+                            <span class="post-comments-counter">{{post.count_comments}}</span>
                         </span>
                     </div>
                 </div>
