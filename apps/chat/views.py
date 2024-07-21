@@ -42,7 +42,6 @@ def get_chat(request, room_name):
         elif request.headers['Sec-Ch-Ua-Platform'] == '"Android"':
             type_device = 'mobile'
     except:
-        print([i for i in request.user_agent])
         type_device = 'mobile'
 
 
