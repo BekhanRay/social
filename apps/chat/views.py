@@ -35,14 +35,12 @@ def get_chat(request, room_name):
 
     try:
         print(request.headers)
-        if request.headers['Sec-Ch-Ua-Platform'] == '"Windows"':
+        if request.headers['Sec-Ch-Ua-Platform'] == '"Windows"' or request.headers['Sec-Ch-Ua-Platform'] == '"Linux"':
             type_device = 'pc'
-        elif request.headers['Sec-Ch-Ua-Platform'] == '"Linux"':
-            type_device = 'pc'
-        elif request.headers['Sec-Ch-Ua-Platform'] == '"Android"':
+        else:
             type_device = 'mobile'
     except:
-        type_device = 'mobile'
+        type_device = 'pc'
 
 
     return render(request, 'chat/chat.html', {

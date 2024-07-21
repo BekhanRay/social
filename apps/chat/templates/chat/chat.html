@@ -220,24 +220,6 @@
         cursor: pointer;
     }
     
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        bottom: 100%;
-        background: #ffffff;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        max-width: 300px;
-        width: 100%;
-        overflow-y: auto;
-        max-height: 200px; /* Limit the height of the dropdown */
-    }
-    
-    .dropdown-menu.show {
-        display: block;
-    }
     
     .emoji {
         cursor: pointer;
@@ -293,15 +275,6 @@
                 </div>
                 <div class="input_chat_message">
                     <textarea name="message" placeholder="Сообщение" id="messageInput" class="messageInput"></textarea>
-                    <div class="header_dropdown" data-dropdown="" style="position: relative;">
-                        <div class="css-header_btn" data-dropdown-button="">
-                            <div class="header_btn">
-                                <span class="header_btn_icon">
-                                    <img src="https://i.ibb.co/dcGX2xZ/Frame-180.png">
-                                </span>
-                            </div>
-                        </div>
-                    </div>
                     <button type="submit" class="sendButton" data-user="{{ request.user.login }}">Отправить</button>
                 </div>
             </div>

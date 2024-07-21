@@ -212,6 +212,7 @@ LOGIN_URL = 'login'
 CSRF_USE_SESSIONS = True
 CSRF_TRUSTED_ORIGINS = ['http://16.171.6.225/',
                         'http://localhost/',
+                        'http://amici.pp.ua/',
                         ]
 
 
