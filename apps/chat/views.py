@@ -11,6 +11,12 @@ User = get_user_model()
 
 @login_required
 def get_chat(request, room_name):
+    print("Request method:", request.method)
+    print("Request path:", request.path)
+    print("Request headers:", request.headers)
+    print("Request user:", request.user)
+    print("Request session:", request.session)
+    print("Is secure:", request.is_secure())
     chat = get_object_or_404(Chat, room_name=room_name)
     messages = Message.objects.filter(chat=chat).order_by('timestamp')
 
@@ -26,11 +32,20 @@ def get_chat(request, room_name):
     ).annotate(
         last_message_time=Coalesce(Subquery(latest_message_subquery), None)
     ).order_by('-last_message_time')
+
+    try:
+        if request.headers['Sec-Ch-Ua-Platform'] == '"Windows"':
+            type_device = 'pc'
+    except:
+        type_device = 'mobile'
+
+
     return render(request, 'chat/chat.html', {
         'chat': chat,
         'chats': chats,
         'messages': messages,
         'receiver': receiver,
+        'type': type_device,
         'current_user_avatar': current_user.avatar_photo.file_path.url if current_user.avatar_photo else 'user_photos/default_user_photo.jpg',
         'other_user_avatar': receiver.avatar_photo.file_path.url if receiver.avatar_photo else 'user_photos/default_user_photo.jpg',
     })

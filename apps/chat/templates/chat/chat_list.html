@@ -1,13 +1,53 @@
-{% extends 'chat/chat.html' %}
+{% load static %}
+<!doctype html>
 
-{% block chat_message %}
-    <div class="select_chat">
-        <h2>
-            Выберите чат
-        </h2>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="chat_sidebar" id="sidebar">
+        <div class="sidebar_header">
+            <a href="{% url 'home' %}" class="sidebar_header_btn" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </a>
+            <a href="{% url 'home' %}" class="logo">Amici</a>
+            <div class="sidebar_header_btn"></div>
+        </div>
+        {% for chat in chats %}
+        {% if user.id == chat.sender.id %}
+        <a href="{% url 'create_chat' chat.receiver.login %}" class="chat_user">
+            <div class="chat_user_img">
+                <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
+            </div>
+            <div class="chat_user_text">
+                <div class="chat_user_nickname">{{chat.receiver.nickname}}</div>
+                {% else %}
+                <a href="{% url 'create_chat' chat.sender.login %}" class="chat_user" data-user="{{chat.room_name}}" onclick="event.preventDefault(); loadChat('{{ chat.room_name }}')">
+            <div class="chat_user_img">
+                <img src="{{chat.sender.avatar_photo.file_path.url}}" alt="">
+            </div>
+            <div class="chat_user_text">
+                <div class="chat_user_nickname">{{chat.sender.nickname}}</div>
+                {% endif %}
+                <div class="chat_user_data">
+                    <span>Последнее сообщение</span>
+                    <span>{{chat.messages.last.get_message_time}}</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
     </div>
-
-
-{% endblock %}
-
+</body>
+</html>
 

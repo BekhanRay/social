@@ -166,11 +166,11 @@
 }
 
 .chat_message_item.left {
-    background: #d1e7dd;
+    background: #d6dde0;
     border-radius: 16px 16px 16px 0;
 }
 .chat_message_item.right{
-    background-color: rgb(255, 177, 177);
+    background-color: rgb(62, 104, 213);
     border-radius: 16px 16px 0px 16px;
     float: right;
 }
