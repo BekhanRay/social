@@ -34,9 +34,15 @@ def get_chat(request, room_name):
     ).order_by('-last_message_time')
 
     try:
+        print(request.headers)
         if request.headers['Sec-Ch-Ua-Platform'] == '"Windows"':
             type_device = 'pc'
+        elif request.headers['Sec-Ch-Ua-Platform'] == '"Linux"':
+            type_device = 'pc'
+        elif request.headers['Sec-Ch-Ua-Platform'] == '"Android"':
+            type_device = 'mobile'
     except:
+        print([i for i in request.user_agent])
         type_device = 'mobile'
 
 

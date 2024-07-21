@@ -67,14 +67,8 @@
                         <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
                     </svg></button>
                     {% if user.id == chat.sender.id %}
-                    <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_img" id="currentUserImage">
-                        <img src="{{ receiver.avatar_photo.file_path.url }}">
-                    </a>
                     <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_nickname" id="currentUserNickname">{{ receiver.nickname}}</a>
                 {% else %}
-                    <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_img" id="currentUserImage">
-                        <img src="{{ chat.sender.avatar_photo.file_path.url }}">
-                    </a>
                     <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_nickname" id="currentUserNickname">{{ chat.sender.nickname}}</a>
 
 
@@ -305,44 +299,6 @@
                                 <span class="header_btn_icon">
                                     <img src="https://i.ibb.co/dcGX2xZ/Frame-180.png">
                                 </span>
-                            </div>
-                        </div>
-                        <div class="dropdown-menu" style="max-width: 400px; left: unset; right: 0; top: unset; bottom: calc(100% + 8px);">
-                            <div class="dropdown-menu_box">
-                                <div class="emojies">
-                                    <div class="emoji" onclick="addEmoji('😄')">😄</div>
-                                    <div class="emoji" onclick="addEmoji('😃')">😃</div>
-                                    <div class="emoji" onclick="addEmoji('😄')">😄</div>
-                                    <div class="emoji" onclick="addEmoji('😁')">😁</div>
-                                    <div class="emoji" onclick="addEmoji('😆')">😆</div>
-                                    <div class="emoji" onclick="addEmoji('😅')">😅</div>
-                                    <div class="emoji" onclick="addEmoji('🤣')">🤣</div>
-                                    <div class="emoji" onclick="addEmoji('😂')">😂</div>
-                                    <div class="emoji" onclick="addEmoji('🙂')">🙂</div>
-                                    <div class="emoji" onclick="addEmoji('🙃')">🙃</div>
-                                    <div class="emoji" onclick="addEmoji('❤️')">❤️</div>
-                                    <div class="emoji" onclick="addEmoji('😉')">😉</div>
-                                    <div class="emoji" onclick="addEmoji('😊')">😊</div>
-                                    <div class="emoji" onclick="addEmoji('😇')">😇</div>
-                                    <div class="emoji" onclick="addEmoji('🥰')">🥰</div>
-                                    <div class="emoji" onclick="addEmoji('😍')">😍</div>
-                                    <div class="emoji" onclick="addEmoji('🤩')">🤩</div>
-                                    <div class="emoji" onclick="addEmoji('😘')">😘</div>
-                                    <div class="emoji" onclick="addEmoji('😗')">😗</div>
-                                    <div class="emoji" onclick="addEmoji('😹')">😹</div>
-                                    <div class="emoji" onclick="addEmoji('😸')">😸</div>
-                                    <div class="emoji" onclick="addEmoji('😻')">😻</div>
-                                    <div class="emoji" onclick="addEmoji('😼')">😼</div>
-                                    <div class="emoji" onclick="addEmoji('😽')">😽</div>
-                                    <div class="emoji" onclick="addEmoji('🙀')">🙀</div>
-                                    <div class="emoji" onclick="addEmoji('😿')">😿</div>
-                                    <div class="emoji" onclick="addEmoji('😾')">😾</div>
-                                    <div class="emoji" onclick="addEmoji('🙈')">🙈</div>
-                                    <div class="emoji" onclick="addEmoji('🙉')">🙉</div>
-                                    <div class="emoji" onclick="addEmoji('🙊')">🙊</div>
-                                    <div class="emoji" onclick="addEmoji('💋')">💋</div>
-
-                                </div>
                             </div>
                         </div>
                     </div>
