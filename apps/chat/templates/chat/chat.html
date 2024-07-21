@@ -99,7 +99,7 @@
 
 
                 <div class="input_chat_message">
-                    <textarea name="message" placeholder="Напишите что-нибудь..." id="messageInput" class="messageInput"></textarea>
+                    <textarea name="message" placeholder="Сообщение" id="messageInput" class="messageInput"></textarea>
                     <div class="header_dropdown" data-dropdown="" style="position: relative;">
                         <div class="css-header_btn" data-dropdown-button="">
                             <div class="header_btn">
@@ -262,10 +262,11 @@
     </style>
     <div class="page__layout" style="padding: 0;">
         <div class="header_chat_message">
-                    <button class="back-button sidebar_header_btn" onclick="closeChat()">
+                    <a href="{% url 'chat_list' %}" class="sidebar_header_btn" >
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
-                    </svg></button>
+                            <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </a>
                     {% if user.id == chat.sender.id %}
                     <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_img" id="currentUserImage">
                         <img src="{{ receiver.avatar_photo.file_path.url }}">
@@ -287,9 +288,9 @@
                             <div class="chat_message_item right">{{ message.message }}</div>
                         {% else %}
                             <div class="chat_img_message">
-                                <a href="#" class="chat_img" id="currentUserImage">
+                                <div class="chat_img" id="currentUserImage">
                                     <img src="{{ message.sender.avatar_photo.file_path.url }}" alt="">
-                                </a>
+                                </div>
                                 <div class="chat_message_item left">{{ message.message }}</div>
                             </div>
                         {% endif %}
@@ -297,53 +298,61 @@
                     {% endfor %}
                 </div>
                 <div class="input_chat_message">
-                    <textarea name="message" placeholder="Напишите что-нибудь..." id="messageInput" class="messageInput"></textarea>
-                    <div class="header_dropdown">
-                        <div class="css-header_btn" id="emojiButton">
+                    <textarea name="message" placeholder="Сообщение" id="messageInput" class="messageInput"></textarea>
+                    <div class="header_dropdown" data-dropdown="" style="position: relative;">
+                        <div class="css-header_btn" data-dropdown-button="">
                             <div class="header_btn">
                                 <span class="header_btn_icon">
-                                    <img src="https://i.ibb.co/dcGX2xZ/Frame-180.png" alt="Emojis">
+                                    <img src="https://i.ibb.co/dcGX2xZ/Frame-180.png">
                                 </span>
                             </div>
                         </div>
-                        <div class="dropdown-menu" id="emojiDropdown">
-                            <div class="emoji" onclick="addEmoji('😄')">😄</div>
-                            <div class="emoji" onclick="addEmoji('😃')">😃</div>
-                            <div class="emoji" onclick="addEmoji('😁')">😁</div>
-                            <div class="emoji" onclick="addEmoji('😆')">😆</div>
-                            <div class="emoji" onclick="addEmoji('😅')">😅</div>
-                            <div class="emoji" onclick="addEmoji('🤣')">🤣</div>
-                            <div class="emoji" onclick="addEmoji('😂')">😂</div>
-                            <div class="emoji" onclick="addEmoji('🙂')">🙂</div>
-                            <div class="emoji" onclick="addEmoji('🙃')">🙃</div>
-                            <div class="emoji" onclick="addEmoji('❤️')">❤️</div>
-                            <div class="emoji" onclick="addEmoji('😉')">😉</div>
-                            <div class="emoji" onclick="addEmoji('😊')">😊</div>
-                            <div class="emoji" onclick="addEmoji('😇')">😇</div>
-                            <div class="emoji" onclick="addEmoji('🥰')">🥰</div>
-                            <div class="emoji" onclick="addEmoji('😍')">😍</div>
-                            <div class="emoji" onclick="addEmoji('🤩')">🤩</div>
-                            <div class="emoji" onclick="addEmoji('😘')">😘</div>
-                            <div class="emoji" onclick="addEmoji('😗')">😗</div>
-                            <div class="emoji" onclick="addEmoji('😹')">😹</div>
-                            <div class="emoji" onclick="addEmoji('😸')">😸</div>
-                            <div class="emoji" onclick="addEmoji('😻')">😻</div>
-                            <div class="emoji" onclick="addEmoji('😼')">😼</div>
-                            <div class="emoji" onclick="addEmoji('😽')">😽</div>
-                            <div class="emoji" onclick="addEmoji('🙀')">🙀</div>
-                            <div class="emoji" onclick="addEmoji('😿')">😿</div>
-                            <div class="emoji" onclick="addEmoji('😾')">😾</div>
-                            <div class="emoji" onclick="addEmoji('🙈')">🙈</div>
-                            <div class="emoji" onclick="addEmoji('🙉')">🙉</div>
-                            <div class="emoji" onclick="addEmoji('🙊')">🙊</div>
-                            <div class="emoji" onclick="addEmoji('💋')">💋</div>
+                        <div class="dropdown-menu" style="max-width: 400px; left: unset; right: 0; top: unset; bottom: calc(100% + 8px);">
+                            <div class="dropdown-menu_box">
+                                <div class="emojies">
+                                    <div class="emoji" onclick="addEmoji('😄')">😄</div>
+                                    <div class="emoji" onclick="addEmoji('😃')">😃</div>
+                                    <div class="emoji" onclick="addEmoji('😄')">😄</div>
+                                    <div class="emoji" onclick="addEmoji('😁')">😁</div>
+                                    <div class="emoji" onclick="addEmoji('😆')">😆</div>
+                                    <div class="emoji" onclick="addEmoji('😅')">😅</div>
+                                    <div class="emoji" onclick="addEmoji('🤣')">🤣</div>
+                                    <div class="emoji" onclick="addEmoji('😂')">😂</div>
+                                    <div class="emoji" onclick="addEmoji('🙂')">🙂</div>
+                                    <div class="emoji" onclick="addEmoji('🙃')">🙃</div>
+                                    <div class="emoji" onclick="addEmoji('❤️')">❤️</div>
+                                    <div class="emoji" onclick="addEmoji('😉')">😉</div>
+                                    <div class="emoji" onclick="addEmoji('😊')">😊</div>
+                                    <div class="emoji" onclick="addEmoji('😇')">😇</div>
+                                    <div class="emoji" onclick="addEmoji('🥰')">🥰</div>
+                                    <div class="emoji" onclick="addEmoji('😍')">😍</div>
+                                    <div class="emoji" onclick="addEmoji('🤩')">🤩</div>
+                                    <div class="emoji" onclick="addEmoji('😘')">😘</div>
+                                    <div class="emoji" onclick="addEmoji('😗')">😗</div>
+                                    <div class="emoji" onclick="addEmoji('😹')">😹</div>
+                                    <div class="emoji" onclick="addEmoji('😸')">😸</div>
+                                    <div class="emoji" onclick="addEmoji('😻')">😻</div>
+                                    <div class="emoji" onclick="addEmoji('😼')">😼</div>
+                                    <div class="emoji" onclick="addEmoji('😽')">😽</div>
+                                    <div class="emoji" onclick="addEmoji('🙀')">🙀</div>
+                                    <div class="emoji" onclick="addEmoji('😿')">😿</div>
+                                    <div class="emoji" onclick="addEmoji('😾')">😾</div>
+                                    <div class="emoji" onclick="addEmoji('🙈')">🙈</div>
+                                    <div class="emoji" onclick="addEmoji('🙉')">🙉</div>
+                                    <div class="emoji" onclick="addEmoji('🙊')">🙊</div>
+                                    <div class="emoji" onclick="addEmoji('💋')">💋</div>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="sendButton" data-user="{{ request.user.login }}">Отправить</button>
                 </div>
             </div>
         </div>
-    </div>
+
+
+
 {% endif %}
 </body>
 
