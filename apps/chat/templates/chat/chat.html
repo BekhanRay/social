@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
     <link rel="stylesheet" href="{% static 'css/chat.css' %}">
 
-    <title>{% block title %} {% endblock %}</title>
+    <title>{% block title %} Чаты {% endblock %}</title>
 </head>
 <body>
 {% if type == 'pc' %}
@@ -407,18 +407,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);  // Небольшая задержка для правильной прокрутки
         }
     });
-   function addEmoji(emoji) {
-            const textField = document.getElementById('messageInput');
-            textField.value += emoji;
-        }
 
-    messageInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            sendButton.click();
-        }
-    });
-});
+
+
+   // Dropdown toggle
     document.addEventListener("mousedown", e => {
         const isDropdownButton = e.target.matches("[data-dropdown-button]");
         if (!isDropdownButton && e.target.closest("[data-dropdown]") != null) return;
@@ -441,5 +433,13 @@ document.addEventListener('DOMContentLoaded', function() {
         textField.value += emoji;
         textField.focus(); // Keep focus on the input after adding emoji
     };
+
+    messageInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            sendButton.click();
+        }
+    });
+});
 
 </script>
