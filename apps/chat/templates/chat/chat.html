@@ -17,7 +17,8 @@
     <title>{% block title %} Чаты {% endblock %}</title>
 </head>
 <body>
-    <div class="page__layout" style="padding: 0;">
+{% if type == 'pc' %}
+        <div class="page__layout" style="padding: 0;">
         <div class="chat_box">
             <div class="chat_sidebar" id="sidebar">
                 <div class="sidebar_header">
@@ -44,7 +45,7 @@
                     </div>
                     <div class="chat_user_text">
                         <div class="chat_user_nickname">{{chat.sender.nickname}}</div>
-                        {% endif %}
+                {% endif %}
                         <div class="chat_user_data">
                             <span>Последнее сообщение</span>
                             <span>{{chat.messages.last.get_message_time}}</span>
@@ -152,9 +153,199 @@
             </div>
         </div>
     </div>
+
+{#{% if type != '"Windows"' %}#}
+{% else %}
+    <style>
+        body {
+        margin: 0;
+        font-family: 'Comfortaa', sans-serif;
+    }
+    
+    .page__layout {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+    
+    .chat_box {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: #f5f5f5;
+    }
+    
+    .chat_message {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative; /* Important for positioning the input */
+    }
+    
+    .header_chat_message {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .container_chat_message {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    
+    .input_chat_message {
+        padding: 10px;
+        background-color: #ffffff;
+        border-top: 1px solid #ddd;
+        position: sticky; /* Make input sticky to the bottom */
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box; /* Ensure padding is included in width */
+        z-index: 1; /* Ensure it's above other content */
+    }
+    
+    .messageInput {
+        width: calc(100% - 70px); /* Adjust width for send button */
+        height: 50px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-right: 10px; /* Space for send button */
+    }
+    
+    .header_dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .css-header_btn {
+        cursor: pointer;
+    }
+    
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        bottom: 100%;
+        background: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-width: 300px;
+        width: 100%;
+        overflow-y: auto;
+        max-height: 200px; /* Limit the height of the dropdown */
+    }
+    
+    .dropdown-menu.show {
+        display: block;
+    }
+    
+    .emoji {
+        cursor: pointer;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .emoji:hover {
+        background-color: #f0f0f0;
+    }
+    .header_chat_message {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+    }
+    </style>
+    <div class="page__layout" style="padding: 0;">
+        <div class="header_chat_message">
+                    <button class="back-button sidebar_header_btn" onclick="closeChat()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M16 4L8 12L16 20" stroke-width="2" stroke-linecap="round"/>
+                    </svg></button>
+                    {% if user.id == chat.sender.id %}
+                    <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_img" id="currentUserImage">
+                        <img src="{{ receiver.avatar_photo.file_path.url }}">
+                    </a>
+                    <a href="{% url 'user_detail' chat.receiver.id %}" class="chat_user_nickname" id="currentUserNickname">{{ receiver.nickname}}</a>
+                {% else %}
+                    <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_img" id="currentUserImage">
+                        <img src="{{ chat.sender.avatar_photo.file_path.url }}">
+                    </a>
+                    <a href="{% url 'user_detail' chat.sender.id %}" class="chat_user_nickname" id="currentUserNickname">{{ chat.sender.nickname}}</a>
+
+
+                {% endif %}
+        </div>
+                <div class="container_chat_message" id="messageContainer">
+                    {% for message in messages %}
+                    <div class="messageContainer">
+                        {% if message.sender.login == request.user.login %}
+                            <div class="chat_message_item right">{{ message.message }}</div>
+                        {% else %}
+                            <div class="chat_img_message">
+                                <a href="#" class="chat_img" id="currentUserImage">
+                                    <img src="{{ message.sender.avatar_photo.file_path.url }}" alt="">
+                                </a>
+                                <div class="chat_message_item left">{{ message.message }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="input_chat_message">
+                    <textarea name="message" placeholder="Напишите что-нибудь..." id="messageInput" class="messageInput"></textarea>
+                    <div class="header_dropdown">
+                        <div class="css-header_btn" id="emojiButton">
+                            <div class="header_btn">
+                                <span class="header_btn_icon">
+                                    <img src="https://i.ibb.co/dcGX2xZ/Frame-180.png" alt="Emojis">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" id="emojiDropdown">
+                            <div class="emoji" onclick="addEmoji('😄')">😄</div>
+                            <div class="emoji" onclick="addEmoji('😃')">😃</div>
+                            <div class="emoji" onclick="addEmoji('😁')">😁</div>
+                            <div class="emoji" onclick="addEmoji('😆')">😆</div>
+                            <div class="emoji" onclick="addEmoji('😅')">😅</div>
+                            <div class="emoji" onclick="addEmoji('🤣')">🤣</div>
+                            <div class="emoji" onclick="addEmoji('😂')">😂</div>
+                            <div class="emoji" onclick="addEmoji('🙂')">🙂</div>
+                            <div class="emoji" onclick="addEmoji('🙃')">🙃</div>
+                            <div class="emoji" onclick="addEmoji('❤️')">❤️</div>
+                            <div class="emoji" onclick="addEmoji('😉')">😉</div>
+                            <div class="emoji" onclick="addEmoji('😊')">😊</div>
+                            <div class="emoji" onclick="addEmoji('😇')">😇</div>
+                            <div class="emoji" onclick="addEmoji('🥰')">🥰</div>
+                            <div class="emoji" onclick="addEmoji('😍')">😍</div>
+                            <div class="emoji" onclick="addEmoji('🤩')">🤩</div>
+                            <div class="emoji" onclick="addEmoji('😘')">😘</div>
+                            <div class="emoji" onclick="addEmoji('😗')">😗</div>
+                            <div class="emoji" onclick="addEmoji('😹')">😹</div>
+                            <div class="emoji" onclick="addEmoji('😸')">😸</div>
+                            <div class="emoji" onclick="addEmoji('😻')">😻</div>
+                            <div class="emoji" onclick="addEmoji('😼')">😼</div>
+                            <div class="emoji" onclick="addEmoji('😽')">😽</div>
+                            <div class="emoji" onclick="addEmoji('🙀')">🙀</div>
+                            <div class="emoji" onclick="addEmoji('😿')">😿</div>
+                            <div class="emoji" onclick="addEmoji('😾')">😾</div>
+                            <div class="emoji" onclick="addEmoji('🙈')">🙈</div>
+                            <div class="emoji" onclick="addEmoji('🙉')">🙉</div>
+                            <div class="emoji" onclick="addEmoji('🙊')">🙊</div>
+                            <div class="emoji" onclick="addEmoji('💋')">💋</div>
+                        </div>
+                    </div>
+                    <button type="submit" class="sendButton" data-user="{{ request.user.login }}">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
 </body>
-
-
 
 
 <script>

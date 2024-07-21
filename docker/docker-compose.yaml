@@ -37,13 +37,6 @@ services:
 #    env_file:
 #      - ../.env
 
-  celery_worker:
-    <<: *backend
-    restart: unless-stopped
-    container_name: celery_worker
-    ports: ['']
-    command: celery -A core worker -l INFO
-
   redis:
     restart: always
     container_name: redis
