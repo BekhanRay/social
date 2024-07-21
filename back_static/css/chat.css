@@ -170,7 +170,7 @@
     border-radius: 16px 16px 16px 0;
 }
 .chat_message_item.right{
-    background-color: rgb(62, 104, 213);
+    background-color: #8ea8d3;
     border-radius: 16px 16px 0px 16px;
     float: right;
 }
