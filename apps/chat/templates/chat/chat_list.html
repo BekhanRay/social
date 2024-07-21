@@ -26,20 +26,20 @@
         </div>
         {% for chat in chats %}
         {% if user.id == chat.sender.id %}
-        <a href="{% url 'create_chat' chat.receiver.login %}" class="chat_user">
+        <a href="{% url 'get_chat' chat.room_name %}" class="chat_user" >
             <div class="chat_user_img">
                 <img src="{{chat.receiver.avatar_photo.file_path.url}}" alt="">
             </div>
             <div class="chat_user_text">
                 <div class="chat_user_nickname">{{chat.receiver.nickname}}</div>
                 {% else %}
-                <a href="{% url 'create_chat' chat.sender.login %}" class="chat_user" data-user="{{chat.room_name}}" onclick="event.preventDefault(); loadChat('{{ chat.room_name }}')">
+                <a href="{% url 'get_chat' chat.room_name %}" class="chat_user">
             <div class="chat_user_img">
                 <img src="{{chat.sender.avatar_photo.file_path.url}}" alt="">
             </div>
             <div class="chat_user_text">
                 <div class="chat_user_nickname">{{chat.sender.nickname}}</div>
-                {% endif %}
+        {% endif %}
                 <div class="chat_user_data">
                     <span>Последнее сообщение</span>
                     <span>{{chat.messages.last.get_message_time}}</span>
